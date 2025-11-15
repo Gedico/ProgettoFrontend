@@ -6,11 +6,31 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./pages/auth/register/register.component')
         .then(m => m.RegisterComponent)
-  },
+  }
+  ,
+
   {
     path: '',
     redirectTo: 'register',
     pathMatch: 'full'
   }
+  ,
+
+  {
+  path: 'oauth-callback',
+  loadComponent: () =>
+    import('./pages/auth/oauth-callback/oauth-callback.component')
+      .then(m => m.OAuthCallbackComponent)
+}
+ ,
+ 
+  {
+  path: 'home',
+  loadComponent: () =>
+    import('./pages/home/home.component')
+      .then(m => m.HomeComponent)
+}
+
+
 ];
 
