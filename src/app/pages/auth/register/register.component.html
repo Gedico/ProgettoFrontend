@@ -1,0 +1,83 @@
+<div class="page-container">
+
+  <div class="card">
+
+    <h2>Registrazione Utente</h2>
+
+    <!-- Messaggi sopra il form -->
+     <div class="message-box">
+       <p class="success" *ngIf="success">{{ success }}</p>
+       <p class="error" *ngIf="error">{{ error }}</p>
+    </div>
+
+
+    <form [formGroup]="form" (ngSubmit)="submit()" class="form">
+
+      <div class="row">
+        <div class="field">
+          <label>Nome *</label>
+          <input formControlName="nome" type="text">
+          <span class="field-error" *ngIf="form.get('nome')?.invalid && form.get('nome')?.touched">
+            Inserisci almeno 2 caratteri.
+          </span>
+        </div>
+
+        <div class="field">
+          <label>Cognome *</label>
+          <input formControlName="cognome" type="text">
+          <span class="field-error" *ngIf="form.get('cognome')?.invalid && form.get('cognome')?.touched">
+            Inserisci almeno 2 caratteri.
+          </span>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Email *</label>
+        <input formControlName="mail" type="email">
+        <span class="field-error" *ngIf="form.get('mail')?.invalid && form.get('mail')?.touched">
+          Inserisci un'email valida.
+        </span>
+      </div>
+
+      <div class="field">
+        <label>Password *</label>
+        <input formControlName="password" type="password">
+        <span class="field-error" *ngIf="form.get('password')?.invalid && form.get('password')?.touched">
+          La password deve contenere almeno 6 caratteri.
+        </span>
+      </div>
+
+      <div class="row">
+        <div class="field">
+          <label>Numero</label>
+          <input formControlName="numero">
+          <span class="field-error" *ngIf="form.get('numero')?.invalid && form.get('numero')?.touched">
+            Il numero deve avere tra 7 e 15 cifre.
+          </span>
+        </div>
+
+        <div class="field">
+          <label>Indirizzo</label>
+          <input formControlName="indirizzo">
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Approfondimento</label>
+        <textarea formControlName="approfondimento"></textarea>
+      </div>
+
+      <div class="field">
+        <label>Messaggio</label>
+        <textarea formControlName="messaggio"></textarea>
+      </div>
+
+      <button class="btn" type="submit" [disabled]="loading">
+        {{ loading ? 'Invio…' : 'Registrati' }}
+      </button>
+
+    </form>
+
+  </div>
+</div>
+
