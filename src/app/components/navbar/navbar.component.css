@@ -1,0 +1,47 @@
+.navbar {
+  width: 100%;
+  height: 70px;
+  background-color: #2977a7; /* azzurro */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 30px;
+  box-sizing: border-box;
+}
+
+/* LOGO A SINISTRA */
+.logo {
+  font-size: 24px;
+  font-weight: bold;
+  color: white;
+}
+
+/* BARRA DI RICERCA AL CENTRO */
+.search-container {
+  flex: 1;                     /* occupa lo spazio centrale */
+  display: flex;
+  justify-content: center;
+  pointer-events: auto;        /* sicurezza */
+}
+
+.search-container input {
+  width: 350px;
+  max-width: 100%;
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: none;
+}
+
+/* BOTTONE A DESTRA */
+.right-button {
+  margin-left: 20px;
+  z-index: 10;                 /* IMPORTANTE per cliccare */
+}
+
+.right-button a {
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  text-decoration: none;
+  cursor: pointer;
+}

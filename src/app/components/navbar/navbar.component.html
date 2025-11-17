@@ -1,0 +1,18 @@
+<nav class="navbar">
+
+  <div class="logo">
+    DietiEstate25
+  </div>
+
+  <div class="search-container" *ngIf="showSearch">
+    <input type="text" placeholder="Cerca inserzioni...">
+  </div>
+
+  <div class="right-button">
+    <a [routerLink]="buttonLink">{{ buttonLabel }}</a>
+  </div>
+
+</nav>
+
+
+

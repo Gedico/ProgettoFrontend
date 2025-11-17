@@ -11,8 +11,9 @@ export const routes: Routes = [
 
   {
     path: '',
-    redirectTo: 'register',
-    pathMatch: 'full'
+    loadComponent: () =>
+    import('./pages/landing/landing.component')
+      .then(m => m.LandingComponent)
   }
   ,
 
@@ -21,7 +22,7 @@ export const routes: Routes = [
   loadComponent: () =>
     import('./pages/auth/oauth-callback/oauth-callback.component')
       .then(m => m.OAuthCallbackComponent)
-}
+  }
  ,
  
   {
@@ -29,8 +30,24 @@ export const routes: Routes = [
   loadComponent: () =>
     import('./pages/home/home.component')
       .then(m => m.HomeComponent)
-}
+  }
 
+,
+
+  {
+  path: 'login',
+  loadComponent: () =>
+    import('./pages/auth/login/login.component')
+      .then(m => m.LoginComponent)
+  }
+
+  ,
+
+  {
+  path: '**',
+  redirectTo: '',
+  pathMatch: 'full'
+  }
 
 ];
 
