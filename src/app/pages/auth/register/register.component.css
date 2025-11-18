@@ -7,150 +7,98 @@
   background: linear-gradient(135deg, #e3f2fd, #e8f5e9);
 }
 
-.card {
+.register-card {
   width: 100%;
-  max-width: 550px;
+  max-width: 420px;
   background: white;
-  padding: 35px;
+  padding: 30px;
   border-radius: 14px;
-  box-shadow: 0 6px 22px rgba(0,0,0,0.12);
+  box-shadow: 0 6px 22px rgba(0, 0, 0, 0.12);
   border-top: 5px solid #1e88e5;
 }
 
-h2 {
-  text-align: center;
-  margin-bottom: 25px;
-  color: #1e88e5;
-  font-family: 'Segoe UI', sans-serif;
-  font-weight: 700;
+form .form-group {
+  margin-bottom: 16px;
 }
 
-.message-box {
-  margin-bottom: 15px;
-  text-text-align: center;
-}
-
-.success {
-  color: #2e7d32;
-  font-weight: 600;
-}
-
-.error {
-  color: #c62828;
-  font-weight: 600;
-}
-
-.form {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-
-.row {
-  display: flex;
-  gap: 15px;
-}
-
-.field {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-}
-
-label {
-  font-weight: 600;
-  margin-bottom: 5px;
-  font-size: 14px;
-  color: #444;
-}
-
-input, textarea {
-  padding: 10px;
-  border-radius: 10px;
-  border: 1px solid #ddd;
-  background: #fafafa;
-  font-size: 14px;
-  transition: border-color .2s ease;
-}
-
-input:focus, textarea:focus {
-  border-color: #1e88e5;
+input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
   outline: none;
 }
 
-input.ng-invalid.ng-touched,
-textarea.ng-invalid.ng-touched {
-  border-color: #e53935;
-  background: #ffebee;
-}
-
-.field-error {
-  color: #e53935;
-  font-size: 13px;
-  margin-top: 5px;
-}
-
-.btn {
+.primary-btn {
   width: 100%;
+  padding: 12px;
+  border-radius: 8px;
   background: #1e88e5;
   color: white;
-  padding: 14px;
-  border-radius: 10px;
   border: none;
-  font-size: 16px;
   cursor: pointer;
-  margin-top: 15px;
-  transition: background .2s ease;
+  font-weight: 600;
+  margin-top: 10px;
 }
 
-.btn:hover {
-  background: #0d47a1;
+.providers {
+  text-align: center;
+  margin-top: 20px;
 }
 
-/* --------------------------------------------- */
-/* 🟦 PULSANTE REGISTRAZIONE CON GOOGLE (NUOVO) */
-/* --------------------------------------------- */
-
-.social-buttons {
-  margin-top: 25px;
-  display: flex;
-  justify-content: center;
-}
-
-.google-btn {
+.provider-btn {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  background: white;
+  border: 1px solid #ccc;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 12px;
-
-  width: 100%;
-  max-width: 350px;
-
-  padding: 12px 20px;
-
-  background: white;
-  border: 1px solid #dadce0;
-  border-radius: 10px;
-
-  font-size: 15px;
-  font-weight: 600;
-  color: #3c4043;
-
+  gap: 10px;
   cursor: pointer;
-  transition: all 0.2s ease-in-out;
 }
 
-.google-btn img {
+.icon {
   width: 22px;
   height: 22px;
 }
 
-.google-btn:hover {
-  background: #f7f8f8;
-  border-color: #c6c6c6;
+.divider {
+  margin-top: 20px;
+  text-align: center;
+  color: #666;
 }
 
-.google-btn:active {
-  background: #eeeeee;
-  transform: scale(0.98);
+.providers .provider-btn {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  background: white;
+  border: 1px solid #ccc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  cursor: pointer;
+  margin-bottom: 10px;
+  font-size: 14px;
 }
+
+.providers .provider-btn.google {
+  border-color: #db4437;
+}
+
+.providers .provider-btn.facebook {
+  border-color: #1877f2;
+}
+
+.providers .provider-btn.github {
+  border-color: #000;
+}
+
+.icon {
+  width: 22px;
+  height: 22px;
+}
+

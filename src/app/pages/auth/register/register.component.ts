@@ -1,70 +1,69 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
-import { AuthService } from '../../../core/auth/auth.service';
-import { NavbarComponent } from "../../../components/navbar/navbar.component";
+
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { GoogleLoginModalComponent } from '../../../google-login-modal/google-login-modal.component';
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, NavbarComponent],
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css'],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    MatDialogModule
+  ],
+  providers: [
+    GoogleLoginModalComponent   // <-- qui, non negli imports (NO WARNING)
+  ]
 })
-export class RegisterComponent {
+export class RegisterComponent implements OnInit {
 
-  form: any;
-  loading = false;
-  success = '';
-  error = '';
+  registerForm: any;
 
   constructor(
     private fb: FormBuilder,
-    private authService: AuthService
-  ) {
+    private dialog: MatDialog
+  ) {}
 
-    this.form = this.fb.group({
-      nome: ['', [Validators.required, Validators.minLength(2)]],
-      cognome: ['', [Validators.required, Validators.minLength(2)]],
-      mail: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
-      numero: ['', [Validators.pattern(/^[0-9]{7,15}$/)]],
-      indirizzo: [''],
-      approfondimento: [''],
-      messaggio: ['']
+  ngOnInit() {
+    this.registerForm = this.fb.group({
+      nome: ['', Validators.required],
+      cognome: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', Validators.required]
     });
   }
 
-  submit() {
-    // Reset messaggi
-    this.success = '';
-    this.error = '';
+  onSubmit() {
+    console.log("Dati registrazione:", this.registerForm.value);
+    // TODO: chiamata API
+  }
 
-    if (this.form.invalid) {
-      this.form.markAllAsTouched();
-      this.error = "Compila correttamente i campi evidenziati.";
-      return;
-    }
-
-    this.loading = true;
-
-    this.authService.registerUtente(this.form.value).subscribe({
-      next: (res: any) => {
-        this.success = res.messaggio || 'Registrazione completata!';
-        this.error = '';
-        this.loading = false;
-      },
-      error: (err) => {
-        this.error = err.error?.messaggio || 'Errore durante la registrazione';
-        this.success = '';
-        this.loading = false;
-      }
+  openGoogleModal() {
+    this.dialog.open(GoogleLoginModalComponent, {
+      width: '380px',
+      panelClass: 'custom-dialog'
     });
   }
 
-  loginWithGoogle() {
-  
-    window.location.href = 'http://localhost:8080/oauth2/authorization/google';
-  }
+  openFacebookModal() {
+  this.dialog.open(GoogleLoginModalComponent, {
+    data: { provider: 'facebook' },
+    width: '380px',
+    panelClass: 'custom-dialog'
+  });
+}
+
+openGithubModal() {
+  this.dialog.open(GoogleLoginModalComponent, {
+    data: { provider: 'github' },
+    width: '380px',
+    panelClass: 'custom-dialog'
+  });
+}
 
 }
+

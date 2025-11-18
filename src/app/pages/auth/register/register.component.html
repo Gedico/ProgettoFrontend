@@ -1,92 +1,58 @@
-<app-navbar></app-navbar>
 <div class="page-container">
+  <div class="register-card">
 
-  <div class="card">
+    <h2>Crea il tuo account</h2>
 
-    <h2>Registrazione Utente</h2>
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
 
-    <!-- Messaggi sopra il form -->
-     <div class="message-box">
-       <p class="success" *ngIf="success">{{ success }}</p>
-       <p class="error" *ngIf="error">{{ error }}</p>
-    </div>
-
-
-    <form [formGroup]="form" (ngSubmit)="submit()" class="form">
-
-      <div class="row">
-        <div class="field">
-          <label>Nome *</label>
-          <input formControlName="nome" type="text">
-          <span class="field-error" *ngIf="form.get('nome')?.invalid && form.get('nome')?.touched">
-            Inserisci almeno 2 caratteri.
-          </span>
-        </div>
-
-        <div class="field">
-          <label>Cognome *</label>
-          <input formControlName="cognome" type="text">
-          <span class="field-error" *ngIf="form.get('cognome')?.invalid && form.get('cognome')?.touched">
-            Inserisci almeno 2 caratteri.
-          </span>
-        </div>
+      <div class="form-group">
+        <label>Nome</label>
+        <input type="text" formControlName="nome" />
       </div>
 
-      <div class="field">
-        <label>Email *</label>
-        <input formControlName="mail" type="email">
-        <span class="field-error" *ngIf="form.get('mail')?.invalid && form.get('mail')?.touched">
-          Inserisci un'email valida.
-        </span>
+      <div class="form-group">
+        <label>Cognome</label>
+        <input type="text" formControlName="cognome" />
       </div>
 
-      <div class="field">
-        <label>Password *</label>
-        <input formControlName="password" type="password">
-        <span class="field-error" *ngIf="form.get('password')?.invalid && form.get('password')?.touched">
-          La password deve contenere almeno 6 caratteri.
-        </span>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" formControlName="email" />
       </div>
 
-      <div class="row">
-        <div class="field">
-          <label>Numero</label>
-          <input formControlName="numero">
-          <span class="field-error" *ngIf="form.get('numero')?.invalid && form.get('numero')?.touched">
-            Il numero deve avere tra 7 e 15 cifre.
-          </span>
-        </div>
-
-        <div class="field">
-          <label>Indirizzo</label>
-          <input formControlName="indirizzo">
-        </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" formControlName="password" />
       </div>
 
-      <div class="field">
-        <label>Approfondimento</label>
-        <textarea formControlName="approfondimento"></textarea>
-      </div>
-
-      <div class="field">
-        <label>Messaggio</label>
-        <textarea formControlName="messaggio"></textarea>
-      </div>
-
-      <button class="btn" type="submit" [disabled]="loading">
-        {{ loading ? 'Invio…' : 'Registrati' }}
+      <button class="primary-btn" type="submit">
+        Registrati
       </button>
-
-      <div class="social-buttons">
-        <button type="button" class="google-btn" (click)="loginWithGoogle()">
-          <img src="assets/google-logo.svg" alt="Google logo" />
-           Registrati con Google
-        </button>
-       </div>
-
-
     </form>
+
+     <div class="divider">oppure</div>
+
+     <div class="providers">
+
+  <!-- GOOGLE -->
+  <button class="provider-btn google" (click)="openGoogleModal()">
+    <img src="assets/icons/google.png" class="icon" />
+    Registrati con Google
+  </button>
+
+  <!-- FACEBOOK -->
+  <button class="provider-btn facebook" (click)="openFacebookModal()">
+    <img src="assets/icons/facebook.png" class="icon" />
+    Registrati con Facebook
+  </button>
+
+  <!-- GITHUB -->
+  <button class="provider-btn github" (click)="openGithubModal()">
+    <img src="assets/icons/github.png" class="icon" />
+    Registrati con GitHub
+  </button>
+
+</div>
 
   </div>
 </div>
-
