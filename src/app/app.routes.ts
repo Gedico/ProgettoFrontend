@@ -1,11 +1,14 @@
 import { Routes } from '@angular/router';
+import { AuthGuard } from './guards/auth.guard';
+import { LoginGuard } from './guards/login.guard';
 
 export const routes: Routes = [
   {
     path: 'register',
     loadComponent: () =>
       import('./pages/auth/register/register.component')
-        .then(m => m.RegisterComponent)
+        .then(m => m.RegisterComponent),
+    canActivate: [LoginGuard]
   }
   ,
 
@@ -24,21 +27,13 @@ export const routes: Routes = [
       .then(m => m.OAuthCallbackComponent)
   }
  ,
- 
-  {
-  path: 'home',
-  loadComponent: () =>
-    import('./pages/home/home.component')
-      .then(m => m.HomeComponent)
-  }
-
-,
 
   {
   path: 'login',
   loadComponent: () =>
     import('./pages/auth/login/login.component')
-      .then(m => m.LoginComponent)
+      .then(m => m.LoginComponent),
+  canActivate: [LoginGuard]
   }
 
   ,

@@ -1,0 +1,4 @@
+Ho implementato 3 stati nella navbar: 
+*1 Bottone login se non loggato e se non sono in login o registrazione 
+*2 Bottone home se non sono loggato e sono in login o registrazione
+3* Bottone profilo solo se sono loggato

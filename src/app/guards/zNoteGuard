@@ -1,0 +1,4 @@
+ho impostato 3 guard per il momento che sono: 
+1* per non far accedere le persone non loggate a contenuti protetti
+2* per impedire la visione si pagine di login alle persone loggate 
+3* un guartd che preclude la visione di determinate pagine in base ai ruoli 

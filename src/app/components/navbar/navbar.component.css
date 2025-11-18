@@ -33,15 +33,56 @@
 }
 
 /* BOTTONE A DESTRA */
-.right-button {
+.right-side {
   margin-left: 20px;
   z-index: 10;                 /* IMPORTANTE per cliccare */
 }
 
-.right-button a {
+.right-side a {
   color: white;
   font-size: 18px;
   font-weight: bold;
   text-decoration: none;
   cursor: pointer;
 }
+
+
+.profile-area {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.profile-area profile-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  color: #2977a7;
+  cursor: pointer;
+}
+
+.logout-btn {
+  padding: 6px 12px;
+  background-color: #1206c0;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.logout-btn:hover {
+  background-color: #e60000;
+}
+
+.role-label {
+  font-weight: 600;
+  font-size: 14px;
+  color: #ffffff;
+}
+

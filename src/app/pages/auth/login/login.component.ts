@@ -44,7 +44,7 @@ export class LoginComponent {
         const token = res.token;
         localStorage.setItem('token', token);
 
-        this.router.navigate(['/home']);
+        this.router.navigate(['/']);
       },
       error: (err) => {
         console.error("Errore login:", err);

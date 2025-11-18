@@ -8,9 +8,38 @@
     <input type="text" placeholder="Cerca inserzioni...">
   </div>
 
-  <div class="right-button">
-    <a [routerLink]="buttonLink">{{ buttonLabel }}</a>
+  <div class="right-side">
+
+  <!-- Landing → Login -->
+  <a *ngIf="showLoginButton" [routerLink]="loginLink" class="login-btn">
+    Login
+  </a>
+
+  <!-- Login/Register → Home -->
+  <a *ngIf="showHomeButton" [routerLink]="homeLink" class="login-btn">
+    Home
+  </a>
+
+  <!-- Loggato → Icona profilo -->
+  <div *ngIf="showProfileIcon" class="profile-area">
+
+    <!-- Icona profilo -->
+    <div class="profile-icon">
+      <img src="assets/profile-icon.svg" alt="Profilo">
+    </div>
+
+    <span class="role-label">
+    {{ userRole }}
+    </span>
+
+    <!-- Logout -->
+    <button class="logout-btn" (click)="logout()">
+      Logout
+    </button>
+
   </div>
+</div>
+
 
 </nav>
 
