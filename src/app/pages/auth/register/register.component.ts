@@ -4,6 +4,8 @@ import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { GoogleLoginModalComponent } from '../../../google-login-modal/google-login-modal.component';
+import { NavbarComponent } from '../../../components/navbar/navbar.component';
+
 
 @Component({
   selector: 'app-register',
@@ -13,7 +15,8 @@ import { GoogleLoginModalComponent } from '../../../google-login-modal/google-lo
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    MatDialogModule
+    MatDialogModule,
+    NavbarComponent
   ],
   providers: [
     GoogleLoginModalComponent   // <-- qui, non negli imports (NO WARNING)
