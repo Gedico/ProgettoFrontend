@@ -37,12 +37,7 @@ export class NavbarComponent {
   get showHomeButton(): boolean {
     return !this.isLogged && (this.currentRoute === '/login' || this.currentRoute === '/register');
   }
-
-  // Mostra barra di ricerca solo nella landing
-  get showSearch(): boolean {
-    return this.router.url === '/';
-  }
-
+  
 
   get showProfileIcon(): boolean {
     return this.isLogged;

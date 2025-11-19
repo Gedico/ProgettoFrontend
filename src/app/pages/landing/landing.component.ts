@@ -1,14 +1,39 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NavbarComponent } from "../../components/navbar/navbar.component";
 import { RouterModule } from '@angular/router';
+import { SearchBarComponent } from '../../components/search-bar/search-bar.component';
+import { CommonModule } from '@angular/common';
+import { InserzioneCardComponent } from '../../components/inserzioni/inserzione-card/inserzione-card.component';
+import { InserzioneService} from '../../services/inserzioni.service';
+import { InserzioneCard } from '../../models/inserzionecard';
+
+
 
 @Component({
   selector: 'app-landing',
   standalone: true,
-  imports: [NavbarComponent, RouterModule],
+  imports: [NavbarComponent, RouterModule, SearchBarComponent, CommonModule, InserzioneCardComponent],
   templateUrl: './landing.component.html',
-  styleUrl: './landing.component.css'
+  styleUrls: ['./landing.component.css']
 })
-export class LandingComponent {
+export class LandingPageComponent implements OnInit {
 
+  ultime: InserzioneCard[] = [];
+
+  constructor(private inserzioneService: InserzioneService) {}
+
+  ngOnInit(): void {
+    this.caricaUltime();
+  }
+
+  caricaUltime() {
+    this.inserzioneService.getUltimeInserzioni().subscribe({
+      next: (dati) => {
+        this.ultime = dati;
+      },
+      error: (err) => {
+        console.error("Errore caricamento ultime inserzioni:", err);
+      }
+    });
+  } 
 }

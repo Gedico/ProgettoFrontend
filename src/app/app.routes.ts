@@ -16,7 +16,7 @@ export const routes: Routes = [
     path: '',
     loadComponent: () =>
     import('./pages/landing/landing.component')
-      .then(m => m.LandingComponent)
+      .then(m => m.LandingPageComponent)
   }
   ,
 

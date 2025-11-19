@@ -1,0 +1,25 @@
+.hero {
+  padding: 40px 0;
+  background-color: #f6f6f6;
+}
+
+.ultime-inserzioni {
+  padding: 30px 10%;
+}
+
+.grid-inserzioni {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+}
+.ultime-inserzioni {
+  padding: 20px 10%;
+}
+
+.grid-inserzioni {
+  margin-top: 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 20px;
+}
+

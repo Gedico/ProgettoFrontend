@@ -1,0 +1,10 @@
+<div class="card">
+  <img [src]="inserzione.fotoPrincipale" alt="Foto inserzione">
+
+  <div class="card-content">
+    <h3>{{ inserzione.titolo }}</h3>
+    <p>{{ inserzione.prezzo | currency:'EUR':'symbol':'1.0-0' }}</p>
+    <p>{{ inserzione.dimensioni }} m² · {{ inserzione.numero_stanze }} stanze</p>
+  </div>
+</div>
+

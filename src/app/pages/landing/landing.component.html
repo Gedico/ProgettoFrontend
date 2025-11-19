@@ -1,2 +1,17 @@
 <app-navbar></app-navbar>
-<p>landing works!</p>
+<!-- Hero con search bar -->
+<section class="hero">
+  <app-search-bar></app-search-bar>
+</section>
+
+<!-- Sezione ultimi immobili -->
+<section class="ultime-inserzioni">
+
+  <h2>Ultime inserzioni</h2>
+  
+  <div class="grid-inserzioni">
+    <app-inserzione-card *ngFor="let inserzione of ultime" [inserzione]="inserzione"></app-inserzione-card>
+  </div>
+
+</section>
+
