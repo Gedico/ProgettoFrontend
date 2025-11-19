@@ -26,19 +26,20 @@ export class OAuthCallbackComponent implements OnInit {
 
       if (token) {
 
-        // 2. Salva il token (localStorage o tokenService)
-        localStorage.setItem('auth-token', token);
+    if (typeof window !== 'undefined') {
+    localStorage.setItem('auth-token', token);
+    }
 
-        this.message = "Accesso completato! Reindirizzamento...";
+    this.message = "Accesso completato! Reindirizzamento...";
 
-        // 3. Reindirizza alla home (o dashboard)
-        setTimeout(() => {
-          this.router.navigate(['/home']); // oppure '/profilo', come vuoi
-        }, 1500);
+    setTimeout(() => {
+      this.router.navigate(['/']);
+   }, 1500);
 
-      } else {
-        this.message = "Token non ricevuto. Accesso fallito.";
-      }
+  } else {
+   this.message = "Token non ricevuto. Accesso fallito.";
+  }
+
     });
   }
 }
