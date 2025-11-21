@@ -27,7 +27,7 @@ export class OAuthCallbackComponent implements OnInit {
       if (token) {
 
     if (typeof window !== 'undefined') {
-    localStorage.setItem('auth-token', token);
+    localStorage.setItem('token', token);
     }
 
     this.message = "Accesso completato! Reindirizzamento...";

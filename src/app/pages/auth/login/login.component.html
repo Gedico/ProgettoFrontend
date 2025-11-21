@@ -26,16 +26,40 @@
       Inserisci la password
     </div>
 
-    <!-- Bottone -->
+    <!-- Bottone Login -->
     <button type="submit">Login</button>
-    
+
+    <!-- Divider -->
+    <div class="divider">oppure</div>
+
+    <!-- OAuth Providers -->
+    <div class="providers">
+
+      <!-- GOOGLE -->
+      <button type="button" class="provider-btn google" (click)="openGoogleModal()">
+        <img src="assets/icons/google.png" class="icon" />
+        Accedi con Google
+      </button>
+
+      <!-- FACEBOOK -->
+      <button type="button" class="provider-btn facebook" (click)="openFacebookModal()">
+        <img src="assets/icons/facebook.png" class="icon" />
+        Accedi con Facebook
+      </button>
+
+      <!-- GITHUB -->
+      <a class="provider-btn github" 
+         href="http://localhost:8080/oauth2/authorization/github">
+        <img src="assets/icons/github.png" class="icon" />
+        Accedi con GitHub
+      </a>
+
+    </div>
 
     <p class="register-link">
-  Non hai un account?
-  <a routerLink="/register">Registrati</a>
-</p>
-
+      Non hai un account?
+      <a routerLink="/register">Registrati</a>
+    </p>
 
   </form>
 </div>
-
