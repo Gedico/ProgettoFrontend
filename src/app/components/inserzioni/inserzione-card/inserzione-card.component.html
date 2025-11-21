@@ -1,4 +1,8 @@
-<div class="card">
+<div 
+  class="card"
+  [routerLink]="['/inserzione', inserzione.idInserzione]"
+  style="cursor: pointer;"
+>
   <img [src]="inserzione.fotoPrincipale" alt="Foto inserzione">
 
   <div class="card-content">

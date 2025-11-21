@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { AuthGuard } from './guards/auth.guard';
 import { LoginGuard } from './guards/login.guard';
+import { VisualizzaInserzioneComponent } from './pages/visualizza-inserzione/visualizza-inserzione.component';
 
 export const routes: Routes = [
   {
@@ -36,6 +37,14 @@ export const routes: Routes = [
   canActivate: [LoginGuard]
   }
 
+  ,
+  
+  {
+
+    path: 'inserzione/:id', component: VisualizzaInserzioneComponent
+
+  }
+  
   ,
 
   {

@@ -1,6 +1,6 @@
 <nav class="navbar">
 
-  <div class="logo">
+  <div class="logo" [routerLink]="homeLink">
     DietiEstate25
   </div>
 
@@ -20,20 +20,39 @@
   <!-- Loggato → Icona profilo -->
   <div *ngIf="showProfileIcon" class="profile-area">
 
-    <!-- Icona profilo -->
-    <div class="profile-icon">
-      <img src="assets/profile-icon.svg" alt="Profilo">
-    </div>
+      <div class="profile-icon" (click)="toggleMenu()">
+        <img src="assets/icons/user.svg" alt="Profilo">
+      </div>
 
-    <span class="role-label">
-    {{ userRole }}
-    </span>
+        <!-- Menu a tendina -->
+        <div class="dropdown-menu" *ngIf="menuAperto">
+      
+          <!-- MENU UTENTE -->
+          <ng-container *ngIf="isUser">
+            <a routerLink="/profilo">Profilo</a>
+            <a routerLink="/proposte-inviate">Proposte inviate</a>
+            <a routerLink="/registro-proposte">Registro proposte</a>
+            <a (click)="logout()">Logout</a>
+          </ng-container>
 
-    <!-- Logout -->
-    <button class="logout-btn" (click)="logout()">
-      Logout
-    </button>
+          <!-- MENU AGENTE -->
+          <ng-container *ngIf="isAgent">
+            <a routerLink="/profilo">Profilo</a>
+            <a routerLink="/proposte-ricevute">Proposte ricevute</a>
+            <a routerLink="/registro-proposte">Registro proposte</a>
+            <a routerLink="/inserzione/aggiungi">Aggiungi inserzione</a>
+            <a routerLink="/inserzioni-caricate">Inserzioni caricate</a>
+            <a (click)="logout()">Logout</a>
+          </ng-container>
 
+          <!-- MENU ADMIN -->
+          <ng-container *ngIf="isAdmin">
+            <a routerLink="/profilo">Profilo</a>
+            <a routerLink="/admin/aggiungi-agente">Aggiungi agente</a>
+            <a routerLink="/admin/statistiche">Statistiche</a>
+            <a (click)="logout()">Logout</a>
+          </ng-container>
+        </div>
   </div>
 </div>
 

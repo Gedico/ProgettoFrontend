@@ -11,6 +11,7 @@ import { SessionService } from '../../services/session.service';
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent {
+  menuAperto: boolean = false;
 
   constructor(
     private router: Router,
@@ -69,7 +70,13 @@ get userRole(): string | null {
   return this.sessionService.getRole();
 }
 
+toggleMenu() {
+    this.menuAperto = !this.menuAperto;
+  }
 
+  chiudiMenu() {
+    this.menuAperto = false;
+  }
 
 
 
