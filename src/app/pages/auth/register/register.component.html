@@ -31,30 +31,10 @@
       </button>
     </form>
 
-     <div class="divider">oppure</div>
-
-     <div class="providers">
-
-  <!-- GOOGLE -->
-  <button class="provider-btn google" (click)="openGoogleModal()">
-    <img src="assets/icons/google.png" class="icon" />
-    Registrati con Google
-  </button>
-
-  <!-- FACEBOOK -->
-  <button class="provider-btn facebook" (click)="openFacebookModal()">
-    <img src="assets/icons/facebook.png" class="icon" />
-    Registrati con Facebook
-  </button>
-
- <!-- GITHUB -->
-<a class="provider-btn github" 
-   href="http://localhost:8080/oauth2/authorization/github">
-  <img src="assets/icons/github.png" class="icon" />
-  Registrati con GitHub
-</a>
-
-</div>
+    <p class="login-link">
+      Hai già un account?
+      <a routerLink="/login">Accedi</a>
+    </p>
 
   </div>
 </div>
