@@ -1,6 +1,6 @@
 <nav class="navbar">
 
-  <div class="logo" [routerLink]="homeLink">
+  <div class="logo" [routerLink]="'/'">
     DietiEstate25
   </div>
 
@@ -8,12 +8,12 @@
   <div class="right-side">
 
   <!-- Landing → Login -->
-  <a *ngIf="showLoginButton" [routerLink]="loginLink" class="login-btn">
+  <a *ngIf="showLoginButton" [routerLink]="'/login'" class="login-btn">
     Login
   </a>
 
   <!-- Login/Register → Home -->
-  <a *ngIf="showHomeButton" [routerLink]="homeLink" class="login-btn">
+  <a *ngIf="showHomeButton" [routerLink]="'/'" class="login-btn">
     Home
   </a>
 
@@ -21,37 +21,15 @@
   <div *ngIf="showProfileIcon" class="profile-area">
 
       <div class="profile-icon" (click)="toggleMenu()">
-        <img src="assets/icons/user.svg" alt="Profilo">
+        <img src="assets/icons/profilo.png" alt="Profilo" height="1024" width="1024">
+        Profilo
       </div>
 
         <!-- Menu a tendina -->
         <div class="dropdown-menu" *ngIf="menuAperto">
-      
-          <!-- MENU UTENTE -->
-          <ng-container *ngIf="isUser">
-            <a routerLink="/profilo">Profilo</a>
-            <a routerLink="/proposte-inviate">Proposte inviate</a>
-            <a routerLink="/registro-proposte">Registro proposte</a>
-            <a (click)="logout()">Logout</a>
-          </ng-container>
 
-          <!-- MENU AGENTE -->
-          <ng-container *ngIf="isAgent">
-            <a routerLink="/profilo">Profilo</a>
-            <a routerLink="/proposte-ricevute">Proposte ricevute</a>
-            <a routerLink="/registro-proposte">Registro proposte</a>
-            <a routerLink="/inserzione/aggiungi">Aggiungi inserzione</a>
-            <a routerLink="/inserzioni-caricate">Inserzioni caricate</a>
-            <a (click)="logout()">Logout</a>
-          </ng-container>
+        <app-menunavbar [role]="userRole" [logout]="logout.bind(this)" (close)="chiudiMenu()"> </app-menunavbar>
 
-          <!-- MENU ADMIN -->
-          <ng-container *ngIf="isAdmin">
-            <a routerLink="/profilo">Profilo</a>
-            <a routerLink="/admin/aggiungi-agente">Aggiungi agente</a>
-            <a routerLink="/admin/statistiche">Statistiche</a>
-            <a (click)="logout()">Logout</a>
-          </ng-container>
         </div>
   </div>
 </div>

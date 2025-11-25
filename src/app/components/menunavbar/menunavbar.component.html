@@ -1,0 +1,25 @@
+<!-- MENU UTENTE -->
+<ng-container *ngIf="role === 'UTENTE'">
+  <a routerLink="/profilo" (click)="close.emit()">Profilo</a>
+  <a routerLink="/proposte-inviate" (click)="close.emit()">Proposte inviate</a>
+  <a routerLink="/registro-proposte" (click)="close.emit()">Registro proposte</a>
+  <a (click)="logout(); close.emit()">Logout</a>
+</ng-container>
+
+<!-- MENU AGENTE -->
+<ng-container *ngIf="role === 'AGENTE'">
+  <a routerLink="/profilo" (click)="close.emit()">Profilo</a>
+  <a routerLink="/proposte-ricevute" (click)="close.emit()">Proposte ricevute</a>
+  <a routerLink="/registro-proposte" (click)="close.emit()">Registro proposte</a>
+  <a routerLink="/inserzione/aggiungi" (click)="close.emit()">Aggiungi inserzione</a>
+  <a routerLink="/inserzioni-caricate" (click)="close.emit()">Inserzioni caricate</a>
+  <a (click)="logout(); close.emit()">Logout</a>
+</ng-container>
+
+<!-- MENU ADMIN -->
+<ng-container *ngIf="role === 'ADMIN'">
+  <a routerLink="/profilo" (click)="close.emit()">Profilo</a>
+  <a routerLink="/admin/addagente" (click)="close.emit()">Aggiungi agente</a>
+  <a routerLink="/admin/statistiche" (click)="close.emit()">Statistiche</a>
+  <a (click)="logout(); close.emit()">Logout</a>
+</ng-container>

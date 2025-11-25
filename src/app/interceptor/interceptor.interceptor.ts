@@ -1,26 +1,24 @@
-import { Injectable } from '@angular/core';
-import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { HttpInterceptorFn } from '@angular/common/http';
 
-@Injectable()
-export class AuthInterceptor implements HttpInterceptor {
+export const AuthInterceptor: HttpInterceptorFn = (req, next) => {
 
-  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-
-    const token = localStorage.getItem('token');
-
-    // Se c’è un token, aggiungiamo l’header Authorization
-    if (token) {
-      const authReq = req.clone({
-        setHeaders: {
-          Authorization: `Bearer ${token}`
-        }
-      });
-      return next.handle(authReq);
-    }
-
-    // Altrimenti proseguiamo senza modificare la richiesta
-    return next.handle(req);
+  // Se siamo in SSR → non abbiamo localStorage
+  if (typeof window === 'undefined') {
+    return next(req);
   }
-}
+
+  const token = localStorage.getItem('token');
+
+  if (token) {
+    const cloned = req.clone({
+      setHeaders: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+    return next(cloned);
+  }
+
+  return next(req);
+};
+
 

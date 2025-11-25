@@ -10,23 +10,24 @@ export const RoleGuard = (allowedRoles: string[]) => {
   const sessionService = inject(SessionService);
   const platformId = inject(PLATFORM_ID);
 
-  // SSR check
   if (!isPlatformBrowser(platformId)) return false;
 
-  // Se non loggato → blocca subito
-  if (!sessionService.isLogged()) {
-    router.navigate(['/']);
+  const state = sessionService.getSnapshot();
+
+  // Utente NON loggato -> blocca
+  if (!state.logged) {
+    router.navigate(['/login']);
     return false;
   }
 
-  const role = sessionService.getRole();
+  const role = state.role;
 
-  // Consenti solo se il ruolo è tra quelli ammessi
+  // Se il ruolo è tra quelli ammessi -> OK
   if (role && allowedRoles.includes(role)) {
     return true;
   }
 
-  // Altrimenti rifiuta e reindirizza (per ora alla home)
+  // Altrimenti reindirizza
   router.navigate(['/']);
   return false;
 };

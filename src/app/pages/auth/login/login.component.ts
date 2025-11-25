@@ -6,6 +6,9 @@ import { CommonModule } from '@angular/common';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { LoginService } from '../../../core/auth/login.service';
 import { GoogleLoginModalComponent } from '../../../google-login-modal/google-login-modal.component';
+import { SessionService } from '../../../services/session.service';
+import {MatSnackBar} from '@angular/material/snack-bar';
+
 
 @Component({
   selector: 'app-login',
@@ -28,12 +31,15 @@ export class LoginComponent {
     private fb: FormBuilder,
     private loginService: LoginService,
     private router: Router,
-    private dialog: MatDialog
-  ) {
+    private dialog: MatDialog,
+    private sessionService: SessionService,
+    private snack: MatSnackBar
+) {
     this.loginForm = this.fb.group({
       mail: ['', [Validators.required, Validators.email]],
-      password: ['', Validators.required]
+      password: ['', [Validators.required, Validators.minLength(8)]]
     });
+
   }
 
   onSubmit() {
@@ -44,18 +50,18 @@ export class LoginComponent {
 
     this.loginService.login(this.loginForm.value).subscribe({
       next: (res) => {
-        const token = res.token;
-        localStorage.setItem('token', token);
+        this.sessionService.setSession(res.token);
+        this.snack.open('Login effettuato con successo', 'OK', { duration: 2500 });
         this.router.navigate(['/']);
       },
       error: (err) => {
-        console.error("Errore login:", err);
-        alert("Credenziali non valide");
+        const msg = err.error?.message || 'Credenziali non valide';
+        this.snack.open(msg, 'Chiudi', { duration: 3000});
       }
     });
   }
 
-  openGoogleModal() {
+    openGoogleModal() {
     this.dialog.open(GoogleLoginModalComponent, {
       width: '380px',
       panelClass: 'custom-dialog'

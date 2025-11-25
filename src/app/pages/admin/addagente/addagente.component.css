@@ -1,0 +1,60 @@
+.add-agente-container {
+  width: 100%;
+  margin-top: 80px;
+  display: flex;
+  justify-content: center;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  width: 320px;
+  padding: 25px;
+  border-radius: 12px;
+  background: #ffffff;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
+  gap: 18px;
+}
+
+label {
+  font-weight: 600;
+  font-size: 14px;
+  color: #444;
+}
+
+input, textarea {
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  transition: border-color 0.25s, box-shadow 0.25s;
+}
+
+input:focus, textarea:focus {
+  border-color: #2977a7;
+  box-shadow: 0 0 4px rgba(41, 119, 167, 0.4);
+  outline: none;
+}
+
+button {
+  padding: 12px;
+  background: #2977a7;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 15px;
+  transition: background-color 0.25s, opacity 0.25s;
+}
+
+button:hover {
+  background: #1f5a7d;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: default;
+  pointer-events: none;
+}
+

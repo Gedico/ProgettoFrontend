@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { AuthGuard } from './guards/auth.guard';
 import { LoginGuard } from './guards/login.guard';
+import { RoleGuard } from './guards/role.guard';
 
 
 export const routes: Routes = [
@@ -29,7 +30,7 @@ export const routes: Routes = [
     loadComponent: () =>import('./pages/auth/oauth-callback/oauth-callback.component')
     .then(m => m.OAuthCallbackComponent)
   },
- 
+
   // Login
   { path: 'login',
     loadComponent: () =>import('./pages/auth/login/login.component')
@@ -37,14 +38,30 @@ export const routes: Routes = [
     canActivate: [LoginGuard]
   },
 
+
+  /*-------------------------------ADMIN DASHBOARD---------------------------------------------------------------------------- */
+
+  //adagente
+  { path: 'admin/addagente',
+    loadComponent: () =>import('./pages/admin/addagente/addagente.component')
+    .then(m => m.AddagenteComponent),
+    canActivate: [AuthGuard,() => RoleGuard(['ADMIN'])]
+  },
+
+
+
+
+
+
+
 /*-------------------------------INSERZIONI---------------------------------------------------------------------------- */
-  // InserzionE
-  { path: 'inserzione/:id', 
+  // Inserzione
+  { path: 'inserzione/:id',
     loadComponent: () =>import('./pages/visualizza-inserzione/visualizza-inserzione.component')
     .then(m => m.VisualizzaInserzioneComponent)
   },
-  
-  
+
+
 /*-------------------------------REDIRECT GENERICO---------------------------------------------------------------------------- */
   {
   path: '**',

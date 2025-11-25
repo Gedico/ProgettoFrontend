@@ -1,76 +1,72 @@
 import { Component } from '@angular/core';
+import {CommonModule} from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
-import { CommonModule } from '@angular/common';
+import { LoginService } from '../../core/auth/login.service';
 import { SessionService } from '../../services/session.service';
+import { MenunavbarComponent} from '../menunavbar/menunavbar.component';
+
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, MenunavbarComponent],
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent {
+
+/*---------VARIABILI---------------------------------------------------------------------------------------------------------*/
+
   menuAperto: boolean = false;
+  currentRoute = '';
 
-  constructor(
-    private router: Router,
-    private sessionService: SessionService
-  ) { }
+  showLoginButton = false;
+  showHomeButton = false;
+  showProfileIcon = false;
+
+  isLogged = false;
+  userRole: string | null = null;
 
 
 
-  // Controllo login
-  get isLogged(): boolean {
-    return this.sessionService.isLogged();
+/*------COSTRUTTORE---------------------------------------------------------------------------------------------------------------*/
+
+  constructor(private router: Router, private sessionService: SessionService , private loginService: LoginService) {
+    // reattivo alla sessione
+    this.sessionService.session$.subscribe(state => {
+      this.isLogged = state.logged;
+      this.userRole = state.role;
+      this.updateNavbarVisibility();
+    });
+
+    // reattivo alla rotta
+    this.router.events.subscribe(() => {
+      this.currentRoute = this.router.url;
+      this.updateNavbarVisibility();
+    });
   }
 
-  // Rotta attuale
-  get currentRoute(): string {
-    return this.router.url;
-  }
 
+  /**----------METODI--------------------------------------------------------------------------------------------------------*/
 
-  get showLoginButton(): boolean {
-    return !this.isLogged && (this.currentRoute === '/' );
-  }
-
-  get showHomeButton(): boolean {
-    return !this.isLogged && (this.currentRoute === '/login' || this.currentRoute === '/register');
-  }
-  
-
-  get showProfileIcon(): boolean {
-    return this.isLogged;
-  }
-
-  get loginLink(): string {
-    return '/login';
-  }
-
-  get homeLink(): string {
-    return '/';
-  }
-
-  
-  // Logout (verrà usato nella fase 2)
   logout() {
-    this.sessionService.logout();
-    this.router.navigate(['/']);
+    const token = this.sessionService.getToken() || '';
+
+    this.loginService.logout(token).subscribe({
+      next: () => {
+        this.sessionService.clearSession();
+        this.router.navigate(['/']);
+      },
+      error: () => {
+        // In caso di errore backend, comunque fai logout locale
+        this.sessionService.clearSession();
+        this.router.navigate(['/']);
+      }
+    });
   }
 
-//Metodi per verifica ruolo 
-get isUser(): boolean { return this.sessionService.isUser(); }
 
-get isAgent(): boolean { return this.sessionService.isAgent(); }
-
-get isAdmin(): boolean { return this.sessionService.isAdmin(); }
-
-get userRole(): string | null {
-  return this.sessionService.getRole();
-}
-
-toggleMenu() {
+  toggleMenu() {
     this.menuAperto = !this.menuAperto;
   }
 
@@ -78,6 +74,14 @@ toggleMenu() {
     this.menuAperto = false;
   }
 
+
+  /*----------AGGIORNA NAVBAR--------------------------------------------------------------------------------------------------------*/
+
+  private updateNavbarVisibility() {
+    this.showLoginButton = !this.isLogged && this.currentRoute === '/';
+    this.showHomeButton  = !this.isLogged && (this.currentRoute === '/login' || this.currentRoute === '/register');
+    this.showProfileIcon = this.isLogged;
+  }
 
 
 }

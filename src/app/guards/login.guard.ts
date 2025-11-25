@@ -10,15 +10,15 @@ export const LoginGuard = () => {
   const sessionService = inject(SessionService);
   const platformId = inject(PLATFORM_ID);
 
-  // SSR check
   if (!isPlatformBrowser(platformId)) return false;
 
-  // Se loggato → blocca accesso a login/register e manda a home
-  if (sessionService.isLogged()) {
+  const state = sessionService.getSnapshot();
+
+  if (state.logged) {
     router.navigate(['/home']);
     return false;
   }
 
-  // Se NON loggato → può accedere
   return true;
 };
+

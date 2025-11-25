@@ -1,0 +1,40 @@
+<app-navbar></app-navbar>
+<h2>Aggiungi Agente</h2>
+
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+
+  <div>
+    <label>Nome</label>
+    <input type="text" formControlName="nome">
+  </div>
+
+  <div>
+    <label>Cognome</label>
+    <input type="text" formControlName="cognome">
+  </div>
+
+  <div>
+    <label>Email</label>
+    <input type="email" formControlName="mail">
+  </div>
+
+  <div>
+    <label>Password</label>
+    <input type="password" formControlName="password">
+  </div>
+
+  <div>
+    <label>Numero di telefono</label>
+    <input type="text" formControlName="numero">
+  </div>
+
+  <div>
+    <label>Agenzia</label>
+    <textarea formControlName="agenzia"></textarea>
+  </div>
+
+  <button type="submit" [disabled]="form.invalid">Crea agente</button>
+
+
+</form>
+

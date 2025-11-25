@@ -27,10 +27,13 @@
     </div>
 
     <!-- Bottone Login -->
-    <button type="submit">Login</button>
+    <button type="submit" [disabled]="loginForm.invalid">Login</button>
 
     <!-- Divider -->
-    <div class="divider">oppure</div>
+    <div class="separator">
+      <span>oppure</span>
+    </div>
+
 
     <!-- OAuth Providers -->
     <div class="providers">
@@ -48,11 +51,11 @@
       </button>
 
       <!-- GITHUB -->
-      <a class="provider-btn github" 
+      <button class="provider-btn github"
          href="http://localhost:8080/oauth2/authorization/github">
         <img src="assets/icons/github.png" class="icon" />
         Accedi con GitHub
-      </a>
+      </button>
 
     </div>
 

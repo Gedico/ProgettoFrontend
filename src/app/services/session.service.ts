@@ -1,62 +1,81 @@
 import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
+import { BehaviorSubject } from 'rxjs';
+
+export interface SessionState {
+  logged: boolean;
+  role: string | null;
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class SessionService {
 
-  constructor(@Inject(PLATFORM_ID) private platformId: object) {}
+  private sessionState$ = new BehaviorSubject<SessionState>({
+    logged: false,
+    role: null
+  });
 
-  // Ritorna true se il token esiste (utente loggato)
-  isLogged(): boolean {
-    if (!isPlatformBrowser(this.platformId)) return false;
-
-    return !!localStorage.getItem('token');
+  get session$() {
+    return this.sessionState$.asObservable();
   }
 
-  // Ottieni il token JWT
-  getToken(): string | null {
-    if (!isPlatformBrowser(this.platformId)) return null;
-
-    return localStorage.getItem('token');
-  }
-
-  // Logout frontend (rimuove token)
-  logout(): void {
+  constructor(@Inject(PLATFORM_ID) private platformId: object) {
     if (!isPlatformBrowser(this.platformId)) return;
 
-    localStorage.removeItem('token');
+    const token = localStorage.getItem('token');
+    if (!token) return;
+
+    // decode JWT
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      const role = payload.ruolo || null;
+
+      this.sessionState$.next({
+        logged: true,
+        role
+      });
+    } catch {
+      // token corrotto → reset stato
+      this.sessionState$.next({
+        logged: false,
+        role: null
+      });
+    }
   }
 
+  // chiamato dopo login
+  setSession(token: string): void {
+    localStorage.setItem('token', token);
 
-  getRole(): string | null {
-  if (!isPlatformBrowser(this.platformId)) return null;
-
-  const token = this.getToken();
-  if (!token) return null;
-
-  try {
     const payload = JSON.parse(atob(token.split('.')[1]));
-    return payload.ruolo || null;
-  } catch (e) {
-    console.error("Errore decodifica token:", e);
-    return null;
+    const role = payload.ruolo || null;
+
+    this.sessionState$.next({
+      logged: true,
+      role
+    });
   }
 
+  // logout frontend (solo stato + localStorage)
+  clearSession(): void {
+    localStorage.removeItem('token');
+
+    this.sessionState$.next({
+      logged: false,
+      role: null
+    });
+  }
+
+  getSnapshot() {
+    return this.sessionState$.getValue();
+  }
+
+
+  getToken(): string | null {
+    if (!isPlatformBrowser(this.platformId)) return null;
+    return localStorage.getItem('token');
+  }
 }
 
-isUser(): boolean {
-  return this.getRole() === 'UTENTE';
-}
-
-isAgent(): boolean {
-  return this.getRole() === 'AGENTE';
-}
-
-isAdmin(): boolean {
-  return this.getRole() === 'ADMIN';
-}
-
-
-}
