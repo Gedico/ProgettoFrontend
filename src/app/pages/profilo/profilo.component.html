@@ -1,62 +1,43 @@
-<div class="profilo-wrapper">
+<div class="profilo-container">
 
-  <!-- LOADING -->
-  <div class="loading" *ngIf="loading">
-    <div class="spinner"></div>
-    <p>Caricamento profilo...</p>
-  </div>
+  <h1>Il mio profilo</h1>
 
-  <!-- SUCCESS MESSAGE -->
-  <div class="success-message" *ngIf="showSuccess">
-    ✔ Profilo aggiornato!
-  </div>
+  <button class="btn-back" (click)="goBack()">
+    ← Indietro
+  </button>
 
-  <!-- CONTENT -->
-  <div class="profilo-card" *ngIf="!loading">
+  <div class="profilo-box" [class.loading]="loading">
 
-    <h2>Il mio profilo</h2>
-    <button class="back-btn" (click)="goBack()">
-      ⬅ Indietro
-    </button>
-
-    <div class="info">
+    <div class="info-riepilogo">
       <p><strong>Email:</strong> {{ email }}</p>
       <p><strong>Ruolo:</strong> {{ ruolo }}</p>
     </div>
 
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
 
-      <div class="form-row">
-        <label>Nome</label>
-        <input type="text" formControlName="nome">
-      </div>
+      <label>Nome</label>
+      <input formControlName="nome">
 
-      <div class="form-row">
-        <label>Cognome</label>
-        <input type="text" formControlName="cognome">
-      </div>
+      <label>Cognome</label>
+      <input formControlName="cognome">
 
-      <div class="form-row">
-        <label>Numero di telefono</label>
-        <input type="text" formControlName="numero">
-      </div>
+      <label>Numero di telefono</label>
+      <input formControlName="numero">
 
-      <div class="form-row">
-        <label>Indirizzo</label>
-        <input type="text" formControlName="indirizzo">
-      </div>
+      <label>Indirizzo</label>
+      <input formControlName="indirizzo">
 
-      <div class="form-row">
-        <label>Nuova password</label>
-        <input type="password" formControlName="password" placeholder="Lascia vuoto per non cambiarla">
-      </div>
+      <label>Nuova password</label>
+      <input type="password" formControlName="password">
 
-      <button type="submit" [disabled]="saving || form.invalid">
-        <span *ngIf="!saving">Salva modifiche</span>
-        <span *ngIf="saving">⏳ Salvataggio...</span>
+      <button class="btn-primary" [disabled]="saving || form.invalid">
+        {{ saving ? 'Salvataggio...' : 'Salva modifiche' }}
       </button>
+
+      <div class="success-msg" *ngIf="showSuccess">
+        ✔ Modifiche salvate!
+      </div>
 
     </form>
   </div>
-
 </div>
