@@ -77,5 +77,11 @@ export class SessionService {
     if (!isPlatformBrowser(this.platformId)) return null;
     return localStorage.getItem('token');
   }
+
+
+  getRole(): string | null {
+    return this.sessionState$.getValue().role;
+  }
+
 }
 
