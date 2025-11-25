@@ -75,4 +75,9 @@ export class LoginComponent {
       panelClass: 'custom-dialog'
     });
   }
+
+  loginWithGithub() {
+    window.location.href = 'http://localhost:8080/oauth2/authorization/github';
+  }
+
 }
