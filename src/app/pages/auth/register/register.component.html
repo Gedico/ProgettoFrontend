@@ -1,4 +1,5 @@
 <app-navbar></app-navbar>
+
 <div class="page-container">
   <div class="register-card">
 
@@ -9,31 +10,35 @@
       <div class="form-group">
         <label>Nome</label>
         <input type="text" formControlName="nome" />
+        <small *ngIf="nome?.touched && nome?.invalid">Inserisci il nome</small>
       </div>
 
       <div class="form-group">
         <label>Cognome</label>
         <input type="text" formControlName="cognome" />
+        <small *ngIf="cognome?.touched && cognome?.invalid">Inserisci il cognome</small>
       </div>
 
       <div class="form-group">
         <label>Email</label>
-        <input type="email" formControlName="email" />
+        <input type="email" formControlName="mail" />
+        <small *ngIf="mail?.touched && mail?.invalid">Email non valida</small>
       </div>
 
       <div class="form-group">
         <label>Password</label>
         <input type="password" formControlName="password" />
+        <small *ngIf="password?.touched && password?.invalid">Inserisci la password</small>
       </div>
 
-      <button class="primary-btn" type="submit">
+      <button class="primary-btn" type="submit" [disabled]="registerForm.invalid">
         Registrati
       </button>
     </form>
 
     <p class="login-link">
       Hai già un account?
-      <a routerLink="/login">Accedi</a>
+      <a routerLink="/login" class="login-anchor">Accedi</a>
     </p>
 
   </div>

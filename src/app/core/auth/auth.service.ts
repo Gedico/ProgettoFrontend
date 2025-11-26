@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';;
+import { Injectable } from '@angular/core';
 import { RegisterRequest } from '../../models/dto/register-request.dto';
 
 @Injectable({
@@ -15,7 +15,7 @@ export class AuthService {
     return this.http.post<any>(`${this.apiUrl}/registerUtente`, data);
   }
 
-  
+
 
 
 }
