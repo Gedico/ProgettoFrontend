@@ -4,7 +4,7 @@ import { ReactiveFormsModule, FormBuilder, Validators, FormGroup } from '@angula
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { RouterLink } from '@angular/router';
 import { Router } from '@angular/router';
-import Swal from 'sweetalert2';
+import  Swal from 'sweetalert2';
 
 import { NavbarComponent } from '../../../components/navbar/navbar.component';
 import { AuthService } from '../../../core/auth/auth.service';
