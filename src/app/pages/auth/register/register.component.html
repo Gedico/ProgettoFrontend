@@ -26,9 +26,8 @@
         <input type="password" formControlName="password" />
       </div>
 
-      <button class="primary-btn" type="submit">
-        Registrati
-      </button>
+      <button type="submit" [disabled]="registerForm.invalid">Login</button>
+
     </form>
 
     <p class="login-link">

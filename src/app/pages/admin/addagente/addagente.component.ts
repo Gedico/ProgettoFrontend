@@ -28,7 +28,7 @@ export class AddagenteComponent {
       cognome: ['', Validators.required],
       mail: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(8)]],
-      numero: ['', Validators.required],
+      numero: ['', [Validators.required,Validators.minLength(10)]],
       agenzia: ['', Validators.required]
     });
   }

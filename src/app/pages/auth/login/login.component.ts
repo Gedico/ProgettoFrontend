@@ -75,4 +75,12 @@ export class LoginComponent {
       panelClass: 'custom-dialog'
     });
   }
+
+  openGithubModal() {
+    this.dialog.open(GoogleLoginModalComponent, {
+      data: { provider: 'github' },
+      width: '380px',
+      panelClass: 'custom-dialog'
+    });
+  }
 }

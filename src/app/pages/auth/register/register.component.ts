@@ -5,6 +5,8 @@ import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { GoogleLoginModalComponent } from '../../../google-login-modal/google-login-modal.component';
 import { NavbarComponent } from '../../../components/navbar/navbar.component';
+import {RouterLink} from '@angular/router';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 
 @Component({
@@ -16,10 +18,10 @@ import { NavbarComponent } from '../../../components/navbar/navbar.component';
     CommonModule,
     ReactiveFormsModule,
     MatDialogModule,
-    NavbarComponent
-  ],
-  providers: [
-    GoogleLoginModalComponent   // <-- qui, non negli imports (NO WARNING)
+    NavbarComponent,
+    GoogleLoginModalComponent,
+    RouterLink,
+    MatSnackBarModule
   ]
 })
 export class RegisterComponent implements OnInit {
@@ -28,22 +30,33 @@ export class RegisterComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private snack: MatSnackBar
   ) {}
 
   ngOnInit() {
     this.registerForm = this.fb.group({
-      nome: ['', Validators.required],
-      cognome: ['', Validators.required],
+      nome: ['', [Validators.required]],
+      cognome: ['', [Validators.required]],
       email: ['', [Validators.required, Validators.email]],
-      password: ['', Validators.required]
+      password: ['', [Validators.required, Validators.minLength(8)]],
     });
+
   }
 
   onSubmit() {
-    console.log("Dati registrazione:", this.registerForm.value);
-    // TODO: chiamata API
+    if (this.registerForm.invalid) {
+      this.snack.open('Compila tutti i campi obbligatori', 'OK', { duration: 2500 });
+      return;
+    }
+
+    this.snack.open('Registrazione completata!', 'OK', {
+      duration: 3000
+    });
+
+    // TODO: chiamata API vera
   }
+
 
   openGoogleModal() {
     this.dialog.open(GoogleLoginModalComponent, {

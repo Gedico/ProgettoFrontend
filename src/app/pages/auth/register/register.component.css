@@ -10,95 +10,92 @@
 .register-card {
   width: 100%;
   max-width: 420px;
-  background: white;
-  padding: 30px;
-  border-radius: 14px;
-  box-shadow: 0 6px 22px rgba(0, 0, 0, 0.12);
-  border-top: 5px solid #1e88e5;
+  background: #fff;
+  padding: 32px;
+  border-radius: 16px;
+  box-shadow: 0 8px 26px rgba(0, 0, 0, 0.12);
+  border-top: 6px solid #1e88e5;
 }
 
 form .form-group {
-  margin-bottom: 16px;
+  margin-bottom: 18px;
 }
 
 input {
   width: 100%;
-  padding: 10px 12px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  outline: none;
+  padding: 12px;
+  border: 1px solid #d0d0d0;
+  border-radius: 10px;
+  transition: border-color 0.25s ease;
+  font-size: 15px;
 }
 
-.primary-btn {
+input:focus {
+  border-color: #1e88e5;
+}
+
+button[type="submit"] {
   width: 100%;
   padding: 12px;
-  border-radius: 8px;
+  border-radius: 10px;
   background: #1e88e5;
   color: white;
   border: none;
-  cursor: pointer;
   font-weight: 600;
+  font-size: 15px;
   margin-top: 10px;
+  transition: background 0.25s ease, opacity 0.25s ease;
+}
+
+/* DISABILITATO */
+button[type="submit"]:disabled {
+  background: #90caf9;      /* più chiaro e opaco */
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* ABILITATO + HOVER */
+button[type="submit"]:not(:disabled) {
+  cursor: pointer;
+}
+
+button[type="submit"]:not(:disabled):hover {
+  background: #1565c0;      /* più intenso */
+}
+
+
+.login-link {
+  text-align: center;
+  margin-top: 18px;
+  font-size: 14px;
 }
 
 .providers {
-  text-align: center;
-  margin-top: 20px;
+  margin-top: 24px;
 }
 
 .provider-btn {
   width: 100%;
-  padding: 10px;
-  border-radius: 8px;
-  background: white;
-  border: 1px solid #ccc;
+  padding: 12px;
+  border-radius: 10px;
+  background: #fff;
+  border: 1px solid #d0d0d0;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
+  gap: 12px;
   cursor: pointer;
-}
-
-.icon {
-  width: 22px;
-  height: 22px;
-}
-
-.divider {
-  margin-top: 20px;
-  text-align: center;
-  color: #666;
-}
-
-.providers .provider-btn {
-  width: 100%;
-  padding: 10px;
-  border-radius: 8px;
-  background: white;
-  border: 1px solid #ccc;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  cursor: pointer;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
   font-size: 14px;
+  transition: border-color 0.25s;
 }
 
-.providers .provider-btn.google {
-  border-color: #db4437;
-}
-
-.providers .provider-btn.facebook {
-  border-color: #1877f2;
-}
-
-.providers .provider-btn.github {
-  border-color: #000;
-}
+.provider-btn.google { border-color: #db4437; }
+.provider-btn.facebook { border-color: #1877f2; }
+.provider-btn.github { border-color: #000; }
 
 .icon {
   width: 22px;
   height: 22px;
+  object-fit: contain;
 }
-
