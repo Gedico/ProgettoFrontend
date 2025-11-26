@@ -76,11 +76,8 @@ export class LoginComponent {
     });
   }
 
-  openGithubModal() {
-    this.dialog.open(GoogleLoginModalComponent, {
-      data: { provider: 'github' },
-      width: '380px',
-      panelClass: 'custom-dialog'
-    });
+  loginWithGithub() {
+    window.location.href = 'http://localhost:8080/oauth2/authorization/github';
   }
+
 }

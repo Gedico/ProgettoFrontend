@@ -2,6 +2,8 @@ import { Routes } from '@angular/router';
 import { AuthGuard } from './guards/auth.guard';
 import { LoginGuard } from './guards/login.guard';
 import { RoleGuard } from './guards/role.guard';
+import { ProfiloComponent } from './pages/profilo/profilo.component';
+
 
 
 export const routes: Routes = [
@@ -62,12 +64,19 @@ export const routes: Routes = [
   },
 
 
+  {
+    path: 'profilo',
+    component: ProfiloComponent,
+    canActivate: [AuthGuard]
+  },
 /*-------------------------------REDIRECT GENERICO---------------------------------------------------------------------------- */
   {
   path: '**',
   redirectTo: '',
   pathMatch: 'full'
-  }
+  },
+
+
 
 ];
 

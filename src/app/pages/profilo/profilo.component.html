@@ -1,0 +1,43 @@
+<div class="profilo-container">
+
+  <h1>Il mio profilo</h1>
+
+  <button class="btn-back" (click)="goBack()">
+    ← Indietro
+  </button>
+
+  <div class="profilo-box" [class.loading]="loading">
+
+    <div class="info-riepilogo">
+      <p><strong>Email:</strong> {{ email }}</p>
+      <p><strong>Ruolo:</strong> {{ ruolo }}</p>
+    </div>
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+
+      <label>Nome</label>
+      <input formControlName="nome">
+
+      <label>Cognome</label>
+      <input formControlName="cognome">
+
+      <label>Numero di telefono</label>
+      <input formControlName="numero">
+
+      <label>Indirizzo</label>
+      <input formControlName="indirizzo">
+
+      <label>Nuova password</label>
+      <input type="password" formControlName="password">
+
+      <button class="btn-primary" [disabled]="saving || form.invalid">
+        {{ saving ? 'Salvataggio...' : 'Salva modifiche' }}
+      </button>
+
+      <div class="success-msg" *ngIf="showSuccess">
+        ✔ Modifiche salvate!
+      </div>
+
+    </form>
+  </div>
+</div>
