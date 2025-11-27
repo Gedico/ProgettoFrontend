@@ -1,17 +1,32 @@
-<app-navbar></app-navbar>
-<!-- Hero con search bar -->
+
+
+<!-- HERO MODERNA -->
 <section class="hero">
-  <app-search-bar></app-search-bar>
-</section>
 
-<!-- Sezione ultimi immobili -->
-<section class="ultime-inserzioni">
+  <div class="overlay"></div>
 
-  <h2>Ultime inserzioni</h2>
-  
-  <div class="grid-inserzioni">
-    <app-inserzione-card *ngFor="let inserzione of ultime" [inserzione]="inserzione"></app-inserzione-card>
+  <div class="hero-content">
+    <h1>Trova la tua prossima casa</h1>
+    <p>Scopri gli immobili disponibili vicino a te o nella città che preferisci.</p>
+
+    <!-- Search bar al centro, come nel tuo codice -->
+    <div class="search-wrapper">
+      <app-search-bar></app-search-bar>
+    </div>
   </div>
 
 </section>
 
+<!-- SEZIONE ULTIME INSERZIONI -->
+<section class="ultime-inserzioni">
+
+  <h2>Ultime inserzioni</h2>
+
+  <div class="grid-inserzioni">
+    <app-inserzione-card
+      *ngFor="let inserzione of ultime"
+      [inserzione]="inserzione">
+    </app-inserzione-card>
+  </div>
+
+</section>

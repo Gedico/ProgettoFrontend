@@ -1,3 +1,44 @@
+/* =============================== */
+/*     FIX OVERFLOW ORIZZONTALE    */
+/* =============================== */
+
+/* Impedisce qualunque scroll orizzontale */
+:host {
+  display: block;
+  overflow-x: hidden;
+}
+
+/* Assicura che tutti gli elementi rimangano dentro la pagina */
+.container-inserzione,
+.galleria,
+.foto-principale,
+.foto-secondarie,
+iframe {
+  max-width: 100%;
+}
+
+/* Fix immagini secondarie */
+.foto-secondarie {
+  overflow-x: auto;
+  max-width: 100%;
+}
+
+.foto-secondarie img {
+  flex-shrink: 0;
+  max-width: 180px;
+}
+
+/* Fix iframe Google Maps */
+iframe {
+  display: block;
+  width: 100%;
+}
+
+
+/* =============================== */
+/*        STILI ORIGINALI          */
+/* =============================== */
+
 /* Container principale */
 .container-inserzione {
   max-width: 1100px;

@@ -1,96 +1,121 @@
+/* ======================= */
+/*        NAVBAR BASE       */
+/* ======================= */
+
 .navbar {
   width: 100%;
-  height: 70px;
-  background-color: #2977a7; /* azzurro */
+  height: 75px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 50;
+  background: transparent;
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  padding: 0 30px;
-  box-sizing: border-box;
+  align-items: center;
+  padding: 0 35px;
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+  overflow: visible !important;
 }
 
-/* LOGO A SINISTRA */
+.navbar.scrolled {
+  background: #1e293b;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.12);
+}
+
+/* LOGO */
 .logo {
-  font-size: 24px;
-  font-weight: bold;
-  color: white;
-}
-
-/* BARRA DI RICERCA AL CENTRO */
-.search-container {
-  flex: 1;                     /* occupa lo spazio centrale */
-  display: flex;
-  justify-content: center;
-  pointer-events: auto;        /* sicurezza */
-}
-
-.search-container input {
-  width: 350px;
-  max-width: 100%;
-  padding: 8px 12px;
-  border-radius: 8px;
-  border: none;
-}
-
-/* BOTTONE A DESTRA */
-.right-side {
-  margin-left: 20px;
-  z-index: 10;                 /* IMPORTANTE per cliccare */
-}
-
-.right-side a {
-  color: white;
-  font-size: 18px;
-  font-weight: bold;
-  text-decoration: none;
-  cursor: pointer;
-}
-
-
-.profile-area {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-}
-
-.profile-area profile-icon {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background-color: #ffffff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
-  color: #2977a7;
-  cursor: pointer;
-}
-
-.logout-btn {
-  padding: 6px 12px;
-  background-color: #1206c0;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: bold;
-}
-
-.logout-btn:hover {
-  background-color: #e60000;
-}
-
-.role-label {
+  font-size: 1.6rem;
   font-weight: 600;
-  font-size: 14px;
-  color: #ffffff;
-}
-
-.profile-icon img {
-  width: 32px;
-  height: 32px;
+  color: white;
   cursor: pointer;
 }
 
+/* SEZIONE DESTRA */
+.navbar-right {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
 
+/* BOTTONI LOGIN E HOME */
+.nav-button {
+  color: #e2e8f0;
+  font-size: 1rem;
+  font-weight: 500;
+  padding: 8px 16px;
+  border-radius: 8px;
+  text-decoration: none;
+  border: 1px solid rgba(255,255,255,0.25);
+  transition: 0.25s;
+}
 
+.nav-button:hover {
+  background-color: rgba(255,255,255,0.15);
+  color: white;
+}
+
+/* ======================= */
+/*        ICONA PROFILO     */
+/* ======================= */
+
+.profile-container {
+  position: relative;
+  margin-right: 40px; /* più spazio a sinistra = niente tagli */
+}
+
+.profile-trigger {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 46px;     /* spazio esterno cliccabile */
+  height: 46px;
+  border-radius: 50%;
+  padding: 4px;
+  cursor: pointer;
+  transition: 0.25s;
+}
+
+.profile-trigger:hover {
+  background: rgba(255,255,255,0.2);
+}
+
+/* cerchio immagine */
+.profile-img-wrapper {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.profile-img-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ======================= */
+/*        DROPDOWN          */
+/* ======================= */
+
+.dropdown {
+  position: absolute;
+  right: 0;
+  top: 58px;
+  background: #ffffff;
+  border-radius: 10px;
+  padding: 12px 0;
+  min-width: 220px;
+  z-index: 3000;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-5px); }
+  to   { opacity: 1; transform: translateY(0); }
+}

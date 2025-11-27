@@ -12,7 +12,7 @@ import { InserzioneCard } from '../../models/inserzionecard';
 @Component({
   selector: 'app-landing',
   standalone: true,
-  imports: [NavbarComponent, RouterModule, SearchBarComponent, CommonModule, InserzioneCardComponent],
+  imports: [ RouterModule, SearchBarComponent, CommonModule, InserzioneCardComponent],
   templateUrl: './landing.component.html',
   styleUrls: ['./landing.component.css']
 })
@@ -35,5 +35,5 @@ export class LandingPageComponent implements OnInit {
         console.error("Errore caricamento ultime inserzioni:", err);
       }
     });
-  } 
+  }
 }

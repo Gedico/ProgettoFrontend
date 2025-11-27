@@ -1,41 +1,47 @@
-<nav class="navbar">
+<nav class="navbar" [ngClass]="{ 'scrolled': currentRoute !== '/' }">
 
+  <!-- LOGO -->
   <div class="logo" [routerLink]="'/'">
     DietiEstate25
   </div>
 
+  <!-- SEZIONE DESTRA -->
+  <div class="navbar-right">
 
-  <div class="right-side">
+    <!-- Bottone Login -->
+    <a *ngIf="showLoginButton" [routerLink]="'/login'" class="nav-button">
+      Login
+    </a>
 
-  <!-- Landing → Login -->
-  <a *ngIf="showLoginButton" [routerLink]="'/login'" class="login-btn">
-    Login
-  </a>
+    <!-- Bottone Home -->
+    <a *ngIf="showHomeButton" [routerLink]="'/'" class="nav-button">
+      Home
+    </a>
 
-  <!-- Login/Register → Home -->
-  <a *ngIf="showHomeButton" [routerLink]="'/'" class="login-btn">
-    Home
-  </a>
+    <!-- ICONA PROFILO -->
+    <div *ngIf="showProfileIcon" class="profile-container">
 
-  <!-- Loggato → Icona profilo -->
-  <div *ngIf="showProfileIcon" class="profile-area">
-
-      <div class="profile-icon" (click)="toggleMenu()">
-        <img src="assets/icons/profilo.png" alt="Profilo" height="1024" width="1024">
-        Profilo
+      <div class="profile-trigger" (click)="toggleMenu()">
+        <div class="profile-img-wrapper">
+          <img
+            ngSrc="assets/icons/profilo.png"
+            alt="Profilo"
+            width="42"
+            height="42"
+            priority
+          />
+        </div>
       </div>
 
-        <!-- Menu a tendina -->
-        <div class="dropdown-menu" *ngIf="menuAperto">
+      <!-- MENU TENDINA -->
+      <div class="dropdown" *ngIf="menuAperto">
+        <app-menunavbar
+          [role]="userRole"
+          [logout]="logout.bind(this)"
+          (close)="chiudiMenu()">
+        </app-menunavbar>
+      </div>
 
-        <app-menunavbar [role]="userRole" [logout]="logout.bind(this)" (close)="chiudiMenu()"> </app-menunavbar>
-
-        </div>
+    </div>
   </div>
-</div>
-
-
 </nav>
-
-
-

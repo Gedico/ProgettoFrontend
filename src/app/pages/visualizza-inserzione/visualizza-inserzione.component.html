@@ -1,4 +1,4 @@
-<app-navbar></app-navbar>
+
 <!-- Stato di caricamento -->
 <div *ngIf="caricamento" class="loading">
   Caricamento inserzione...
@@ -15,16 +15,16 @@
 
   <!-- Galleria foto -->
   <div class="galleria">
-    <img 
-      class="foto-principale" 
-      [src]="inserzione.foto[0].url" 
+    <img
+      class="foto-principale"
+      [src]="inserzione.foto[0].url"
       alt="Foto principale"
     />
 
     <div class="foto-secondarie">
-      <img 
-        *ngFor="let f of inserzione.foto.slice(1)" 
-        [src]="f.url" 
+      <img
+        *ngFor="let f of inserzione.foto.slice(1)"
+        [src]="f.url"
         alt="Foto inserzione"
       />
     </div>
@@ -60,14 +60,9 @@
       style="border:0; margin-top: 10px;"
       loading="lazy"
       allowfullscreen
-      [src]="
-        'https://maps.google.com/maps?q=' +
-        inserzione.posizione.latitudine +
-        ',' +
-        inserzione.posizione.longitudine +
-        '&z=15&output=embed'
-      ">
+      [src]="mappaUrl">
     </iframe>
+
   </div>
 
 </div>
