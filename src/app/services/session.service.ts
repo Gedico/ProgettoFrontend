@@ -22,12 +22,12 @@ export class SessionService {
   }
 
   constructor(@Inject(PLATFORM_ID) private platformId: object) {
+    // ❗ IMPORTANTE: Blocca tutta la logica se siamo in SSR
     if (!isPlatformBrowser(this.platformId)) return;
 
     const token = localStorage.getItem('token');
     if (!token) return;
 
-    // decode JWT
     try {
       const payload = JSON.parse(atob(token.split('.')[1]));
       const role = payload.ruolo || null;
@@ -36,8 +36,8 @@ export class SessionService {
         logged: true,
         role
       });
+
     } catch {
-      // token corrotto → reset stato
       this.sessionState$.next({
         logged: false,
         role: null
@@ -45,21 +45,35 @@ export class SessionService {
     }
   }
 
-  // chiamato dopo login
+  /** ================================
+   *   SET SESSION (LOGIN)
+   *  ================================ */
   setSession(token: string): void {
+    if (!isPlatformBrowser(this.platformId)) return;
+
     localStorage.setItem('token', token);
 
-    const payload = JSON.parse(atob(token.split('.')[1]));
-    const role = payload.ruolo || null;
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      const role = payload.ruolo || null;
 
-    this.sessionState$.next({
-      logged: true,
-      role
-    });
+      this.sessionState$.next({
+        logged: true,
+        role
+      });
+
+    } catch {
+      console.error("Token non valido");
+      this.clearSession();
+    }
   }
 
-  // logout frontend (solo stato + localStorage)
+  /** ================================
+   *   CLEAR SESSION (LOGOUT)
+   *  ================================ */
   clearSession(): void {
+    if (!isPlatformBrowser(this.platformId)) return;
+
     localStorage.removeItem('token');
 
     this.sessionState$.next({
@@ -68,20 +82,20 @@ export class SessionService {
     });
   }
 
+  /** ================================
+   *   GETTERS
+   *  ================================ */
   getSnapshot() {
     return this.sessionState$.getValue();
   }
-
 
   getToken(): string | null {
     if (!isPlatformBrowser(this.platformId)) return null;
     return localStorage.getItem('token');
   }
 
-
   getRole(): string | null {
     return this.sessionState$.getValue().role;
   }
-
 }
 

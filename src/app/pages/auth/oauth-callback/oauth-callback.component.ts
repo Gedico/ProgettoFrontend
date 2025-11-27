@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { SessionService } from '../../../services/session.service';
 
 @Component({
   selector: 'app-oauth-callback',
@@ -15,7 +16,8 @@ export class OAuthCallbackComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private sessionService: SessionService
   ) {}
 
   ngOnInit(): void {
@@ -25,21 +27,23 @@ export class OAuthCallbackComponent implements OnInit {
       const token = params.get('token');
 
       if (token) {
+        // 👇 Usa SessionService invece di localStorage diretto
+        this.sessionService.setSession(token);
 
-    if (typeof window !== 'undefined') {
-    localStorage.setItem('token', token);
-    }
+        this.message = "Accesso completato! Reindirizzamento...";
 
-    this.message = "Accesso completato! Reindirizzamento...";
+        setTimeout(() => {
+          this.router.navigate(['/']);
+        }, 1500);
 
-    setTimeout(() => {
-      this.router.navigate(['/']);
-   }, 1500);
+      } else {
+        this.message = "Token non ricevuto. Accesso fallito.";
 
-  } else {
-   this.message = "Token non ricevuto. Accesso fallito.";
-  }
-
+        // 👇 Opzionale: torna al login dopo 2 secondi
+        setTimeout(() => {
+          this.router.navigate(['/login']);
+        }, 2000);
+      }
     });
   }
 }
