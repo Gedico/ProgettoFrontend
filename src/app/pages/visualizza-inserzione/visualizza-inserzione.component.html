@@ -1,4 +1,3 @@
-
 <!-- Stato di caricamento -->
 <div *ngIf="caricamento" class="loading">
   Caricamento inserzione...
@@ -11,15 +10,49 @@
   <div class="header">
     <h1>{{ inserzione.dati.titolo }}</h1>
     <h2>{{ inserzione.dati.prezzo | currency:'EUR':'symbol':'1.0-0' }}</h2>
+
+    <!-- ⭐⭐⭐ BOTTONE OFFERTA ⭐⭐⭐ -->
+    <button
+      class="btn btn-primary"
+      style="margin-top: 15px;"
+      (click)="toggleFormOfferta()">
+      {{ mostraFormOfferta ? 'Nascondi offerta' : 'Fai un\'offerta' }}
+    </button>
   </div>
+
+  <!-- ⭐⭐⭐ CARD FORM OFFERTA ⭐⭐⭐ -->
+  <div *ngIf="mostraFormOfferta" class="card-offerta">
+
+    <h4>Invia una proposta</h4>
+
+    <form [formGroup]="offertaForm" (ngSubmit)="inviaProposta()">
+
+      <div class="form-group">
+        <label>Importo offerta (€)</label>
+        <input type="number" formControlName="prezzoProposta" />
+
+        <small *ngIf="prezzoProposta?.touched && prezzoProposta?.invalid"
+               style="color: red;">
+          Importo minimo accettabile: €{{ prezzoMinimo | number:'1.0-0' }}
+        </small>
+      </div>
+
+      <div class="form-group">
+        <label>Note (opzionale)</label>
+        <textarea rows="2" formControlName="note"></textarea>
+      </div>
+
+      <button type="submit">
+        Invia proposta
+      </button>
+    </form>
+
+  </div>
+  <!-- ⭐⭐⭐ FINE CARD ⭐⭐⭐ -->
 
   <!-- Galleria foto -->
   <div class="galleria">
-    <img
-      class="foto-principale"
-      [src]="inserzione.foto[0].url"
-      alt="Foto principale"
-    />
+    <img class="foto-principale" [src]="inserzione.foto[0].url" alt="Foto principale" />
 
     <div class="foto-secondarie">
       <img
@@ -30,7 +63,7 @@
     </div>
   </div>
 
-  <!-- Dettagli principali -->
+  <!-- Dettagli -->
   <div class="dettagli">
     <h3>Dettagli</h3>
 
@@ -40,7 +73,6 @@
     <p><strong>Ascensore:</strong> {{ inserzione.dati.ascensore ? 'Sì' : 'No' }}</p>
     <p><strong>Classe energetica:</strong> {{ inserzione.dati.classeEnergetica }}</p>
   </div>
-
 
   <!-- Descrizione -->
   <div class="descrizione">
@@ -53,7 +85,6 @@
     <h3>Posizione</h3>
     <p>{{ inserzione.posizione.descrizione }}</p>
 
-    <!-- Mappa opzionale -->
     <iframe
       width="100%"
       height="300"
@@ -62,8 +93,6 @@
       allowfullscreen
       [src]="mappaUrl">
     </iframe>
-
   </div>
 
 </div>
-

@@ -154,3 +154,50 @@ p, li {
     height: 90px;
   }
 }
+
+
+/* =============================== */
+/*    CARD FORM OFFERTA (NUOVO)    */
+/* =============================== */
+
+.card-offerta {
+  margin-top: 20px;
+  padding: 20px;
+  border-radius: 10px;
+  background: #ffffff;
+  box-shadow: 0px 4px 12px rgba(0,0,0,0.10);
+  border: 1px solid #e5e5e5;
+  max-width: 450px;
+}
+
+.card-offerta h4 {
+  margin-bottom: 15px;
+  font-weight: 600;
+}
+
+.card-offerta .form-group {
+  margin-bottom: 15px;
+}
+
+.card-offerta input,
+.card-offerta textarea {
+  border-radius: 6px;
+  padding: 8px;
+  border: 1px solid #ccc;
+  width: 100%;
+}
+
+.card-offerta button {
+  width: 100%;
+  padding: 10px;
+  border-radius: 6px;
+  background-color: #0070f3;
+  color: white;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.card-offerta button:hover {
+  background-color: #0059c9;
+}

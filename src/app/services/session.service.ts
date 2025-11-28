@@ -22,55 +22,54 @@ export class SessionService {
   }
 
   constructor(@Inject(PLATFORM_ID) private platformId: object) {
-    // ❗ IMPORTANTE: Blocca tutta la logica se siamo in SSR
     if (!isPlatformBrowser(this.platformId)) return;
 
     const token = localStorage.getItem('token');
     if (!token) return;
 
-    try {
-      const payload = JSON.parse(atob(token.split('.')[1]));
-      const role = payload.ruolo || null;
-
-      this.sessionState$.next({
-        logged: true,
-        role
-      });
-
-    } catch {
-      this.sessionState$.next({
-        logged: false,
-        role: null
-      });
-    }
+    this.applyToken(token);
   }
 
-  /** ================================
-   *   SET SESSION (LOGIN)
-   *  ================================ */
+  /** ======================================
+   *   APPLICA IL TOKEN (LOGIN)
+   *  ====================================== */
   setSession(token: string): void {
     if (!isPlatformBrowser(this.platformId)) return;
 
     localStorage.setItem('token', token);
+    this.applyToken(token);
+  }
 
+  /** ======================================
+   *   PARSE SICURO DEL TOKEN
+   *  ====================================== */
+  private applyToken(token: string): void {
     try {
       const payload = JSON.parse(atob(token.split('.')[1]));
-      const role = payload.ruolo || null;
+
+      // 🔥 SUPPORTA TUTTE LE POSSIBILI KEY DI SPRING
+      const role =
+        payload.ruolo ||
+        payload.role ||
+        payload.authority ||
+        payload.authorities?.[0] ||
+        payload['roles'] ||
+        null;
 
       this.sessionState$.next({
         logged: true,
         role
       });
 
-    } catch {
-      console.error("Token non valido");
+    } catch (e) {
+      console.error("ERRORE PARSING TOKEN:", e);
       this.clearSession();
     }
   }
 
-  /** ================================
-   *   CLEAR SESSION (LOGOUT)
-   *  ================================ */
+  /** ======================================
+   *   LOGOUT
+   *  ====================================== */
   clearSession(): void {
     if (!isPlatformBrowser(this.platformId)) return;
 
@@ -82,9 +81,9 @@ export class SessionService {
     });
   }
 
-  /** ================================
+  /** ======================================
    *   GETTERS
-   *  ================================ */
+   *  ====================================== */
   getSnapshot() {
     return this.sessionState$.getValue();
   }

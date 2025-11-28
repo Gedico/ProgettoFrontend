@@ -1,0 +1,11 @@
+import { StatoProposta } from "../enums/stato-proposta";
+
+export interface PropostaResponse {
+  idProposta: number;
+  titoloInserzione: string;
+  importo: number;
+  stato: StatoProposta;
+  dataCreazione: string;
+  messaggio?: string;
+  idInserzione?: number; // utile per redirect
+}
