@@ -1,203 +1,165 @@
-/* =============================== */
-/*     FIX OVERFLOW ORIZZONTALE    */
-/* =============================== */
-
-/* Impedisce qualunque scroll orizzontale */
-:host {
-  display: block;
-  overflow-x: hidden;
-}
-
-/* Assicura che tutti gli elementi rimangano dentro la pagina */
-.container-inserzione,
-.galleria,
-.foto-principale,
-.foto-secondarie,
-iframe {
-  max-width: 100%;
-}
-
-/* Fix immagini secondarie */
-.foto-secondarie {
-  overflow-x: auto;
-  max-width: 100%;
-}
-
-.foto-secondarie img {
-  flex-shrink: 0;
-  max-width: 180px;
-}
-
-/* Fix iframe Google Maps */
-iframe {
-  display: block;
-  width: 100%;
-}
-
-
-/* =============================== */
-/*        STILI ORIGINALI          */
-/* =============================== */
-
-/* Container principale */
-.container-inserzione {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 20px;
-  font-family: sans-serif;
-}
-
-/* Stato loading */
-.loading {
-  text-align: center;
-  font-size: 20px;
-  padding: 40px;
-}
-
-/* Header (titolo + prezzo) */
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 25px;
-}
-
-.header h1 {
-  font-size: 28px;
-  font-weight: 600;
-}
-
-.header h2 {
-  font-size: 26px;
-  color: #0070f3;
-  font-weight: bold;
-}
-
-/* Galleria di immagini */
-.galleria {
-  margin-bottom: 30px;
-}
-
-.foto-principale {
-  width: 100%;
-  height: 450px;
-  object-fit: cover;
-  border-radius: 8px;
-}
-
-.foto-secondarie {
-  display: flex;
-  gap: 10px;
-  margin-top: 10px;
-  overflow-x: auto;
-}
-
-.foto-secondarie img {
-  width: 180px;
-  height: 120px;
-  object-fit: cover;
-  border-radius: 6px;
-  flex-shrink: 0;
-  cursor: pointer;
-  transition: transform 0.15s ease;
-}
-
-.foto-secondarie img:hover {
-  transform: scale(1.05);
-}
-
-/* Sezioni */
-.dettagli,
-.servizi,
-.descrizione,
-.posizione {
-  margin-top: 30px;
-  padding: 20px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-}
-
-h3 {
-  font-size: 20px;
-  margin-bottom: 10px;
-  font-weight: 600;
-}
-
-p, li {
-  font-size: 16px;
-  line-height: 1.6;
-}
-
-/* Lista servizi */
-.servizi ul {
-  padding-left: 20px;
-}
-
-.servizi li {
-  margin-bottom: 5px;
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-  .header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 10px;
-  }
-
-  .foto-principale {
-    height: 300px;
-  }
-
-  .foto-secondarie img {
-    width: 140px;
-    height: 90px;
-  }
-}
-
-
-/* =============================== */
-/*    CARD FORM OFFERTA (NUOVO)    */
-/* =============================== */
-
-.card-offerta {
-  margin-top: 20px;
-  padding: 20px;
-  border-radius: 10px;
-  background: #ffffff;
-  box-shadow: 0px 4px 12px rgba(0,0,0,0.10);
-  border: 1px solid #e5e5e5;
-  max-width: 450px;
-}
-
-.card-offerta h4 {
-  margin-bottom: 15px;
-  font-weight: 600;
-}
-
-.card-offerta .form-group {
-  margin-bottom: 15px;
-}
-
-.card-offerta input,
-.card-offerta textarea {
-  border-radius: 6px;
-  padding: 8px;
-  border: 1px solid #ccc;
-  width: 100%;
-}
-
-.card-offerta button {
-  width: 100%;
-  padding: 10px;
-  border-radius: 6px;
-  background-color: #0070f3;
+/* ============================== */
+/*          BOTTONE MODERNO       */
+/* ============================== */
+.btn-offerta {
+  padding: 12px 22px;
+  background: linear-gradient(135deg, #007bff, #0056e0);
   color: white;
-  border: none;
   font-size: 16px;
+  font-weight: 600;
+  border: none;
+  border-radius: 12px;
   cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 90, 255, 0.25);
+  transition: transform 0.15s ease, box-shadow 0.2s ease, opacity 0.2s ease;
 }
 
-.card-offerta button:hover {
-  background-color: #0059c9;
+.btn-offerta:hover {
+  opacity: 0.95;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 90, 255, 0.32);
+}
+
+.btn-offerta:active {
+  transform: translateY(1px);
+  box-shadow: 0 3px 10px rgba(0, 90, 255, 0.2);
+}
+
+/* ============================== */
+/*          OVERLAY MODERNO       */
+/* ============================== */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(6px);
+  animation: fadeInOverlay 0.25s ease-out;
+  z-index: 998;
+}
+
+@keyframes fadeInOverlay {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* ============================== */
+/*       MODAL MODERNA           */
+/* ============================== */
+.modal-card {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 92%;
+  max-width: 430px;
+
+  background: #ffffff;
+  padding: 28px;
+  border-radius: 20px;
+  box-shadow:
+    0 3px 12px rgba(0,0,0,0.1),
+    0 6px 28px rgba(0,0,0,0.2);
+
+  animation: popIn 0.22s ease-out;
+  z-index: 999;
+}
+
+@keyframes popIn {
+  0% { transform: translate(-50%, -45%) scale(0.92); opacity: 0; }
+  100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+}
+
+/* Animazione chiusura */
+.modal-card.closing {
+  animation: popOut 0.18s ease forwards;
+}
+
+@keyframes popOut {
+  from { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+  to   { transform: translate(-50%, -45%) scale(0.9); opacity: 0; }
+}
+
+/* ============================== */
+/*        INPUT MODERNI           */
+/* ============================== */
+.input-icon {
+  position: relative;
+}
+
+.input-icon span {
+  position: absolute;
+  top: 50%;
+  left: 12px;
+  transform: translateY(-50%);
+  font-size: 16px;
+  color: #666;
+}
+
+.input-icon input {
+  padding-left: 36px !important;
+}
+
+.modal-card input,
+.modal-card textarea {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1.5px solid #d6d6d6;
+  background: #fafafa;
+  font-size: 16px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.modal-card input:focus,
+.modal-card textarea:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);
+  outline: none;
+}
+
+.modal-card small {
+  color: #d10000;
+  margin-top: 4px;
+  display: block;
+  font-size: 13px;
+}
+
+/* ============================== */
+/*      BOTTONI MODERNI           */
+/* ============================== */
+.btn-submit {
+  width: 100%;
+  padding: 12px;
+  margin-top: 14px;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #2e8bff, #006aff);
+  color: white;
+  font-size: 17px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 100, 255, 0.25);
+  transition: transform 0.12s ease, opacity 0.15s ease;
+}
+
+.btn-submit:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+.btn-close {
+  width: 100%;
+  padding: 11px;
+  margin-top: 10px;
+  border: none;
+  border-radius: 10px;
+  background: #f2f2f2;
+  font-size: 15px;
+  color: #333;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.btn-close:hover {
+  background: #e1e1e1;
 }

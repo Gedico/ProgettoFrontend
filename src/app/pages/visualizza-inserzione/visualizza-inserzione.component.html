@@ -1,39 +1,36 @@
-<!-- Stato di caricamento -->
-<div *ngIf="caricamento" class="loading">
-  Caricamento inserzione...
-</div>
+<div *ngIf="caricamento" class="loading">Caricamento inserzione...</div>
 
-<!-- Contenuto principale -->
 <div *ngIf="!caricamento && inserzione" class="container-inserzione">
 
-  <!-- Titolo + Prezzo -->
   <div class="header">
     <h1>{{ inserzione.dati.titolo }}</h1>
     <h2>{{ inserzione.dati.prezzo | currency:'EUR':'symbol':'1.0-0' }}</h2>
 
-    <!-- ⭐⭐⭐ BOTTONE OFFERTA ⭐⭐⭐ -->
-    <button
-      class="btn btn-primary"
-      style="margin-top: 15px;"
-      (click)="toggleFormOfferta()">
-      {{ mostraFormOfferta ? 'Nascondi offerta' : 'Fai un\'offerta' }}
+    <button class="btn-offerta" (click)="toggleFormOfferta()">
+      💸 Fai un'offerta
     </button>
   </div>
 
-  <!-- ⭐⭐⭐ CARD FORM OFFERTA ⭐⭐⭐ -->
-  <div *ngIf="mostraFormOfferta" class="card-offerta">
+  <!-- Overlay -->
+  <div class="modal-overlay" *ngIf="mostraFormOfferta" (click)="chiudiModal()"></div>
 
-    <h4>Invia una proposta</h4>
+  <!-- Modal -->
+  <div class="modal-card" *ngIf="mostraFormOfferta">
+
+    <h3>Invia una proposta</h3>
 
     <form [formGroup]="offertaForm" (ngSubmit)="inviaProposta()">
 
       <div class="form-group">
-        <label>Importo offerta (€)</label>
-        <input type="number" formControlName="prezzoProposta" />
+        <label>Importo offerta</label>
 
-        <small *ngIf="prezzoProposta?.touched && prezzoProposta?.invalid"
-               style="color: red;">
-          Importo minimo accettabile: €{{ prezzoMinimo | number:'1.0-0' }}
+        <div class="input-icon">
+          <span>€</span>
+          <input type="number" formControlName="prezzoProposta" />
+        </div>
+
+        <small *ngIf="prezzoProposta?.touched && prezzoProposta?.invalid">
+          Minimo accettato: €{{ prezzoMinimo | number:'1.0-0' }}
         </small>
       </div>
 
@@ -42,31 +39,24 @@
         <textarea rows="2" formControlName="note"></textarea>
       </div>
 
-      <button type="submit">
-        Invia proposta
-      </button>
+      <button class="btn-submit" type="submit">Invia proposta</button>
+      <button class="btn-close" type="button" (click)="chiudiModal()">Chiudi</button>
+
     </form>
 
   </div>
-  <!-- ⭐⭐⭐ FINE CARD ⭐⭐⭐ -->
 
   <!-- Galleria foto -->
   <div class="galleria">
-    <img class="foto-principale" [src]="inserzione.foto[0].url" alt="Foto principale" />
+    <img class="foto-principale" [src]="inserzione.foto[0].url" />
 
     <div class="foto-secondarie">
-      <img
-        *ngFor="let f of inserzione.foto.slice(1)"
-        [src]="f.url"
-        alt="Foto inserzione"
-      />
+      <img *ngFor="let f of inserzione.foto.slice(1)" [src]="f.url" />
     </div>
   </div>
 
-  <!-- Dettagli -->
   <div class="dettagli">
     <h3>Dettagli</h3>
-
     <p><strong>Superficie:</strong> {{ inserzione.dati.dimensioni }} m²</p>
     <p><strong>Stanze:</strong> {{ inserzione.dati.numeroStanze }}</p>
     <p><strong>Piano:</strong> {{ inserzione.dati.piano }}</p>
@@ -74,13 +64,11 @@
     <p><strong>Classe energetica:</strong> {{ inserzione.dati.classeEnergetica }}</p>
   </div>
 
-  <!-- Descrizione -->
   <div class="descrizione">
     <h3>Descrizione</h3>
     <p>{{ inserzione.dati.descrizione }}</p>
   </div>
 
-  <!-- Posizione -->
   <div class="posizione">
     <h3>Posizione</h3>
     <p>{{ inserzione.posizione.descrizione }}</p>
@@ -88,9 +76,9 @@
     <iframe
       width="100%"
       height="300"
-      style="border:0; margin-top: 10px;"
       loading="lazy"
       allowfullscreen
+      style="border:0; margin-top: 10px;"
       [src]="mappaUrl">
     </iframe>
   </div>
