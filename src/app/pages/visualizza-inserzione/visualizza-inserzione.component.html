@@ -1,62 +1,60 @@
+<!-- CARICAMENTO -->
 <div *ngIf="caricamento" class="loading">Caricamento inserzione...</div>
 
+<!-- CONTENUTO -->
 <div *ngIf="!caricamento && inserzione" class="container-inserzione">
 
-  <div class="header">
+  <!-- TITOLO & PREZZO -->
+  <div class="header" *ngIf="inserzione?.dati">
     <h1>{{ inserzione.dati.titolo }}</h1>
-    <h2>{{ inserzione.dati.prezzo | currency:'EUR':'symbol':'1.0-0' }}</h2>
 
-    <button class="btn-offerta" (click)="toggleFormOfferta()">
-      💸 Fai un'offerta
-    </button>
+    <h2>{{ inserzione.dati.prezzo | currency:'EUR':'symbol' }}</h2>
   </div>
 
-  <!-- Overlay -->
-  <div class="modal-overlay" *ngIf="mostraFormOfferta" (click)="chiudiModal()"></div>
+  <!-- Bottone Offerta -->
+  <button class="proposta-btn" (click)="toggleFormOfferta()">
+    💶 Fai un'offerta
+  </button>
 
-  <!-- Modal -->
+  <!-- ===================== MODAL ======================= -->
+  <div class="overlay" *ngIf="mostraFormOfferta" (click)="toggleFormOfferta()"></div>
+
   <div class="modal-card" *ngIf="mostraFormOfferta">
-
-    <h3>Invia una proposta</h3>
+    <h2>Invia una proposta</h2>
 
     <form [formGroup]="offertaForm" (ngSubmit)="inviaProposta()">
 
-      <div class="form-group">
-        <label>Importo offerta</label>
+      <label>Importo offerta (€)</label>
+      <input type="number" formControlName="prezzoProposta" class="input-field"/>
 
-        <div class="input-icon">
-          <span>€</span>
-          <input type="number" formControlName="prezzoProposta" />
-        </div>
-
-        <small *ngIf="prezzoProposta?.touched && prezzoProposta?.invalid">
-          Minimo accettato: €{{ prezzoMinimo | number:'1.0-0' }}
-        </small>
+      <div class="validation" *ngIf="prezzoProposta?.touched && prezzoProposta?.invalid">
+        Minimo accettato:
+        <strong>{{ prezzoMinimo | currency:'EUR':'symbol':'1.0-0' }}</strong>
       </div>
 
-      <div class="form-group">
-        <label>Note (opzionale)</label>
-        <textarea rows="2" formControlName="note"></textarea>
-      </div>
+      <label>Note (opzionale)</label>
+      <textarea formControlName="note" class="textarea-field"></textarea>
 
-      <button class="btn-submit" type="submit">Invia proposta</button>
-      <button class="btn-close" type="button" (click)="chiudiModal()">Chiudi</button>
+      <button class="submit-btn" type="submit">Invia proposta</button>
+      <button class="close-btn" type="button" (click)="toggleFormOfferta()">Chiudi</button>
 
     </form>
-
   </div>
+  <!-- ===================== FINE MODAL ======================= -->
 
-  <!-- Galleria foto -->
+  <!-- FOTO PRINCIPALE -->
   <div class="galleria">
-    <img class="foto-principale" [src]="inserzione.foto[0].url" />
+    <img class="foto-principale"
+         *ngIf="inserzione && inserzione.foto?.length"
 
-    <div class="foto-secondarie">
-      <img *ngFor="let f of inserzione.foto.slice(1)" [src]="f.url" />
-    </div>
+         [src]="inserzione.foto[0].url"
+         alt="Foto principale"/>
   </div>
 
-  <div class="dettagli">
+  <!-- DETTAGLI -->
+  <div class="dettagli" *ngIf="inserzione?.dati">
     <h3>Dettagli</h3>
+
     <p><strong>Superficie:</strong> {{ inserzione.dati.dimensioni }} m²</p>
     <p><strong>Stanze:</strong> {{ inserzione.dati.numeroStanze }}</p>
     <p><strong>Piano:</strong> {{ inserzione.dati.piano }}</p>
@@ -64,23 +62,19 @@
     <p><strong>Classe energetica:</strong> {{ inserzione.dati.classeEnergetica }}</p>
   </div>
 
-  <div class="descrizione">
+  <!-- DESCRIZIONE -->
+  <div class="descrizione" *ngIf="inserzione?.dati">
     <h3>Descrizione</h3>
     <p>{{ inserzione.dati.descrizione }}</p>
   </div>
 
-  <div class="posizione">
+  <!-- POSIZIONE -->
+  <div class="posizione" *ngIf="inserzione?.posizione">
     <h3>Posizione</h3>
     <p>{{ inserzione.posizione.descrizione }}</p>
 
-    <iframe
-      width="100%"
-      height="300"
-      loading="lazy"
-      allowfullscreen
-      style="border:0; margin-top: 10px;"
-      [src]="mappaUrl">
-    </iframe>
+    <iframe width="100%" height="300" [src]="mappaUrl"></iframe>
   </div>
 
 </div>
+

@@ -9,7 +9,6 @@ import { InserzioneResponse } from '../models/inserzioneresponse';
   providedIn: 'root'
 })
 export class InserzioneService {
-
   private apiUrl = 'http://localhost:8080/api/inserzioni';
 
   constructor(private http: HttpClient) {}
