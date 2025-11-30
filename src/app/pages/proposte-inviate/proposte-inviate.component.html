@@ -1,0 +1,30 @@
+<h2 class="titolo">Le mie proposte inviate</h2>
+
+<div *ngIf="caricamento" class="caricamento">
+  Caricamento in corso...
+</div>
+
+<div *ngIf="!caricamento && proposte.length === 0" class="vuoto">
+  <p>Non hai ancora inviato alcuna proposta.</p>
+</div>
+
+<div class="card" *ngFor="let p of proposte">
+
+  <div class="card-header">
+    <h3>{{ p.titoloInserzione }}</h3>
+
+    <span class="badge" [style.background]="coloreStato(p.stato)">
+      {{ p.stato }}
+    </span>
+  </div>
+
+  <div class="info">
+    <p><strong>Importo proposto:</strong> {{ p.importo }} €</p>
+    <p><strong>Data:</strong> {{ p.dataCreazione | date:'dd/MM/yyyy HH:mm' }}</p>
+
+    <button class="btn-dettagli" [routerLink]="['/proposta', p.idProposta]">
+      Vedi dettagli
+    </button>
+  </div>
+
+</div>

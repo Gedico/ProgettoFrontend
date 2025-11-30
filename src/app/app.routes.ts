@@ -69,6 +69,16 @@ export const routes: Routes = [
     component: ProfiloComponent,
     canActivate: [AuthGuard]
   },
+
+  {
+    path: 'proposte-inviate',
+    loadComponent: () =>
+      import('./pages/proposte-inviate/proposte-inviate.component')
+        .then(c => c.ProposteInviateComponent),
+    canActivate: [AuthGuard]
+  },
+
+
 /*-------------------------------REDIRECT GENERICO---------------------------------------------------------------------------- */
   {
   path: '**',

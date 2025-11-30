@@ -1,0 +1,49 @@
+.titolo {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.card {
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  margin-bottom: 15px;
+  background: #fff;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.badge {
+  padding: 6px 12px;
+  border-radius: 6px;
+  color: #fff;
+  font-weight: bold;
+}
+
+.info p {
+  margin: 4px 0;
+}
+
+.btn-dettagli {
+  margin-top: 10px;
+  padding: 8px 14px;
+  background: #0055ff;
+  border: none;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.btn-dettagli:hover {
+  background: #003fcc;
+}
+
+.vuoto {
+  font-size: 16px;
+  opacity: 0.7;
+}

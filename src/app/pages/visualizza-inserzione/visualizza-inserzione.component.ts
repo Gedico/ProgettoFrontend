@@ -6,7 +6,6 @@ import { CurrencyPipe, CommonModule } from '@angular/common';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 import { SessionService } from '../../services/session.service';
-
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PropostaService } from '../../services/proposta.service';
 import Swal from 'sweetalert2';
@@ -43,18 +42,15 @@ export class VisualizzaInserzioneComponent implements OnInit {
   ngOnInit(): void {
     this.id = Number(this.route.snapshot.paramMap.get('id'));
 
-    // Inizializza il form
     this.offertaForm = this.fb.group({
       prezzoProposta: ['', Validators.required],
       note: ['']
     });
 
-    // Carica i dati dell’inserzione
     this.inserzioneService.getInserzioneById(this.id).subscribe({
       next: (data) => {
         this.inserzione = data;
 
-        // Prezzo minimo consentito (-15%)
         this.prezzoMinimo = data.dati.prezzo * 0.85;
 
         this.offertaForm.get('prezzoProposta')?.setValidators([
@@ -63,15 +59,13 @@ export class VisualizzaInserzioneComponent implements OnInit {
         ]);
         this.offertaForm.get('prezzoProposta')?.updateValueAndValidity();
 
-        // Mappa
         this.mappaUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
           `https://maps.google.com/maps?q=${data.posizione.latitudine},${data.posizione.longitudine}&z=15&output=embed`
         );
 
         this.caricamento = false;
       },
-      error: (err) => {
-        console.error("Errore caricamento inserzione:", err);
+      error: () => {
         this.caricamento = false;
       }
     });
@@ -84,7 +78,6 @@ export class VisualizzaInserzioneComponent implements OnInit {
   toggleFormOfferta() {
     const session = this.sessionService.getSnapshot();
 
-    // 🔒 UTENTE NON LOGGATO → Mostra popup + redirect
     if (!session.logged) {
       Swal.fire({
         title: "Accesso richiesto",
@@ -103,40 +96,70 @@ export class VisualizzaInserzioneComponent implements OnInit {
       return;
     }
 
-    // 🔓 Utente loggato → Mostra form
     this.mostraFormOfferta = !this.mostraFormOfferta;
   }
 
   inviaProposta() {
-    if (this.offertaForm.invalid) {
-      this.offertaForm.markAllAsTouched();
+    if (this.offertaForm.invalid) return;
+
+    let prezzoInput = this.offertaForm.value.prezzoProposta;
+    const prezzoNorm = this.normalizzaPrezzo(prezzoInput);
+
+    if (isNaN(prezzoNorm)) {
+      Swal.fire("Errore", "Formato prezzo non valido.", "error").then(() => {});
       return;
     }
 
-    const request = {
+    if (prezzoNorm < this.prezzoMinimo) {
+      Swal.fire("Errore", "La tua offerta è inferiore al minimo accettato.", "error").then(() => {});
+      return;
+    }
+
+    const payload = {
       idInserzione: this.inserzione.id,
-      prezzoProposta: this.offertaForm.value.prezzoProposta,
+      prezzoProposta: prezzoNorm,
       note: this.offertaForm.value.note
     };
 
-    this.propostaService.inviaProposta(request).subscribe({
-      next: (res) => {
-        Swal.fire(
-          "Successo!",
-          res.messaggio || "Proposta inviata con successo.",
-          "success"
-        ).then(() => {});
-
-        this.mostraFormOfferta = false;
-        this.offertaForm.reset();
+    this.propostaService.inviaProposta(payload).subscribe({
+      next: () => {
+        Swal.fire("Successo", "Proposta inviata!", "success").then(() => {});
+        this.toggleFormOfferta();
       },
       error: (err) => {
-        Swal.fire(
-          "Errore",
-          err.error?.message || "Impossibile inviare proposta",
-          "error"
-        ).then(() => {});
+        Swal.fire("Errore", err?.error?.message || "Errore invio proposta.", "error").then(() => {});
       }
     });
   }
+
+  private normalizzaPrezzo(input: string | number): number {
+    if (typeof input === 'number') return input;
+
+    if (!input) return NaN;
+
+    // Rimuove spazi
+    input = input.replace(/\s+/g, '').trim();
+
+    // Caso: contiene sia punto che virgola
+    if (input.includes('.') && input.includes(',')) {
+      const lastComma = input.lastIndexOf(',');
+      const lastPoint = input.lastIndexOf('.');
+
+      // Se la virgola è più "a destra" → virgola = decimali
+      if (lastComma > lastPoint) {
+        input = input.replace(/\./g, '');   // toglie i separatori delle migliaia
+        input = input.replace(',', '.');    // converte decimali
+      } else {
+        // Punto come decimale
+        input = input.replace(/,/g, '');    // toglie le migliaia
+      }
+    }
+    // Caso: solo virgole → interpreta come decimali
+    else if (input.includes(',')) {
+      input = input.replace(/,/g, '.');
+    }
+
+    return Number(input);
+  }
+
 }

@@ -51,4 +51,14 @@ export class PropostaService {
     return this.http.delete<void>(`${this.baseUrl}/${id}`);
   }
 
+  getProposteUtente(): Observable<PropostaResponse[]> {
+    return this.http.get<PropostaResponse[]>(`${this.baseUrl}/mie`);
+  }
+
+
+
+
+
+
+
 }
