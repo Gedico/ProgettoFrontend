@@ -78,6 +78,12 @@ export const routes: Routes = [
     canActivate: [AuthGuard]
   },
 
+  {
+    path: 'ricerca',
+    loadComponent: () => import('./pages/risultati-ricerca/risultati-ricerca.component')
+      .then(m => m.RisultatiRicercaComponent)
+  },
+
 
 /*-------------------------------REDIRECT GENERICO---------------------------------------------------------------------------- */
   {

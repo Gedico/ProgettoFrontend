@@ -1,5 +1,40 @@
-<div class="search-container">
-  <input type="text" placeholder="Cerca inserzioni..." disabled />
-</div>
+<form [formGroup]="form" (ngSubmit)="cerca()" class="search-wrapper">
 
+  <div class="search-box">
 
+    <div class="item">
+      <span class="icon">🔍</span>
+      <input type="text" formControlName="query" placeholder="Cosa cerchi? (villa, bilocale...)">
+    </div>
+
+    <div class="item">
+      <span class="icon">📍</span>
+      <input type="text" formControlName="citta" placeholder="Città">
+    </div>
+
+    <div class="item">
+      <span class="icon">🏷️</span>
+      <select formControlName="categoria">
+        <option value="">Categoria</option>
+        <option value="VILLA">Villa</option>
+        <option value="APPARTAMENTO">Appartamento</option>
+        <option value="MONOLOCALE">Monolocale</option>
+        <option value="BILOCALE">Bilocale</option>
+      </select>
+    </div>
+
+    <div class="item short">
+      <span class="icon">💳</span>
+      <input type="number" formControlName="prezzoMin" placeholder="Min">
+    </div>
+
+    <div class="item short">
+      <span class="icon">💳</span>
+      <input type="number" formControlName="prezzoMax" placeholder="Max">
+    </div>
+
+    <button type="submit" class="btn-search">Cerca</button>
+
+  </div>
+
+</form>

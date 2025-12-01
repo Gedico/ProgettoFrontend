@@ -1,0 +1,25 @@
+<div class="container">
+
+  <h1>Risultati della ricerca</h1>
+
+  <p *ngIf="nessunRisultato" class="no-results">
+    Nessuna inserzione trovata. Prova a cambiare i filtri.
+  </p>
+
+  <div class="grid" *ngIf="!nessunRisultato">
+    <app-inserzione-card
+      *ngFor="let item of risultati"
+      [inserzione]="{
+        idInserzione: item.id,
+        titolo: item.dati.titolo,
+        prezzo: item.dati.prezzo,
+        dimensioni: item.dati.dimensioni,
+        numero_stanze: item.dati.numeroStanze,
+        fotoPrincipale: item.foto && item.foto.length > 0 ? item.foto[0].url : ''
+
+
+      }"
+    ></app-inserzione-card>
+  </div>
+
+</div>
