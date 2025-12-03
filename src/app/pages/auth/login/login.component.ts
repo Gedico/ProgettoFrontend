@@ -8,6 +8,8 @@ import { LoginService } from '../../../core/auth/login.service';
 import { GoogleLoginModalComponent } from '../../../google-login-modal/google-login-modal.component';
 import { SessionService } from '../../../services/session.service';
 import {MatSnackBar} from '@angular/material/snack-bar';
+import { ForgotPasswordComponent } from '../../../components/auth/forgot-password/forgot-password.component';
+
 
 
 @Component({
@@ -18,7 +20,8 @@ import {MatSnackBar} from '@angular/material/snack-bar';
     ReactiveFormsModule,
     RouterModule,
     MatDialogModule,
-    NavbarComponent
+    NavbarComponent,
+    ForgotPasswordComponent
   ],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
@@ -61,6 +64,15 @@ export class LoginComponent {
     });
   }
 
+
+  openForgotPassword() {
+    this.dialog.open(ForgotPasswordComponent, {
+      width: '400px',
+      panelClass: 'custom-dialog'
+    });
+  }
+
+
     openGoogleModal() {
     this.dialog.open(GoogleLoginModalComponent, {
       width: '380px',
@@ -77,7 +89,7 @@ export class LoginComponent {
   }
 
   loginWithGithub() {
-    window.location.href = 'http://localhost:8080/oauth2/authorization/github';
+    window.location.href = 'http://localhost:8080/oauth2/authorization/github';//TODO controllare perchè non va con modal
   }
 
 }

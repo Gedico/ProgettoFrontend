@@ -41,6 +41,22 @@ export const routes: Routes = [
   },
 
 
+  //Forgot Password
+  {path: 'forgot-password',
+    loadComponent: () => import('./components/auth/forgot-password/forgot-password.component')
+    .then(m => m.ForgotPasswordComponent)
+  },
+
+
+  //Reset Password
+  {path: 'reset-password',
+    loadComponent: () => import('./pages/auth/reset-password/reset-password.component')
+    .then(m => m.ResetPasswordComponent)
+  },
+
+
+
+
   /*-------------------------------ADMIN DASHBOARD---------------------------------------------------------------------------- */
 
   //adagente
@@ -49,8 +65,6 @@ export const routes: Routes = [
     .then(m => m.AddagenteComponent),
     canActivate: [AuthGuard,() => RoleGuard(['ADMIN'])]
   },
-
-
 
 
 
