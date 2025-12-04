@@ -127,5 +127,41 @@ button:disabled {
 .separator::after {
   margin-left: 10px;
 }
+/* Contenitore orizzontale */
+.social-login-row {
+  display: flex;
+  justify-content: center; /* centra orizzontalmente */
+  gap: 20px;               /* distanza tra icone */
+  margin-top: 20px;
+}
+
+/* Stile dei pulsanti-icona */
+.social-btn {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 1px solid #ddd;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+/* Effetto hover */
+.social-btn:hover {
+  background: #f0f0f0;
+  transform: scale(1.05);
+}
+
+/* Icona */
+.social-btn img {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
+
+
 
 
