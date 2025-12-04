@@ -41,6 +41,22 @@ export const routes: Routes = [
   },
 
 
+  //Forgot Password
+  {path: 'forgot-password',
+    loadComponent: () => import('./components/auth/forgot-password/forgot-password.component')
+    .then(m => m.ForgotPasswordComponent)
+  },
+
+
+  //Reset Password
+  {path: 'reset-password',
+    loadComponent: () => import('./pages/auth/reset-password/reset-password.component')
+    .then(m => m.ResetPasswordComponent)
+  },
+
+
+
+
   /*-------------------------------ADMIN DASHBOARD---------------------------------------------------------------------------- */
 
   //adagente
@@ -51,12 +67,25 @@ export const routes: Routes = [
   },
 
 
+  /*-------------------------------AGENTE DASHBOARD---------------------------------------------------------------------------- */
 
+  {
+    path: 'proposte-ricevute',
+    loadComponent: () =>
+      import('./pages/agente/proposte-ricevute/proposte-ricevute.component')
+        .then(c => c.ProposteRicevuteComponent),
+    canActivate: [AuthGuard, () => RoleGuard(['AGENTE'])]
+  },
 
+  {
+    path: 'registro-proposte',
+    loadComponent: () =>
+      import('./pages/agente/registro-proposte/registro-proposte.component')
+        .then(c => c.RegistroProposteComponent),
+    canActivate: [AuthGuard, () => RoleGuard(['AGENTE'])]
+  },
 
-
-
-/*-------------------------------INSERZIONI---------------------------------------------------------------------------- */
+  /*-------------------------------INSERZIONI---------------------------------------------------------------------------- */
   // Inserzione
   { path: 'inserzione/:id',
     loadComponent: () =>import('./pages/visualizza-inserzione/visualizza-inserzione.component')

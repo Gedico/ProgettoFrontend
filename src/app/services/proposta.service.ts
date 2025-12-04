@@ -55,9 +55,10 @@ export class PropostaService {
     return this.http.get<PropostaResponse[]>(`${this.baseUrl}/mie`);
   }
 
-
-
-
+  // 🔹 7) Recupera registro proposte (ACCETTATE + RIFIUTATE)
+  getRegistroProposte(): Observable<PropostaResponse[]> {
+    return this.http.get<PropostaResponse[]>(`${this.baseUrl}/registro`);
+  }
 
 
 
