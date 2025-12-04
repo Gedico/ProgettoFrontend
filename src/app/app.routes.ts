@@ -67,10 +67,25 @@ export const routes: Routes = [
   },
 
 
+  /*-------------------------------AGENTE DASHBOARD---------------------------------------------------------------------------- */
 
+  {
+    path: 'proposte-ricevute',
+    loadComponent: () =>
+      import('./pages/agente/proposte-ricevute/proposte-ricevute.component')
+        .then(c => c.ProposteRicevuteComponent),
+    canActivate: [AuthGuard, () => RoleGuard(['AGENTE'])]
+  },
 
+  {
+    path: 'registro-proposte',
+    loadComponent: () =>
+      import('./pages/agente/registro-proposte/registro-proposte.component')
+        .then(c => c.RegistroProposteComponent),
+    canActivate: [AuthGuard, () => RoleGuard(['AGENTE'])]
+  },
 
-/*-------------------------------INSERZIONI---------------------------------------------------------------------------- */
+  /*-------------------------------INSERZIONI---------------------------------------------------------------------------- */
   // Inserzione
   { path: 'inserzione/:id',
     loadComponent: () =>import('./pages/visualizza-inserzione/visualizza-inserzione.component')

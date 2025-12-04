@@ -16,6 +16,4 @@ export class MenunavbarComponent {
   @Output() close = new EventEmitter<void>();
 
 
-
-
 }
