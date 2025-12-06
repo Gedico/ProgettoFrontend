@@ -1,16 +1,14 @@
-import { Component } from '@angular/core';
+import { ForgotPasswordComponent } from '../../../components/auth/forgot-password/forgot-password.component';
+import { GoogleLoginModalComponent } from '../../../google-login-modal/google-login-modal.component';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NavbarComponent } from "../../../components/navbar/navbar.component";
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { SessionService } from '../../../services/session.service';
+import { LoginService } from '../../../core/auth/login.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { RouterModule, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { LoginService } from '../../../core/auth/login.service';
-import { GoogleLoginModalComponent } from '../../../google-login-modal/google-login-modal.component';
-import { SessionService } from '../../../services/session.service';
-import {MatSnackBar} from '@angular/material/snack-bar';
-import { ForgotPasswordComponent } from '../../../components/auth/forgot-password/forgot-password.component';
-
-
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-login',

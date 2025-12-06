@@ -1,8 +1,7 @@
 <!DOCTYPE html>
-<app-navbar></app-navbar>
 
 <div class="login-container">
-  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+  <form [formGroup]="loginForm" >
 
     <h2>Accedi</h2>
 
@@ -27,7 +26,7 @@
     </div>
 
     <!-- Bottone Login -->
-    <button type="submit" [disabled]="loginForm.invalid">Login</button>
+    <button type="submit" [disabled]="loginForm.invalid" (click)="onSubmit()">Login</button>
 
 
     <!-- Bottone Password Dimenticata -->

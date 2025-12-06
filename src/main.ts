@@ -1,5 +1,5 @@
 import { bootstrapApplication } from '@angular/platform-browser';
-import { provideRouter } from '@angular/router';
+import {provideRouter, withHashLocation} from '@angular/router';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 
 import { AppComponent } from './app/app.component';
@@ -10,7 +10,7 @@ import { AuthInterceptor } from './app/interceptor/interceptor.interceptor';
 bootstrapApplication(AppComponent, {
   ...appConfig,
   providers: [
-    provideRouter(routes),
+    provideRouter(routes, withHashLocation()),
     provideHttpClient(
       withInterceptors([AuthInterceptor])
     ),
