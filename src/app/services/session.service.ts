@@ -45,24 +45,45 @@ export class SessionService {
    *  ====================================== */
   private applyToken(token: string): void {
     try {
-      const payload = JSON.parse(atob(token.split('.')[1]));
+      const [, payloadBase64] = token.split('.');
+      if (!payloadBase64) throw new Error('Formato JWT non valido');
 
-      // 🔥 SUPPORTA TUTTE LE POSSIBILI KEY DI SPRING
-      const role =
+      const payload = JSON.parse(atob(payloadBase64));
+
+      const exp = payload.exp;
+      if (exp && Date.now() / 1000 > exp) {
+        console.warn('Token scaduto, logout obbligatorio');
+        return this.clearSession();
+      }
+
+      const rawRole =
         payload.ruolo ||
         payload.role ||
         payload.authority ||
         payload.authorities?.[0] ||
-        payload['roles'] ||
+        payload.roles ||
         null;
+
+      const normalized = (rawRole || '').toString().toUpperCase();
+
+      const role =
+        normalized.includes('USER')   ? 'UTENTE' :
+          normalized.includes('UTENTE')   ? 'UTENTE' :
+            normalized.includes('ADMIN')   ? 'ADMIN' :
+              normalized.includes('AGENTE')   ? 'AGENTE' :
+          null;
+
+      if (!role) {
+        console.warn('Ruolo JWT sconosciuto:', rawRole);
+      }
 
       this.sessionState$.next({
         logged: true,
         role
       });
 
-    } catch (e) {
-      console.error("ERRORE PARSING TOKEN:", e);
+    } catch (err) {
+      console.error('Errore parsing token:', err);
       this.clearSession();
     }
   }

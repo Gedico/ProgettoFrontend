@@ -9,6 +9,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { RouterModule, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
+import {AuthService} from '../../../core/auth/auth.service';
+import {goOffline} from '@angular/fire/database';
 
 @Component({
   selector: 'app-login',
@@ -31,6 +33,7 @@ export class LoginComponent {
   constructor(
     private fb: FormBuilder,
     private loginService: LoginService,
+    private authService: AuthService,
     private router: Router,
     private dialog: MatDialog,
     private sessionService: SessionService,
@@ -43,51 +46,38 @@ export class LoginComponent {
 
   }
 
+/*******ON SUBMIT******************************************************************************************************************/
+
   onSubmit() {
     if (this.loginForm.invalid) {
       this.loginForm.markAllAsTouched();
       return;
     }
 
-    this.loginService.login(this.loginForm.value).subscribe({
-      next: (res) => {
-        this.sessionService.setSession(res.token);
-        this.snack.open('Login effettuato con successo', 'OK', { duration: 2500 });
-        this.router.navigate(['/']);
-      },
-      error: (err) => {
-        const msg = err.error?.message || 'Credenziali non valide';
-        this.snack.open(msg, 'Chiudi', { duration: 3000});
-      }
+    this.authService.login(this.loginForm.value).subscribe({
+      next: () => this.router.navigate(['/']),
+      error: err => this.snack.open(err.error?.message || 'Credenziali non valide')
     });
+
   }
 
 
-  openForgotPassword() {
-    this.dialog.open(ForgotPasswordComponent, {
-      width: '400px',
-      panelClass: 'custom-dialog'
-    });
+  /****LOGIN CON API*****************************************************************************************************************/
+
+
+  loginWith(provider: 'google' | 'facebook' | 'github') {
+    this.authService.loginWithProvider(provider);
   }
 
 
-    openGoogleModal() {
-    this.dialog.open(GoogleLoginModalComponent, {
-      width: '380px',
-      panelClass: 'custom-dialog'
-    });
-  }
+  /********FORGOT PASSWORD****************************************************************************************************************/
 
-  openFacebookModal() {
-    this.dialog.open(GoogleLoginModalComponent, {
-      data: { provider: 'facebook' },
-      width: '380px',
-      panelClass: 'custom-dialog'
-    });
-  }
+    openForgotPassword() {
+      this.dialog.open(ForgotPasswordComponent, {
+        width: '400px',
+        panelClass: 'custom-dialog'
+      });
+    }
 
-  loginWithGithub() {
-    window.location.href = 'http://localhost:8080/oauth2/authorization/github';//TODO controllare perchè non va con modal
-  }
-
+  protected readonly goOffline = goOffline;
 }

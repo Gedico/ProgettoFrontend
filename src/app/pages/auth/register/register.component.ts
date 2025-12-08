@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
 import  Swal from 'sweetalert2';
 
 import { NavbarComponent } from '../../../components/navbar/navbar.component';
-import { AuthService } from '../../../core/auth/auth.service';
+import { RegisterService } from '../../../core/register/register.service';
 import { RegisterRequest } from '../../../models/dto/register-request.dto';
 
 @Component({
@@ -30,7 +30,7 @@ export class RegisterComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private dialog: MatDialog,
-    private authService: AuthService,
+    private authService: RegisterService,
     private router: Router
   ) {}
 

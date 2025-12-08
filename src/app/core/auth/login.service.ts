@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import {LoginResponse} from '../../models/dto/auth/login-response.dto';
+import {LoginRequest} from '../../models/dto/auth/login-request.dto';
 
 @Injectable({
   providedIn: 'root'
@@ -11,8 +13,8 @@ export class LoginService {
 
   constructor(private http: HttpClient) {}
 
-  login(data: { mail: string; password: string }): Observable<any> {
-    return this.http.post(`${this.apiUrl}/login`, data);
+  login(data: LoginRequest): Observable<LoginResponse> {
+    return this.http.post<LoginResponse>(`${this.apiUrl}/login`, data);
   }
 
   logout(token: string): Observable<any> {
