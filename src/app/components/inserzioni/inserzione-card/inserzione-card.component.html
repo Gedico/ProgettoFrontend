@@ -1,14 +1,19 @@
 <div
   class="card-inserzione"
-  [routerLink]="['/inserzione', inserzione.idInserzione]"
+  (click)="apriDettaglio()"
+  [class.card-inserzione--disabled]="!clickable"
 >
+
+  <!-- FOTO -->
   <img
     class="card-inserzione__img"
-    [src]="inserzione.fotoPrincipale || 'assets/img/placeholder-home.jpg'"
-    alt="Foto inserzione"
+    [src]="foto"
+    [alt]="inserzione.titolo || 'Foto inserzione'"
   >
 
+  <!-- CONTENUTO TESTUALE -->
   <div class="card-inserzione__content">
+
     <h3 class="card-inserzione__titolo">
       {{ inserzione.titolo }}
     </h3>
@@ -20,5 +25,6 @@
     <p class="card-inserzione__dettagli">
       {{ inserzione.dimensioni }} m² · {{ inserzione.numero_stanze }} stanze
     </p>
+
   </div>
 </div>

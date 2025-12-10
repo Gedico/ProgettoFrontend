@@ -1,26 +1,37 @@
 <section class="pagina-inserzioni-agente">
+
   <header class="header-inserzioni">
     <h2>Le mie inserzioni</h2>
     <p class="sottotitolo">Gestisci rapidamente tutte le inserzioni di cui ti occupi.</p>
   </header>
 
-  <div *ngIf="loading" class="stato stato--info">
-    Caricamento delle inserzioni in corso...
-  </div>
+  @if (loading) {
+    <div class="stato stato--info">
+      Caricamento delle inserzioni in corso...
+    </div>
+  }
 
-  <div *ngIf="errorMessage" class="stato stato--errore">
-    {{ errorMessage }}
-  </div>
+  @if (errorMessage) {
+    <div class="stato stato--errore">
+      {{ errorMessage }}
+    </div>
+  }
 
-  <div *ngIf="!loading && !errorMessage && mieInserzioni.length === 0" class="stato stato--vuoto">
-    <p>Non hai ancora inserzioni pubblicate.</p>
-  </div>
+  @if (!loading && !errorMessage && mieInserzioni.length === 0) {
+    <div class="stato stato--vuoto">
+      <p>Non hai ancora inserzioni pubblicate.</p>
+    </div>
+  }
 
-  <div class="lista-inserzioni" *ngIf="mieInserzioni.length > 0">
-    <app-inserzione-card
-      *ngFor="let card of mieInserzioni"
-      [inserzione]="card"
-      (click)="apriDettagli(card.idInserzione)">
-    </app-inserzione-card>
-  </div>
+  @if (mieInserzioni.length > 0) {
+    <div class="lista-inserzioni">
+      @for (card of mieInserzioni; track card.idInserzione) {
+        <app-inserzione-card
+          [inserzione]="card"
+          (click)="apriDettagli(card.idInserzione)">
+        </app-inserzione-card>
+      }
+    </div>
+  }
+
 </section>

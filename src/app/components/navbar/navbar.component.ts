@@ -26,7 +26,7 @@ export class NavbarComponent {
   isLogged = false;
   userRole: string | null = null;
 
-  // ⭐ Variabile per navbar trasparente/scrolled
+
   isScrolled = false;
 
   /*--------- COSTRUTTORE --------------------------------------------------*/
