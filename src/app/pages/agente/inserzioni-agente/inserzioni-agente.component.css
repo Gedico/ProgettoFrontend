@@ -1,0 +1,51 @@
+.pagina-inserzioni-agente {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 24px 16px 40px;
+}
+
+.header-inserzioni {
+  margin-bottom: 24px;
+}
+
+.header-inserzioni h2 {
+  margin: 0;
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+
+.sottotitolo {
+  margin: 4px 0 0;
+  color: #666;
+  font-size: 0.95rem;
+}
+
+.lista-inserzioni {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Messaggi di stato */
+.stato {
+  padding: 12px 16px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  font-size: 0.95rem;
+}
+
+.stato--info {
+  background-color: #e8f1ff;
+  color: #204a8e;
+}
+
+.stato--errore {
+  background-color: #ffe8e8;
+  color: #8e2020;
+}
+
+.stato--vuoto {
+  background-color: #f5f5f5;
+  color: #555;
+  text-align: center;
+}

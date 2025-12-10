@@ -1,14 +1,24 @@
-<div 
-  class="card"
+<div
+  class="card-inserzione"
   [routerLink]="['/inserzione', inserzione.idInserzione]"
-  style="cursor: pointer;"
 >
-  <img [src]="inserzione.fotoPrincipale" alt="Foto inserzione">
+  <img
+    class="card-inserzione__img"
+    [src]="inserzione.fotoPrincipale || 'assets/img/placeholder-home.jpg'"
+    alt="Foto inserzione"
+  >
 
-  <div class="card-content">
-    <h3>{{ inserzione.titolo }}</h3>
-    <p>{{ inserzione.prezzo | currency:'EUR':'symbol':'1.0-0' }}</p>
-    <p>{{ inserzione.dimensioni }} m² · {{ inserzione.numero_stanze }} stanze</p>
+  <div class="card-inserzione__content">
+    <h3 class="card-inserzione__titolo">
+      {{ inserzione.titolo }}
+    </h3>
+
+    <p class="card-inserzione__prezzo">
+      {{ inserzione.prezzo | currency:'EUR':'symbol':'1.0-0' }}
+    </p>
+
+    <p class="card-inserzione__dettagli">
+      {{ inserzione.dimensioni }} m² · {{ inserzione.numero_stanze }} stanze
+    </p>
   </div>
 </div>
-
