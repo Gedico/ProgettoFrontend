@@ -85,6 +85,15 @@ export const routes: Routes = [
     canActivate: [AuthGuard, () => RoleGuard(['AGENTE'])]
   },
 
+  {
+    path: 'agente/inserzioni',
+    loadComponent: () =>
+      import('./pages/agente/inserzioni-agente/inserzioni-agente.component')
+        .then(c => c.InserzioniAgenteComponent),
+    canActivate: [AuthGuard, () => RoleGuard(['AGENTE'])]
+  },
+
+
   /*-------------------------------INSERZIONI---------------------------------------------------------------------------- */
   // Inserzione
   { path: 'inserzione/:id',

@@ -1,0 +1,13 @@
+<h2 class="titolo">Le mie inserzioni</h2>
+
+<div class="contenitore-inserzioni">
+  <app-inserzione-card
+    *ngFor="let card of mieInserzioni"
+    [inserzione]="card"
+    (click)="apriDettagli(card.idInserzione)">
+  </app-inserzione-card>
+</div>
+
+<div *ngIf="mieInserzioni.length === 0" class="vuoto">
+  <p>Non hai ancora inserzioni pubblicate.</p>
+</div>
