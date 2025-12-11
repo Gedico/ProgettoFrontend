@@ -34,14 +34,17 @@ export class InserzioneService {
 
 
 
+
   getUltimeInserzioni(): Observable<InserzioneCard[]> {
     return this.http.get<InserzioneCard[]>(`${this.apiUrl}/recenti`);
   }
 
+  // 🔹 Dettaglio inserzione
   getInserzioneById(id: number): Observable<InserzioneResponse> {
     return this.http.get<InserzioneResponse>(`${this.apiUrl}/${id}`);
   }
 
+  // 🔹 Ricerca avanzata
   ricercaInserzioni(filtri: any): Observable<InserzioneResponse[]> {
     let params = new HttpParams();
 
@@ -52,5 +55,10 @@ export class InserzioneService {
     });
 
     return this.http.get<InserzioneResponse[]>(`${this.apiUrl}/ricerca`, {params});
+  }
+
+  // 🔹 ottiene le inserzioni dell'agente loggato
+  getInserzioniAgente(): Observable<InserzioneCard[]> {
+    return this.http.get<InserzioneCard[]>(`${this.apiUrl}/mie`);
   }
 }

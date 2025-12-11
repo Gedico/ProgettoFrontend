@@ -1,6 +1,6 @@
 import { ForgotPasswordComponent } from '../../../components/auth/forgot-password/forgot-password.component';
+
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { NavbarComponent } from "../../../components/navbar/navbar.component";
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { SessionService } from '../../../services/session.service';
 import { LoginService } from '../../../core/auth/login.service';

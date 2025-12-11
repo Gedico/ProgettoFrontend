@@ -1,10 +1,20 @@
 import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 export interface SessionState {
   logged: boolean;
   role: string | null;
+}
+
+interface JwtPayload {
+  exp?: number;
+  ruolo?: string;
+  role?: string;
+  authority?: string;
+  authorities?: string[];
+  roles?: string[] | string;
+  [key: string]: unknown;
 }
 
 @Injectable({
@@ -12,89 +22,100 @@ export interface SessionState {
 })
 export class SessionService {
 
-  private sessionState$ = new BehaviorSubject<SessionState>({
+  private readonly sessionState$ = new BehaviorSubject<SessionState>({
     logged: false,
     role: null
   });
 
-  get session$() {
-    return this.sessionState$.asObservable();
-  }
-
-  constructor(@Inject(PLATFORM_ID) private platformId: object) {
-    if (!isPlatformBrowser(this.platformId)) return;
+  constructor(@Inject(PLATFORM_ID) private readonly platformId: object) {
+    if (!this.canUseBrowser()) return;
 
     const token = localStorage.getItem('token');
-    if (!token) return;
-
-    this.applyToken(token);
+    if (token) {
+      this.applyToken(token);
+    }
   }
 
   /** ======================================
-   *   APPLICA IL TOKEN (LOGIN)
+   *   OBSERVABLE PUBBLICO
+   *  ====================================== */
+  get session$(): Observable<SessionState> {
+    return this.sessionState$.asObservable();
+  }
+
+  /** ======================================
+   *   LOGIN / SALVATAGGIO TOKEN
    *  ====================================== */
   setSession(token: string): void {
-    if (!isPlatformBrowser(this.platformId)) return;
+    if (!this.canUseBrowser()) return;
 
     localStorage.setItem('token', token);
     this.applyToken(token);
   }
 
   /** ======================================
-   *   PARSE SICURO DEL TOKEN
+   *   PARSE JWT
    *  ====================================== */
   private applyToken(token: string): void {
+    const payload = this.decodeJwt(token);
+
+    if (!payload) {
+      return this.clearSession();
+    }
+
+    if (this.isExpired(payload)) {
+      return this.clearSession();
+    }
+
+    const role = this.mapRole(payload);
+
+    this.sessionState$.next({
+      logged: true,
+      role
+    });
+  }
+
+  private decodeJwt(token: string): JwtPayload | null {
     try {
       const [, payloadBase64] = token.split('.');
-      if (!payloadBase64) throw new Error('Formato JWT non valido');
+      if (!payloadBase64) return null;
 
-      const payload = JSON.parse(atob(payloadBase64));
+      return JSON.parse(atob(payloadBase64)) as JwtPayload;
 
-      const exp = payload.exp;
-      if (exp && Date.now() / 1000 > exp) {
-        console.warn('Token scaduto, logout obbligatorio');
-        return this.clearSession();
-      }
-
-      const rawRole =
-        payload.ruolo ||
-        payload.role ||
-        payload.authority ||
-        payload.authorities?.[0] ||
-        payload.roles ||
-        null;
-
-      const normalized = (rawRole || '').toString().toUpperCase();
-
-      const role =
-        normalized.includes('USER')   ? 'UTENTE' :
-          normalized.includes('UTENTE')   ? 'UTENTE' :
-            normalized.includes('ADMIN')   ? 'ADMIN' :
-              normalized.includes('AGENTE')   ? 'AGENTE' :
-          null;
-
-      if (!role) {
-        console.warn('Ruolo JWT sconosciuto:', rawRole);
-      }
-
-      this.sessionState$.next({
-        logged: true,
-        role
-      });
-
-    } catch (err) {
-      console.error('Errore parsing token:', err);
-      this.clearSession();
+    } catch {
+      return null;
     }
+  }
+
+  private isExpired(payload: JwtPayload): boolean {
+    return payload.exp ? Date.now() / 1000 > payload.exp : false;
+  }
+
+  private mapRole(payload: JwtPayload): string | null {
+    const raw =
+      payload.ruolo ??
+      payload.role ??
+      payload.authority ??
+      payload.authorities?.[0] ??
+      payload.roles ??
+      null;
+
+    if (!raw) return null;
+
+    const normalized = raw.toString().toUpperCase();
+
+    if (normalized.includes('ADMIN')) return 'ADMIN';
+    if (normalized.includes('AGENTE')) return 'AGENTE';
+    return 'UTENTE'; // default
   }
 
   /** ======================================
    *   LOGOUT
    *  ====================================== */
   clearSession(): void {
-    if (!isPlatformBrowser(this.platformId)) return;
-
-    localStorage.removeItem('token');
+    if (this.canUseBrowser()) {
+      localStorage.removeItem('token');
+    }
 
     this.sessionState$.next({
       logged: false,
@@ -105,17 +126,22 @@ export class SessionService {
   /** ======================================
    *   GETTERS
    *  ====================================== */
-  getSnapshot() {
+  getSnapshot(): SessionState {
     return this.sessionState$.getValue();
   }
 
   getToken(): string | null {
-    if (!isPlatformBrowser(this.platformId)) return null;
-    return localStorage.getItem('token');
+    return this.canUseBrowser() ? localStorage.getItem('token') : null;
   }
 
   getRole(): string | null {
     return this.sessionState$.getValue().role;
   }
-}
 
+  /** ======================================
+   *   UTILITY
+   *  ====================================== */
+  private canUseBrowser(): boolean {
+    return isPlatformBrowser(this.platformId);
+  }
+}

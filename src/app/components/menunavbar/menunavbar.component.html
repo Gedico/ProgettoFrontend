@@ -9,7 +9,7 @@
 <ng-container *ngIf="role === 'AGENTE'">
   <a routerLink="/proposte-ricevute" (click)="close.emit()">Proposte ricevute</a>
   <a routerLink="/registro-proposte" (click)="close.emit()">Registro proposte</a>
-  <a routerLink="/inserzione/aggiungi" (click)="close.emit()">Inserzioni</a>
+  <a routerLink="/agente/inserzioni" (click)="close.emit()">Inserzioni</a>
   <a (click)="logout(); close.emit()">Logout</a>
 </ng-container>
 
