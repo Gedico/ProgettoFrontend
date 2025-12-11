@@ -50,4 +50,9 @@ export class InserzioniAgenteComponent implements OnInit {
     }
     this.router.navigate(['/inserzione', id]);
   }
+
+  vaiAggiungiInserzione(): void {
+    this.router.navigate(['/agente/inserzioni/nuova']);
+  }
+
 }

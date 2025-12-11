@@ -4,9 +4,14 @@
   padding: 24px 16px 40px;
 }
 
-.header-inserzioni {
+.header-con-bottone {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 32px;
   margin-bottom: 24px;
 }
+
 
 .header-inserzioni h2 {
   margin: 0;
@@ -16,14 +21,30 @@
 
 .sottotitolo {
   margin: 4px 0 0;
-  color: #666;
-  font-size: 0.95rem;
+  color: #555;
+  font-size: 0.98rem;
+}
+
+.add-button {
+  background-color: #1d6cff;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 15px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.2s ease;
+}
+
+.add-button:hover {
+  background-color: #1551c7;
 }
 
 .lista-inserzioni {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 20px;
 }
 
 /* Messaggi di stato */
@@ -49,3 +70,5 @@
   color: #555;
   text-align: center;
 }
+
+
