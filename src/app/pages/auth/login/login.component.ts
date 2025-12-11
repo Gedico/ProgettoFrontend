@@ -1,5 +1,4 @@
 import { ForgotPasswordComponent } from '../../../components/auth/forgot-password/forgot-password.component';
-import { GoogleLoginModalComponent } from '../../../google-login-modal/google-login-modal.component';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NavbarComponent } from "../../../components/navbar/navbar.component";
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
@@ -19,9 +18,7 @@ import {goOffline} from '@angular/fire/database';
     CommonModule,
     ReactiveFormsModule,
     RouterModule,
-    MatDialogModule,
-    NavbarComponent,
-    ForgotPasswordComponent
+    MatDialogModule
   ],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']

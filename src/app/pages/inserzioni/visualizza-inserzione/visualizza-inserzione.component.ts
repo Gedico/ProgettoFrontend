@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { InserzioneResponse } from '../../models/inserzioneresponse';
-import { InserzioneService } from '../../services/inserzioni.service';
+import { InserzioneResponse } from '../../../models/inserzioneresponse';
+import { InserzioneService } from '../../../services/inserzioni.service';
 import { CurrencyPipe, CommonModule } from '@angular/common';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
-import { SessionService } from '../../services/session.service';
+import { SessionService } from '../../../services/session.service';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { PropostaService } from '../../services/proposta.service';
+import { PropostaService } from '../../../services/proposta.service';
 import Swal from 'sweetalert2';
 
 @Component({

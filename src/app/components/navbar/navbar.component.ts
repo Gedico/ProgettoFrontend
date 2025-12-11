@@ -1,5 +1,5 @@
 import { Component, Inject, PLATFORM_ID } from '@angular/core';
-import {CommonModule, isPlatformBrowser, NgOptimizedImage} from '@angular/common';
+import {CommonModule, isPlatformBrowser} from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { LoginService } from '../../core/auth/login.service';
 import { SessionService } from '../../services/session.service';
@@ -8,7 +8,7 @@ import { MenunavbarComponent } from '../menunavbar/menunavbar.component';
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [CommonModule, RouterModule, MenunavbarComponent, NgOptimizedImage],
+  imports: [CommonModule, RouterModule, MenunavbarComponent],
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css']
 })

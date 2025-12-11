@@ -14,6 +14,26 @@ export class InserzioneService {
   constructor(private http: HttpClient) {
   }
 
+  creaInserzione(dati: any, immagini: File[]) {
+    const formData = new FormData();
+
+    // JSON → deve chiamarsi esattamente "dati"
+    formData.append(
+      'dati',
+      new Blob([JSON.stringify(dati)], { type: 'application/json' })
+    );
+
+    // Immagini
+    for (const img of immagini) {
+      formData.append('immagini', img);
+    }
+
+    // L'interceptor aggiunge automaticamente l'Authorization
+    return this.http.post(`${this.apiUrl}/crea`, formData);
+  }
+
+
+
   getUltimeInserzioni(): Observable<InserzioneCard[]> {
     return this.http.get<InserzioneCard[]>(`${this.apiUrl}/recenti`);
   }

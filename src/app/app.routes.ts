@@ -88,7 +88,7 @@ export const routes: Routes = [
   /*-------------------------------INSERZIONI---------------------------------------------------------------------------- */
   // Inserzione
   { path: 'inserzione/:id',
-    loadComponent: () =>import('./pages/visualizza-inserzione/visualizza-inserzione.component')
+    loadComponent: () =>import('./pages/inserzioni/visualizza-inserzione/visualizza-inserzione.component')
     .then(m => m.VisualizzaInserzioneComponent)
   },
 
@@ -111,6 +111,13 @@ export const routes: Routes = [
     path: 'ricerca',
     loadComponent: () => import('./pages/risultati-ricerca/risultati-ricerca.component')
       .then(m => m.RisultatiRicercaComponent)
+  },
+
+
+  {
+    path: 'crea-inserzione',
+    loadComponent: () => import('./pages/inserzioni/nuova-inserzione/nuova-inserzione.component')
+      .then(m => m.NuovaInserzioneComponent)
   },
 
 
