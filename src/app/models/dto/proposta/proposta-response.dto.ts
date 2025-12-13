@@ -4,6 +4,7 @@ export interface PropostaResponse {
   idProposta: number;
   titoloInserzione: string;
   importo: number;
+  prezzoInserzione: number;
   stato: StatoProposta;
   dataCreazione: string;
   messaggio?: string;

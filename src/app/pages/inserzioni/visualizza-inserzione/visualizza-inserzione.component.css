@@ -18,12 +18,13 @@
    ========================================================= */
 .header {
   display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
+  align-items: center;
+  gap: 16px;
   margin-bottom: 25px;
-  flex-wrap: wrap;
-  gap: 10px;
+  margin-top: 30px;
+  width: 100%;
 }
+
 
 .header h1 {
   font-size: 28px;
@@ -31,14 +32,18 @@
   line-height: 1.2;
 }
 
-.header h2 {
+.prezzo-dettaglio {
+  margin-left: auto;
   font-size: 26px;
   font-weight: 700;
   color: #0070f3;
   background: #eaf3ff;
   padding: 6px 14px;
   border-radius: 10px;
+  white-space: nowrap;
+  z-index:1;
 }
+
 
 /* =========================================================
    BOTTONI

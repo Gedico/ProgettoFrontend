@@ -9,6 +9,8 @@ import { PropostaService } from '../../../services/proposta.service';
 import { PropostaResponse } from '../../../models/dto/proposta/proposta-response.dto';
 import { StatoProposta } from '../../../models/dto/enums/stato-proposta';
 import Swal from 'sweetalert2';
+import {ContropropostaRequest} from '../../../models/dto/proposta/controproposta-request-dto';
+import {parsePrezzo} from '../../../shared/utils/prezzo.utils';
 
 @Component({
   selector: 'app-proposte-ricevute',
@@ -47,6 +49,83 @@ export class ProposteRicevuteComponent implements OnInit {
       error: _ => this.loading = false
     });
   }
+
+  apriControproposta(proposta: PropostaResponse) {
+
+    const prezzoUtente = proposta.importo;
+    const prezzoInserzione = proposta.prezzoInserzione;
+
+    Swal.fire({
+      title: 'Invia controproposta',
+      html: `
+      <p>
+        Offerta ricevuta:
+        <b>${prezzoUtente.toLocaleString('it-IT')} €</b><br>
+        Prezzo inserzione:
+        <b>${prezzoInserzione.toLocaleString('it-IT')} €</b>
+      </p>
+    `,
+      input: 'text',
+      inputLabel: 'Nuovo prezzo',
+      inputPlaceholder: 'Es. 2459000 oppure 2.459.000',
+      showCancelButton: true,
+      confirmButtonText: 'Invia',
+      cancelButtonText: 'Annulla',
+
+      preConfirm: (value) => {
+        const prezzo = parsePrezzo(value);
+
+        if (!prezzo) {
+          Swal.showValidationMessage('Inserisci un importo valido');
+          return;
+        }
+
+        if (prezzo <= prezzoUtente) {
+          Swal.showValidationMessage(
+            'La controproposta deve essere maggiore dell’offerta ricevuta'
+          );
+          return;
+        }
+
+        if (prezzo > prezzoInserzione) {
+          Swal.showValidationMessage(
+            'La controproposta non può superare il prezzo dell’inserzione'
+          );
+          return;
+        }
+
+        return prezzo;
+      }
+    }).then(result => {
+      if (result.isConfirmed) {
+
+        const request: ContropropostaRequest = {
+          nuovoPrezzo: result.value
+        };
+
+        this.propostaService
+          .creaControproposta(proposta.idProposta, request)
+          .subscribe({
+            next: () => {
+              Swal.fire(
+                'Inviata!',
+                'Controproposta inviata con successo',
+                'success'
+              );
+              this.caricaProposte();
+            },
+            error: err => {
+              Swal.fire(
+                'Errore',
+                err?.error?.message || 'Errore durante l’invio della controproposta',
+                'error'
+              );
+            }
+          });
+      }
+    });
+  }
+
 
   aggiornaStato(id: number, nuovoStato: StatoProposta) {
     Swal.fire({

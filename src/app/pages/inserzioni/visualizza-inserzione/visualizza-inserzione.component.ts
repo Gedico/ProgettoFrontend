@@ -9,11 +9,12 @@ import { SessionService } from '../../../services/session.service';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PropostaService } from '../../../services/proposta.service';
 import Swal from 'sweetalert2';
+import {CurrencyInputDirective} from '../../../shared/directives/currency-input.directive';
 
 @Component({
   selector: 'app-visualizza-inserzione',
   standalone: true,
-  imports: [CurrencyPipe, CommonModule, ReactiveFormsModule],
+  imports: [CurrencyPipe, CommonModule, ReactiveFormsModule, CurrencyInputDirective],
   templateUrl: './visualizza-inserzione.component.html',
   styleUrls: ['./visualizza-inserzione.component.css']
 })
@@ -43,12 +44,14 @@ export class VisualizzaInserzioneComponent implements OnInit {
     this.id = Number(this.route.snapshot.paramMap.get('id'));
 
     this.offertaForm = this.fb.group({
-      prezzoProposta: ['', Validators.required],
+      prezzoProposta: [null, Validators.required],
       note: ['']
     });
 
     this.inserzioneService.getInserzioneById(this.id).subscribe({
       next: (data) => {
+        console.log('INSERZIONE RAW:', data);
+        console.log('PREZZO:', data?.dati?.prezzo);
         this.inserzione = data;
 
         this.prezzoMinimo = data.dati.prezzo * 0.85;
@@ -102,22 +105,20 @@ export class VisualizzaInserzioneComponent implements OnInit {
   inviaProposta() {
     if (this.offertaForm.invalid) return;
 
-    let prezzoInput = this.offertaForm.value.prezzoProposta;
-    const prezzoNorm = this.normalizzaPrezzo(prezzoInput);
+    const prezzo = this.offertaForm.value.prezzoProposta;
 
-    if (isNaN(prezzoNorm)) {
-      Swal.fire("Errore", "Formato prezzo non valido.", "error").then(() => {});
-      return;
-    }
-
-    if (prezzoNorm < this.prezzoMinimo) {
-      Swal.fire("Errore", "La tua offerta è inferiore al minimo accettato.", "error").then(() => {});
+    if (prezzo < this.prezzoMinimo) {
+      Swal.fire(
+        "Errore",
+        "La tua offerta è inferiore al minimo accettato.",
+        "error"
+      ).then(() => {});
       return;
     }
 
     const payload = {
       idInserzione: this.inserzione.id,
-      prezzoProposta: prezzoNorm,
+      prezzoProposta: prezzo,
       note: this.offertaForm.value.note
     };
 
@@ -127,39 +128,15 @@ export class VisualizzaInserzioneComponent implements OnInit {
         this.toggleFormOfferta();
       },
       error: (err) => {
-        Swal.fire("Errore", err?.error?.message || "Errore invio proposta.", "error").then(() => {});
+        Swal.fire(
+          "Errore",
+          err?.error?.message || "Errore invio proposta.",
+          "error"
+        ).then(() => {});
       }
     });
   }
 
-  private normalizzaPrezzo(input: string | number): number {
-    if (typeof input === 'number') return input;
 
-    if (!input) return NaN;
-
-    // Rimuove spazi
-    input = input.replace(/\s+/g, '').trim();
-
-    // Caso: contiene sia punto che virgola
-    if (input.includes('.') && input.includes(',')) {
-      const lastComma = input.lastIndexOf(',');
-      const lastPoint = input.lastIndexOf('.');
-
-      // Se la virgola è più "a destra" → virgola = decimali
-      if (lastComma > lastPoint) {
-        input = input.replace(/\./g, '');   // toglie i separatori delle migliaia
-        input = input.replace(',', '.');    // converte decimali
-      } else {
-        // Punto come decimale
-        input = input.replace(/,/g, '');    // toglie le migliaia
-      }
-    }
-    // Caso: solo virgole → interpreta come decimali
-    else if (input.includes(',')) {
-      input = input.replace(/,/g, '.');
-    }
-
-    return Number(input);
-  }
 
 }

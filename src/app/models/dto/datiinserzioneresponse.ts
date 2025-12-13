@@ -8,4 +8,5 @@ export interface DatiInserzioneResponse {
   ascensore: boolean;
   classeEnergetica: string;
   categoria: string;
+
 }
