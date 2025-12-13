@@ -1,33 +1,47 @@
-<!-- ===================== CARICAMENTO ===================== -->
 @if (caricamento) {
-  <div class="loading">
-    Caricamento inserzione...
-  </div>
+  <div class="loading">Caricamento inserzione...</div>
 }
 
-<!-- ===================== CONTENUTO ===================== -->
 @if (!caricamento && inserzione) {
   <div class="container-inserzione">
 
-    <!-- HEADER -->
-    @if (inserzione.dati) {
-      <div class="header">
-        <h1>{{ inserzione.dati.titolo }}</h1>
-
-        <div class="prezzo-dettaglio">
-          {{ inserzione.dati.prezzo | currency:'EUR':'symbol':'1.0-0' }}
-        </div>
+    <div class="header">
+      <h1>{{ inserzione.dati.titolo }}</h1>
+      <div class="prezzo-dettaglio">
+        {{ inserzione.dati.prezzo | currency:'EUR':'symbol':'1.0-0' }}
       </div>
-    }
+    </div>
 
-    <!-- Bottone Offerta -->
     <button class="proposta-btn" (click)="toggleFormOfferta()">
       💶 Fai un'offerta
     </button>
 
-    <!-- ===================== MODAL ======================= -->
-    @if (mostraFormOfferta) {
+    <!-- CONTROPROPOSTA AGENTE -->
+    @if (contropropostaAgente && contropropostaAgente.stato === 'CONTROPROPOSTA') {
+      <div class="controproposta-card">
+        <h3>Controproposta dell'agente</h3>
 
+        <p>
+          <strong>Importo:</strong>
+          {{ contropropostaAgente.importo | currency:'EUR':'symbol':'1.0-0' }}
+        </p>
+
+        @if (contropropostaAgente.messaggio) {
+          <p>
+            <strong>Note:</strong><br>
+            {{ contropropostaAgente.messaggio }}
+          </p>
+        }
+
+        <div class="azioni-controproposta">
+          <button class="btn-accetta" (click)="accettaControproposta()">✔ Accetta</button>
+          <button class="btn-rifiuta" (click)="rifiutaControproposta()">✖ Rifiuta</button>
+        </div>
+      </div>
+    }
+
+    <!-- MODAL OFFERTA -->
+    @if (mostraFormOfferta) {
       <div class="overlay" (click)="toggleFormOfferta()"></div>
 
       <div class="modal-card">
@@ -42,80 +56,39 @@
             formControlName="prezzoProposta"
             appCurrencyInput />
 
+          <div class="text-muted mt-1">
+            Prezzo minimo accettato:
+            <strong>{{ prezzoMinimoAccettato | currency:'EUR' }}</strong>
+          </div>
+
           @if (prezzoProposta?.touched && prezzoProposta?.invalid) {
-            <div class="validation">
-              Minimo accettato:
-              <strong>
-                {{ prezzoMinimo | currency:'EUR':'symbol':'1.0-0' }}
-              </strong>
+            <div class="text-danger mt-1">
+              Inserisci un importo valido
             </div>
           }
 
           <label>Note (opzionale)</label>
-          <textarea
-            formControlName="note"
-            class="textarea-field">
-          </textarea>
+          <textarea formControlName="note" class="textarea-field"></textarea>
 
-          <button class="submit-btn" type="submit">
-            Invia proposta
-          </button>
-
-          <button
-            class="close-btn"
-            type="button"
-            (click)="toggleFormOfferta()">
-            Chiudi
-          </button>
-
+          <button class="submit-btn" type="submit">Invia proposta</button>
+          <button class="close-btn" type="button" (click)="toggleFormOfferta()">Chiudi</button>
         </form>
       </div>
     }
 
-    <!-- FOTO -->
-    @if (inserzione.foto.length) {
-      <div class="galleria">
-        <img
-          class="foto-principale"
-          [src]="inserzione.foto[0].url"
-          alt="Foto principale" />
-      </div>
-    }
+    <div class="galleria" *ngIf="inserzione.foto.length">
+      <img class="foto-principale" [src]="inserzione.foto[0].url"  alt=""/>
+    </div>
 
-    <!-- DETTAGLI -->
-    @if (inserzione.dati) {
-      <div class="dettagli">
-        <h3>Dettagli</h3>
+    <div class="descrizione">
+      <h3>Descrizione</h3>
+      <p>{{ inserzione.dati.descrizione }}</p>
+    </div>
 
-        <p><strong>Superficie:</strong> {{ inserzione.dati.dimensioni }} m²</p>
-        <p><strong>Stanze:</strong> {{ inserzione.dati.numeroStanze }}</p>
-        <p><strong>Piano:</strong> {{ inserzione.dati.piano }}</p>
-        <p><strong>Ascensore:</strong> {{ inserzione.dati.ascensore ? 'Sì' : 'No' }}</p>
-        <p><strong>Classe energetica:</strong> {{ inserzione.dati.classeEnergetica }}</p>
-      </div>
-    }
-
-    <!-- DESCRIZIONE -->
-    @if (inserzione.dati) {
-      <div class="descrizione">
-        <h3>Descrizione</h3>
-        <p>{{ inserzione.dati.descrizione }}</p>
-      </div>
-    }
-
-    <!-- POSIZIONE -->
-    @if (inserzione.posizione) {
-      <div class="posizione">
-        <h3>Posizione</h3>
-        <p>{{ inserzione.posizione.descrizione }}</p>
-
-        <iframe
-          width="100%"
-          height="300"
-          [src]="mappaUrl">
-        </iframe>
-      </div>
-    }
+    <div class="posizione">
+      <h3>Posizione</h3>
+      <iframe width="100%" height="300" [src]="mappaUrl"></iframe>
+    </div>
 
   </div>
 }

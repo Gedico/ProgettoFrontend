@@ -1,15 +1,15 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { InserzioneResponse } from '../../../models/inserzioneresponse';
-import { InserzioneService } from '../../../services/inserzioni.service';
-import { CurrencyPipe, CommonModule } from '@angular/common';
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-
-import { SessionService } from '../../../services/session.service';
-import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { PropostaService } from '../../../services/proposta.service';
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {InserzioneResponse} from '../../../models/inserzioneresponse';
+import {InserzioneService} from '../../../services/inserzioni.service';
+import {CommonModule, CurrencyPipe} from '@angular/common';
+import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
+import {SessionService} from '../../../services/session.service';
+import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
+import {PropostaService} from '../../../services/proposta.service';
 import Swal from 'sweetalert2';
 import {CurrencyInputDirective} from '../../../shared/directives/currency-input.directive';
+import {StatoProposta} from '../../../models/dto/enums/stato-proposta';
 
 @Component({
   selector: 'app-visualizza-inserzione',
@@ -28,7 +28,10 @@ export class VisualizzaInserzioneComponent implements OnInit {
 
   mostraFormOfferta = false;
   offertaForm!: FormGroup;
-  prezzoMinimo!: number;
+
+  prezzoMinimoAccettato!: number;
+
+  contropropostaAgente: any = null;
 
   constructor(
     private route: ActivatedRoute,
@@ -50,21 +53,23 @@ export class VisualizzaInserzioneComponent implements OnInit {
 
     this.inserzioneService.getInserzioneById(this.id).subscribe({
       next: (data) => {
-        console.log('INSERZIONE RAW:', data);
-        console.log('PREZZO:', data?.dati?.prezzo);
         this.inserzione = data;
 
-        this.prezzoMinimo = data.dati.prezzo * 0.85;
+        // Prezzo minimo = -15%
+        this.prezzoMinimoAccettato = data.dati.prezzo * 0.85;
 
         this.offertaForm.get('prezzoProposta')?.setValidators([
           Validators.required,
-          Validators.min(this.prezzoMinimo)
+          Validators.min(this.prezzoMinimoAccettato)
         ]);
         this.offertaForm.get('prezzoProposta')?.updateValueAndValidity();
 
         this.mappaUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
           `https://maps.google.com/maps?q=${data.posizione.latitudine},${data.posizione.longitudine}&z=15&output=embed`
         );
+
+        // Carica eventuale controproposta agente
+        this.caricaControproposta();
 
         this.caricamento = false;
       },
@@ -95,7 +100,6 @@ export class VisualizzaInserzioneComponent implements OnInit {
           this.router.navigate(['/login']).then(() => {});
         }
       });
-
       return;
     }
 
@@ -105,38 +109,64 @@ export class VisualizzaInserzioneComponent implements OnInit {
   inviaProposta() {
     if (this.offertaForm.invalid) return;
 
-    const prezzo = this.offertaForm.value.prezzoProposta;
-
-    if (prezzo < this.prezzoMinimo) {
-      Swal.fire(
-        "Errore",
-        "La tua offerta è inferiore al minimo accettato.",
-        "error"
-      ).then(() => {});
-      return;
-    }
-
     const payload = {
       idInserzione: this.inserzione.id,
-      prezzoProposta: prezzo,
+      prezzoProposta: this.offertaForm.value.prezzoProposta,
       note: this.offertaForm.value.note
     };
 
     this.propostaService.inviaProposta(payload).subscribe({
       next: () => {
         Swal.fire("Successo", "Proposta inviata!", "success").then(() => {});
-        this.toggleFormOfferta();
+        this.mostraFormOfferta = false;
+        this.offertaForm.reset();
       },
       error: (err) => {
-        Swal.fire(
-          "Errore",
-          err?.error?.message || "Errore invio proposta.",
-          "error"
-        ).then(() => {});
+        Swal.fire("Errore", err?.error?.message || "Errore invio proposta.", "error").then(() => {});
       }
     });
   }
 
+  caricaControproposta() {
+    this.propostaService.getProposteUtente().subscribe({
+      next: (res) => {
+        this.contropropostaAgente = res.find(
+          (p: any) =>
+            p.idInserzione === this.inserzione.id &&
+            p.proponente === 'AGENTE' &&
+            p.stato === 'CONTROPROPOSTA'
+        );
+      }
+    });
+  }
 
+  accettaControproposta() {
+    this.propostaService.aggiornaStato(
+      this.contropropostaAgente.idProposta,
+      StatoProposta.ACCETTATA
+    ).subscribe({
+      next: () => {
+        Swal.fire("Accettata", "Hai accettato la controproposta.", "success").then(() => {});
+        this.contropropostaAgente.stato = 'ACCETTATA';
+      },
+      error: (err) => {
+        Swal.fire("Errore", err?.error?.message || "Errore.", "error").then(() => {});
+      }
+    });
+  }
 
+  rifiutaControproposta() {
+    this.propostaService.aggiornaStato(
+      this.contropropostaAgente.idProposta,
+      StatoProposta.ACCETTATA
+    ).subscribe({
+      next: () => {
+        Swal.fire("Rifiutata", "Hai rifiutato la controproposta.", "info").then(() => {});
+        this.contropropostaAgente.stato = 'RIFIUTATA';
+      },
+      error: (err) => {
+        Swal.fire("Errore", err?.error?.message || "Errore.", "error").then(() => {});
+      }
+    });
+  }
 }

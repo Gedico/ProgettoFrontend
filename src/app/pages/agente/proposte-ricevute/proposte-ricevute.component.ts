@@ -111,15 +111,11 @@ export class ProposteRicevuteComponent implements OnInit {
                 'Inviata!',
                 'Controproposta inviata con successo',
                 'success'
-              );
+              ).then(() => {});
               this.caricaProposte();
             },
             error: err => {
-              Swal.fire(
-                'Errore',
-                err?.error?.message || 'Errore durante l’invio della controproposta',
-                'error'
-              );
+              Swal.fire('Errore', err?.error?.message || 'Errore durante l’invio della controproposta', 'error').then(() => {});
             }
           });
       }
@@ -137,7 +133,7 @@ export class ProposteRicevuteComponent implements OnInit {
     }).then(result => {
       if (result.isConfirmed) {
         this.propostaService.aggiornaStato(id, nuovoStato).subscribe(() => {
-          Swal.fire('Fatto!', 'Stato aggiornato con successo', 'success');
+          Swal.fire('Fatto!', 'Stato aggiornato con successo', 'success').then(() => {});
           this.caricaProposte();
         });
       }
