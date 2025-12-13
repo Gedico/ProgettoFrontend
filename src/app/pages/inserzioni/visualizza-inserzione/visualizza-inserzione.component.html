@@ -36,9 +36,17 @@
         <div class="azioni-controproposta">
           <button class="btn-accetta" (click)="accettaControproposta()">✔ Accetta</button>
           <button class="btn-rifiuta" (click)="rifiutaControproposta()">✖ Rifiuta</button>
+
+          <button
+            class="btn-dettagli"
+            (click)="vaiAInserzione()">
+            👁 Vedi inserzione
+          </button>
         </div>
       </div>
     }
+
+
 
     <!-- MODAL OFFERTA -->
     @if (mostraFormOfferta) {
@@ -48,7 +56,6 @@
         <h2>Invia una proposta</h2>
 
         <form [formGroup]="offertaForm" (ngSubmit)="inviaProposta()">
-
           <label>Importo offerta (€)</label>
           <input
             type="text"
@@ -77,9 +84,15 @@
       </div>
     }
 
-    <div class="galleria" *ngIf="inserzione.foto.length">
-      <img class="foto-principale" [src]="inserzione.foto[0].url"  alt=""/>
-    </div>
+    @if (inserzione.foto.length) {
+      <div class="galleria">
+        <img
+          class="foto-principale"
+          [src]="inserzione.foto[0].url"
+          alt="" />
+      </div>
+    }
+
 
     <div class="descrizione">
       <h3>Descrizione</h3>

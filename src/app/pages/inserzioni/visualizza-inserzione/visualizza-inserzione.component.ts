@@ -141,32 +141,78 @@ export class VisualizzaInserzioneComponent implements OnInit {
   }
 
   accettaControproposta() {
-    this.propostaService.aggiornaStato(
-      this.contropropostaAgente.idProposta,
-      StatoProposta.ACCETTATA
-    ).subscribe({
-      next: () => {
-        Swal.fire("Accettata", "Hai accettato la controproposta.", "success").then(() => {});
-        this.contropropostaAgente.stato = 'ACCETTATA';
-      },
-      error: (err) => {
-        Swal.fire("Errore", err?.error?.message || "Errore.", "error").then(() => {});
+    Swal.fire({
+      title: 'Confermi l’accettazione?',
+      text: 'Accettando la controproposta l’inserzione verrà considerata venduta.',
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonText: 'Sì, accetta',
+      cancelButtonText: 'Annulla',
+      confirmButtonColor: '#28a745'
+    }).then(result => {
+      if (result.isConfirmed) {
+        this.propostaService.aggiornaStato(
+          this.contropropostaAgente.idProposta,
+          StatoProposta.ACCETTATA
+        ).subscribe({
+          next: () => {
+            Swal.fire(
+              'Accettata',
+              'Hai accettato la controproposta.',
+              'success'
+            ).then(() => {});
+            this.contropropostaAgente.stato = 'ACCETTATA';
+          },
+          error: (err) => {
+            Swal.fire(
+              'Errore',
+              err?.error?.message || 'Errore.',
+              'error'
+            ).then(() => {});
+          }
+        });
       }
     });
   }
 
+
   rifiutaControproposta() {
-    this.propostaService.aggiornaStato(
-      this.contropropostaAgente.idProposta,
-      StatoProposta.RIFIUTATA
-    ).subscribe({
-      next: () => {
-        Swal.fire("Rifiutata", "Hai rifiutato la controproposta.", "info").then(() => {});
-        this.contropropostaAgente.stato = 'RIFIUTATA';
-      },
-      error: (err) => {
-        Swal.fire("Errore", err?.error?.message || "Errore.", "error").then(() => {});
+    Swal.fire({
+      title: 'Rifiutare la controproposta?',
+      text: 'Questa azione non potrà essere annullata.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Sì, rifiuta',
+      cancelButtonText: 'Annulla',
+      confirmButtonColor: '#dc3545'
+    }).then(result => {
+      if (result.isConfirmed) {
+        this.propostaService.aggiornaStato(
+          this.contropropostaAgente.idProposta,
+          StatoProposta.RIFIUTATA
+        ).subscribe({
+          next: () => {
+            Swal.fire(
+              'Rifiutata',
+              'Hai rifiutato la controproposta.',
+              'info'
+            ).then(() => {});
+            this.contropropostaAgente.stato = 'RIFIUTATA';
+          },
+          error: (err) => {
+            Swal.fire(
+              'Errore',
+              err?.error?.message || 'Errore.',
+              'error'
+            ).then(() => {});
+          }
+        });
       }
     });
   }
+
+  vaiAInserzione() {
+    this.router.navigate(['/inserzioni', this.inserzione.id]).then(() => {});
+  }
+
 }

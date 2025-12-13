@@ -40,18 +40,22 @@
         </p>
 
         <div class="azioni">
-          <button class="btn-accetta" (click)="accetta(p)">
-            Accetta
+          <button
+            class="btn-accetta"
+            (click)="accetta(p)">
+            ✔ Accetta
           </button>
 
-          <button class="btn-rifiuta" (click)="rifiuta(p)">
-            Rifiuta
+          <button
+            class="btn-rifiuta"
+            (click)="rifiuta(p)">
+            ✖ Rifiuta
           </button>
 
           <button
             class="btn-dettagli"
-            [routerLink]="['/inserzioni', p.idInserzione]">
-            Vedi inserzione
+            (click)="vaiAInserzione(p.idInserzione)">
+            👁 Vedi inserzione
           </button>
         </div>
       </div>
@@ -90,8 +94,8 @@
 
         <button
           class="btn-dettagli"
-          [routerLink]="['/inserzioni', p.idInserzione]">
-          Vedi inserzione
+          (click)="vaiAInserzione(p.idInserzione)">
+          👁 Vedi inserzione
         </button>
       </div>
 
