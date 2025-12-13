@@ -55,11 +55,12 @@
             class="input-field"
             formControlName="prezzoProposta"
             appCurrencyInput />
+          <small class="hint">
+            Importo minimo consentito:
+            <b>{{ prezzoMinimo | currency:'EUR':'symbol':'1.0-0' }}</b>.
+            È possibile inserire un’offerta superiore al prezzo dell’inserzione.
+          </small>
 
-          <div class="text-muted mt-1">
-            Prezzo minimo accettato:
-            <strong>{{ prezzoMinimoAccettato | currency:'EUR' }}</strong>
-          </div>
 
           @if (prezzoProposta?.touched && prezzoProposta?.invalid) {
             <div class="text-danger mt-1">

@@ -29,7 +29,7 @@ export class VisualizzaInserzioneComponent implements OnInit {
   mostraFormOfferta = false;
   offertaForm!: FormGroup;
 
-  prezzoMinimoAccettato!: number;
+  prezzoMinimo!: number;
 
   contropropostaAgente: any = null;
 
@@ -56,11 +56,11 @@ export class VisualizzaInserzioneComponent implements OnInit {
         this.inserzione = data;
 
         // Prezzo minimo = -15%
-        this.prezzoMinimoAccettato = data.dati.prezzo * 0.85;
+        this.prezzoMinimo = data.dati.prezzo * 0.85;
 
         this.offertaForm.get('prezzoProposta')?.setValidators([
           Validators.required,
-          Validators.min(this.prezzoMinimoAccettato)
+          Validators.min(this.prezzoMinimo)
         ]);
         this.offertaForm.get('prezzoProposta')?.updateValueAndValidity();
 
@@ -158,7 +158,7 @@ export class VisualizzaInserzioneComponent implements OnInit {
   rifiutaControproposta() {
     this.propostaService.aggiornaStato(
       this.contropropostaAgente.idProposta,
-      StatoProposta.ACCETTATA
+      StatoProposta.RIFIUTATA
     ).subscribe({
       next: () => {
         Swal.fire("Rifiutata", "Hai rifiutato la controproposta.", "info").then(() => {});

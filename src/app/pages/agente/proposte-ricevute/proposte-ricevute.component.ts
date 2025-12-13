@@ -50,32 +50,59 @@ export class ProposteRicevuteComponent implements OnInit {
     });
   }
 
-  apriControproposta(proposta: PropostaResponse) {
+
+  apriControproposta(proposta: PropostaResponse): void {
 
     const prezzoUtente = proposta.importo;
     const prezzoInserzione = proposta.prezzoInserzione;
 
+    // Formatter live per SweetAlert
+    const formattaPrezzoInput = (input: HTMLInputElement): void => {
+      input.addEventListener('input', () => {
+        const soloNumeri = input.value.replace(/\D/g, '');
+        if (!soloNumeri) {
+          input.value = '';
+          return;
+        }
+        input.value = Number(soloNumeri).toLocaleString('it-IT');
+      });
+    };
+
     Swal.fire({
       title: 'Invia controproposta',
       html: `
-      <p>
-        Offerta ricevuta:
-        <b>${prezzoUtente.toLocaleString('it-IT')} €</b><br>
-        Prezzo inserzione:
-        <b>${prezzoInserzione.toLocaleString('it-IT')} €</b>
-      </p>
-    `,
+  <p>
+    Offerta ricevuta:
+    <b>${prezzoUtente.toLocaleString('it-IT')} €</b><br>
+    Prezzo inserzione:
+    <b>${prezzoInserzione.toLocaleString('it-IT')} €</b>
+  </p>
+
+  <p style="font-size: 0.85em; color: #555; margin-top: 8px;">
+    La controproposta deve essere compresa tra
+    <b>${(prezzoInserzione * 0.85).toLocaleString('it-IT')} €</b>
+    e
+    <b>${prezzoInserzione.toLocaleString('it-IT')} €</b>.
+  </p>
+`,
+
+
       input: 'text',
       inputLabel: 'Nuovo prezzo',
-      inputPlaceholder: 'Es. 2459000 oppure 2.459.000',
+      inputPlaceholder: 'Es. 2.459.000',
       showCancelButton: true,
       confirmButtonText: 'Invia',
       cancelButtonText: 'Annulla',
 
+      didOpen: () => {
+        const input = Swal.getInput() as HTMLInputElement;
+        formattaPrezzoInput(input);
+      },
+
       preConfirm: (value) => {
         const prezzo = parsePrezzo(value);
 
-        if (!prezzo) {
+        if (!prezzo || prezzo <= 0) {
           Swal.showValidationMessage('Inserisci un importo valido');
           return;
         }
@@ -96,6 +123,7 @@ export class ProposteRicevuteComponent implements OnInit {
 
         return prezzo;
       }
+
     }).then(result => {
       if (result.isConfirmed) {
 
@@ -115,12 +143,17 @@ export class ProposteRicevuteComponent implements OnInit {
               this.caricaProposte();
             },
             error: err => {
-              Swal.fire('Errore', err?.error?.message || 'Errore durante l’invio della controproposta', 'error').then(() => {});
+              Swal.fire(
+                'Errore',
+                err?.error?.message || 'Errore durante l’invio della controproposta',
+                'error'
+              ).then(() => {});
             }
           });
       }
     });
   }
+
 
 
   aggiornaStato(id: number, nuovoStato: StatoProposta) {
@@ -139,4 +172,6 @@ export class ProposteRicevuteComponent implements OnInit {
       }
     });
   }
+
+
 }
