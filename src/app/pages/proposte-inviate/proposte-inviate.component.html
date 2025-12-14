@@ -54,9 +54,10 @@
 
           <button
             class="btn-dettagli"
-            (click)="vaiAInserzione(p.idInserzione)">
+            [routerLink]="['/inserzione', p.idInserzione]">
             👁 Vedi inserzione
           </button>
+
         </div>
       </div>
 
@@ -94,7 +95,7 @@
 
         <button
           class="btn-dettagli"
-          (click)="vaiAInserzione(p.idInserzione)">
+          [routerLink]="['/inserzione', p.idInserzione]">
           👁 Vedi inserzione
         </button>
       </div>

@@ -12,6 +12,7 @@ import Swal from 'sweetalert2';
 import {ContropropostaRequest} from '../../../models/dto/proposta/controproposta-request-dto';
 import {parsePrezzo} from '../../../shared/utils/prezzo.utils';
 
+
 @Component({
   selector: 'app-proposte-ricevute',
   standalone: true,

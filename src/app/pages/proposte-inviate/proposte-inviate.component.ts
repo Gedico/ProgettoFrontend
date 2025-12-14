@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {Router} from '@angular/router';
+import { RouterLink } from '@angular/router';
 
 import { PropostaService } from '../../services/proposta.service';
 import { PropostaResponse } from '../../models/dto/proposta/proposta-response.dto';
@@ -10,7 +10,7 @@ import Swal from 'sweetalert2';
 @Component({
   selector: 'app-proposte-inviate',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   templateUrl: './proposte-inviate.component.html',
   styleUrls: ['./proposte-inviate.component.css']
 })
@@ -25,7 +25,7 @@ export class ProposteInviateComponent implements OnInit {
 
   caricamento = true;
 
-  constructor(private propostaService: PropostaService, private router: Router)
+  constructor(private propostaService: PropostaService)
  {}
   ngOnInit(): void {
     this.caricaProposte();
@@ -140,7 +140,5 @@ export class ProposteInviateComponent implements OnInit {
     });
   }
 
-  vaiAInserzione(idInserzione: number): void {
-    this.router.navigate(['/inserzioni', idInserzione]).then(() => {});
-  }
+
 }
