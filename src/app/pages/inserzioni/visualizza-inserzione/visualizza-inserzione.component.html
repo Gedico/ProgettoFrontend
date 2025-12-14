@@ -12,44 +12,65 @@
       </div>
     </div>
 
-    <button class="proposta-btn" (click)="toggleFormOfferta()">
+
+    <button
+      class="proposta-btn"
+      [disabled]="haTrattativaInCorso"
+      (click)="toggleFormOfferta()">
       💶 Fai un'offerta
     </button>
 
+    @if (haTrattativaInCorso) {
+      <p class="hint-trattativa">
+        Hai già una trattativa in corso per questa inserzione.
+      </p>
+    }
+
+
+
     <!-- CONTROPROPOSTA AGENTE -->
     @if (contropropostaAgente && contropropostaAgente.stato === 'CONTROPROPOSTA') {
-      <div class="controproposta-card">
-        <h3>Controproposta dell'agente</h3>
+      <div class="alert-controproposta">
 
-        <p>
-          <strong>Importo:</strong>
-          {{ contropropostaAgente.importo | currency:'EUR':'symbol':'1.0-0' }}
+        <div class="alert-header">
+          <span class="icon">📩</span>
+          <h3>Controproposta dell’agente</h3>
+        </div>
+
+        <p class="alert-text">
+          L’agente ha risposto alla tua offerta con un importo di
+          <b>{{ contropropostaAgente.importo | currency:'EUR':'symbol':'1.0-0' }}</b>.
         </p>
 
         @if (contropropostaAgente.messaggio) {
-          <p>
-            <strong>Note:</strong><br>
+          <p class="alert-note">
+            <strong>Nota dell’agente:</strong><br>
             {{ contropropostaAgente.messaggio }}
           </p>
         }
 
-        <div class="azioni-controproposta">
-          <button class="btn-accetta" (click)="accettaControproposta()">✔ Accetta</button>
-          <button class="btn-rifiuta" (click)="rifiutaControproposta()">✖ Rifiuta</button>
+        <div class="alert-actions">
+          <button class="btn-accetta" (click)="accettaControproposta()">
+            ✔ Accetta
+          </button>
 
-          <button
-            class="btn-dettagli"
-            (click)="vaiAInserzione()">
-            👁 Vedi inserzione
+          <button class="btn-rifiuta" (click)="rifiutaControproposta()">
+            ✖ Rifiuta
           </button>
         </div>
+
+        <p class="alert-reminder">
+          Per continuare è necessario accettare o rifiutare la controproposta.
+        </p>
+
       </div>
     }
 
 
 
+
     <!-- MODAL OFFERTA -->
-    @if (mostraFormOfferta) {
+    @if (mostraFormOfferta && !haTrattativaInCorso) {
       <div class="overlay" (click)="toggleFormOfferta()"></div>
 
       <div class="modal-card">

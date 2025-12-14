@@ -30,7 +30,7 @@ export class VisualizzaInserzioneComponent implements OnInit {
   offertaForm!: FormGroup;
 
   prezzoMinimo!: number;
-
+  haTrattativaInCorso = false;
   contropropostaAgente: any = null;
 
   constructor(
@@ -130,15 +130,26 @@ export class VisualizzaInserzioneComponent implements OnInit {
   caricaControproposta() {
     this.propostaService.getProposteUtente().subscribe({
       next: (res) => {
+        const propostaUtente = res.find(
+          (p: any) =>
+            p.idInserzione === this.inserzione.id &&
+            p.proponente === 'UTENTE' &&
+            p.stato === 'IN_ATTESA'
+        );
+
         this.contropropostaAgente = res.find(
           (p: any) =>
             p.idInserzione === this.inserzione.id &&
             p.proponente === 'AGENTE' &&
             p.stato === 'CONTROPROPOSTA'
         );
+
+        // Stato centrale
+        this.haTrattativaInCorso = !!propostaUtente || !!this.contropropostaAgente;
       }
     });
   }
+
 
   accettaControproposta() {
     Swal.fire({
@@ -162,6 +173,7 @@ export class VisualizzaInserzioneComponent implements OnInit {
               'success'
             ).then(() => {});
             this.contropropostaAgente.stato = 'ACCETTATA';
+            this.haTrattativaInCorso = false;
           },
           error: (err) => {
             Swal.fire(
@@ -198,6 +210,7 @@ export class VisualizzaInserzioneComponent implements OnInit {
               'info'
             ).then(() => {});
             this.contropropostaAgente.stato = 'RIFIUTATA';
+            this.haTrattativaInCorso = false;
           },
           error: (err) => {
             Swal.fire(
