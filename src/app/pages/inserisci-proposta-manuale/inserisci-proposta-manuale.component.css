@@ -1,0 +1,80 @@
+.container-form {
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 24px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+.container-form h2 {
+  margin-bottom: 24px;
+  font-size: 22px;
+  font-weight: 600;
+  text-align: center;
+}
+
+/* FORM */
+
+.container-form form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.container-form label {
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.container-form input,
+.container-form textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid #d0d0d0;
+  font-size: 14px;
+}
+
+.container-form textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+/* ERROR */
+
+.error {
+  color: #dc3545;
+  font-size: 13px;
+}
+
+/* ACTIONS */
+
+.actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 24px;
+}
+
+.actions button {
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  border: none;
+}
+
+.actions button[type="submit"] {
+  background-color: #007bff;
+  color: #ffffff;
+}
+
+.actions button[type="submit"]:disabled {
+  background-color: #a6c8ff;
+  cursor: not-allowed;
+}
+
+.actions button[type="button"] {
+  background-color: #e0e0e0;
+  color: #333333;
+}

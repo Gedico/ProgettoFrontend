@@ -20,6 +20,14 @@
       💶 Fai un'offerta
     </button>
 
+    @if (isAgente()) {
+      <button
+        class="proposta-btn manuale"
+        (click)="vaiAPropostaManuale()">
+        📝 Inserisci offerta manuale
+      </button>
+    }
+
     @if (haTrattativaInCorso) {
       <p class="hint-trattativa">
         Hai già una trattativa in corso per questa inserzione.

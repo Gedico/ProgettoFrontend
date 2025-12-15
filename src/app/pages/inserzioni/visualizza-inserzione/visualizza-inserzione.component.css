@@ -314,3 +314,12 @@ iframe {
   background: #c0392b;
   transform: translateY(-1px);
 }
+
+.proposta-btn.manuale {
+  background-color: #6c757d;
+  margin-left: 10px;
+}
+
+.proposta-btn.manuale:hover {
+  background-color: #5a6268;
+}

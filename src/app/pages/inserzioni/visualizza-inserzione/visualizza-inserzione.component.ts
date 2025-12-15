@@ -228,4 +228,16 @@ export class VisualizzaInserzioneComponent implements OnInit {
     this.router.navigate(['/inserzioni', this.inserzione.id]).then(() => {});
   }
 
+  isAgente(): boolean {
+    const session = this.sessionService.getSnapshot();
+    return session.logged && session.role === 'AGENTE';
+  }
+
+  vaiAPropostaManuale(): void {
+    this.router.navigate(
+      ['/inserzione', this.inserzione.id, 'proposta-manuale']
+    ).then(() => {});
+  }
+
+
 }
