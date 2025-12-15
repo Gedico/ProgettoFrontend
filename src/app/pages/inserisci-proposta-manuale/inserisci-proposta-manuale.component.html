@@ -2,10 +2,11 @@
 
   <h2>Inserisci offerta manuale</h2>
 
-  <form (ngSubmit)="submit()">
+  <form [formGroup]="form" (ngSubmit)="submit()">
 
-    <label>Importo offerta (€)</label>
-    <input type="number" formControlName="prezzoProposta" />
+
+  <label>Importo offerta (€)</label>
+    <input type="text"  class = "input-field" formControlName="prezzoProposta" appCurrencyInput />
 
     @if (form.get('prezzoProposta')?.touched && form.get('prezzoProposta')?.invalid) {
       <div class="error">

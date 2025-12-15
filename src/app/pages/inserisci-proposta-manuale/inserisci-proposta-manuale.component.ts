@@ -6,11 +6,12 @@ import Swal from 'sweetalert2';
 
 import { PropostaService } from '../../services/proposta.service';
 import { PropostaManualeRequest } from '../../models/dto/proposta/proposta-manuale-request.dto';
+import {CurrencyInputDirective} from '../../shared/directives/currency-input.directive';
 
 @Component({
   selector: 'app-inserisci-proposta-manuale',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FormsModule],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule, CurrencyInputDirective],
   templateUrl: 'inserisci-proposta-manuale.component.html',
   styleUrls: ['inserisci-proposta-manuale.component.css']
 })
@@ -27,14 +28,14 @@ export class InserisciPropostaManualeComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // 1️⃣ Leggo l'id inserzione dalla URL
+    //  Leggo l'id inserzione dalla URL
     this.idInserzione = Number(this.route.snapshot.paramMap.get('id'));
 
-    // 2️⃣ Creo il form reactive
+    //  Creo il form reactive
     this.form = this.fb.group({
       prezzoProposta: [null, [Validators.required, Validators.min(1)]],
-      nomeCliente: ['', Validators.required],
-      contattoCliente: ['', Validators.required],
+      nomeCliente: ['', Validators.required, Validators.minLength(2)],
+      contattoCliente: ['', Validators.required,Validators.minLength(5)],
       note: [''],
       dataOfferta: [
         new Date().toISOString().substring(0, 10),
