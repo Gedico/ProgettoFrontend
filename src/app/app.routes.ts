@@ -101,6 +101,14 @@ export const routes: Routes = [
     .then(m => m.VisualizzaInserzioneComponent)
   },
 
+  {
+    path: 'inserzione/:id/proposta-manuale',
+    loadComponent: () =>
+      import('./pages/inserisci-proposta-manuale/inserisci-proposta-manuale.component')
+        .then(m => m.InserisciPropostaManualeComponent),
+    canActivate: [AuthGuard, () => RoleGuard(['AGENTE'])]
+  },
+
 
   {
     path: 'profilo',

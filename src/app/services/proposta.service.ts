@@ -5,6 +5,8 @@ import { Observable } from 'rxjs';
 import { PropostaRequest } from '../models/dto/proposta/proposta-request.dto';
 import { PropostaResponse } from '../models/dto/proposta/proposta-response.dto';
 import { StatoProposta } from '../models/dto/enums/stato-proposta';
+import {ContropropostaRequest} from '../models/dto/proposta/controproposta-request-dto';
+import {PropostaManualeRequest} from '../models/dto/proposta/proposta-manuale-request.dto';
 
 @Injectable({
   providedIn: 'root'
@@ -58,6 +60,28 @@ export class PropostaService {
   // 🔹 7) Recupera registro proposte (ACCETTATE + RIFIUTATE)
   getRegistroProposte(): Observable<PropostaResponse[]> {
     return this.http.get<PropostaResponse[]>(`${this.baseUrl}/registro`);
+  }
+
+
+  // 🔹 8) Controproposta da parte dell'agente
+  creaControproposta(
+    idProposta: number,
+    request: ContropropostaRequest
+  ): Observable<PropostaResponse> {
+    return this.http.post<PropostaResponse>(
+      `${this.baseUrl}/${idProposta}/controproposta`,
+      request
+    );
+  }
+
+  creaPropostaManuale(
+    idInserzione: number,
+    request: PropostaManualeRequest
+  ): Observable<PropostaResponse> {
+    return this.http.post<PropostaResponse>(
+      `${this.baseUrl}/inserzioni/${idInserzione}/manuale`,
+      request
+    );
   }
 
 

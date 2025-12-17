@@ -1,19 +1,20 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { InserzioneResponse } from '../../../models/inserzioneresponse';
-import { InserzioneService } from '../../../services/inserzioni.service';
-import { CurrencyPipe, CommonModule } from '@angular/common';
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-
-import { SessionService } from '../../../services/session.service';
-import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { PropostaService } from '../../../services/proposta.service';
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {InserzioneResponse} from '../../../models/inserzioneresponse';
+import {InserzioneService} from '../../../services/inserzioni.service';
+import {CommonModule, CurrencyPipe} from '@angular/common';
+import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
+import {SessionService} from '../../../services/session.service';
+import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
+import {PropostaService} from '../../../services/proposta.service';
 import Swal from 'sweetalert2';
+import {CurrencyInputDirective} from '../../../shared/directives/currency-input.directive';
+import {StatoProposta} from '../../../models/dto/enums/stato-proposta';
 
 @Component({
   selector: 'app-visualizza-inserzione',
   standalone: true,
-  imports: [CurrencyPipe, CommonModule, ReactiveFormsModule],
+  imports: [CurrencyPipe, CommonModule, ReactiveFormsModule, CurrencyInputDirective],
   templateUrl: './visualizza-inserzione.component.html',
   styleUrls: ['./visualizza-inserzione.component.css']
 })
@@ -27,7 +28,10 @@ export class VisualizzaInserzioneComponent implements OnInit {
 
   mostraFormOfferta = false;
   offertaForm!: FormGroup;
+
   prezzoMinimo!: number;
+  haTrattativaInCorso = false;
+  contropropostaAgente: any = null;
 
   constructor(
     private route: ActivatedRoute,
@@ -43,7 +47,7 @@ export class VisualizzaInserzioneComponent implements OnInit {
     this.id = Number(this.route.snapshot.paramMap.get('id'));
 
     this.offertaForm = this.fb.group({
-      prezzoProposta: ['', Validators.required],
+      prezzoProposta: [null, Validators.required],
       note: ['']
     });
 
@@ -58,6 +62,7 @@ export class VisualizzaInserzioneComponent implements OnInit {
       next: (data) => {
         this.inserzione = data;
 
+        // Prezzo minimo = -15%
         this.prezzoMinimo = data.dati.prezzo * 0.85;
 
         this.offertaForm.get('prezzoProposta')?.setValidators([
@@ -69,6 +74,9 @@ export class VisualizzaInserzioneComponent implements OnInit {
         this.mappaUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
           `https://maps.google.com/maps?q=${data.posizione.latitudine},${data.posizione.longitudine}&z=15&output=embed`
         );
+
+        // Carica eventuale controproposta agente
+        this.caricaControproposta();
 
         this.caricamento = false;
       },
@@ -99,7 +107,6 @@ export class VisualizzaInserzioneComponent implements OnInit {
           this.router.navigate(['/login']).then(() => {});
         }
       });
-
       return;
     }
 
@@ -109,29 +116,17 @@ export class VisualizzaInserzioneComponent implements OnInit {
   inviaProposta() {
     if (this.offertaForm.invalid) return;
 
-    let prezzoInput = this.offertaForm.value.prezzoProposta;
-    const prezzoNorm = this.normalizzaPrezzo(prezzoInput);
-
-    if (isNaN(prezzoNorm)) {
-      Swal.fire("Errore", "Formato prezzo non valido.", "error").then(() => {});
-      return;
-    }
-
-    if (prezzoNorm < this.prezzoMinimo) {
-      Swal.fire("Errore", "La tua offerta è inferiore al minimo accettato.", "error").then(() => {});
-      return;
-    }
-
     const payload = {
       idInserzione: this.inserzione.id,
-      prezzoProposta: prezzoNorm,
+      prezzoProposta: this.offertaForm.value.prezzoProposta,
       note: this.offertaForm.value.note
     };
 
     this.propostaService.inviaProposta(payload).subscribe({
       next: () => {
         Swal.fire("Successo", "Proposta inviata!", "success").then(() => {});
-        this.toggleFormOfferta();
+        this.mostraFormOfferta = false;
+        this.offertaForm.reset();
       },
       error: (err) => {
         Swal.fire("Errore", err?.error?.message || "Errore invio proposta.", "error").then(() => {});
@@ -139,34 +134,117 @@ export class VisualizzaInserzioneComponent implements OnInit {
     });
   }
 
-  private normalizzaPrezzo(input: string | number): number {
-    if (typeof input === 'number') return input;
+  caricaControproposta() {
+    this.propostaService.getProposteUtente().subscribe({
+      next: (res) => {
+        const propostaUtente = res.find(
+          (p: any) =>
+            p.idInserzione === this.inserzione.id &&
+            p.proponente === 'UTENTE' &&
+            p.stato === 'IN_ATTESA'
+        );
 
-    if (!input) return NaN;
+        this.contropropostaAgente = res.find(
+          (p: any) =>
+            p.idInserzione === this.inserzione.id &&
+            p.proponente === 'AGENTE' &&
+            p.stato === 'CONTROPROPOSTA'
+        );
 
-    // Rimuove spazi
-    input = input.replace(/\s+/g, '').trim();
-
-    // Caso: contiene sia punto che virgola
-    if (input.includes('.') && input.includes(',')) {
-      const lastComma = input.lastIndexOf(',');
-      const lastPoint = input.lastIndexOf('.');
-
-      // Se la virgola è più "a destra" → virgola = decimali
-      if (lastComma > lastPoint) {
-        input = input.replace(/\./g, '');   // toglie i separatori delle migliaia
-        input = input.replace(',', '.');    // converte decimali
-      } else {
-        // Punto come decimale
-        input = input.replace(/,/g, '');    // toglie le migliaia
+        // Stato centrale
+        this.haTrattativaInCorso = !!propostaUtente || !!this.contropropostaAgente;
       }
-    }
-    // Caso: solo virgole → interpreta come decimali
-    else if (input.includes(',')) {
-      input = input.replace(/,/g, '.');
-    }
-
-    return Number(input);
+    });
   }
+
+
+  accettaControproposta() {
+    Swal.fire({
+      title: 'Confermi l’accettazione?',
+      text: 'Accettando la controproposta l’inserzione verrà considerata venduta.',
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonText: 'Sì, accetta',
+      cancelButtonText: 'Annulla',
+      confirmButtonColor: '#28a745'
+    }).then(result => {
+      if (result.isConfirmed) {
+        this.propostaService.aggiornaStato(
+          this.contropropostaAgente.idProposta,
+          StatoProposta.ACCETTATA
+        ).subscribe({
+          next: () => {
+            Swal.fire(
+              'Accettata',
+              'Hai accettato la controproposta.',
+              'success'
+            ).then(() => {});
+            this.contropropostaAgente.stato = 'ACCETTATA';
+            this.haTrattativaInCorso = false;
+          },
+          error: (err) => {
+            Swal.fire(
+              'Errore',
+              err?.error?.message || 'Errore.',
+              'error'
+            ).then(() => {});
+          }
+        });
+      }
+    });
+  }
+
+
+  rifiutaControproposta() {
+    Swal.fire({
+      title: 'Rifiutare la controproposta?',
+      text: 'Questa azione non potrà essere annullata.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Sì, rifiuta',
+      cancelButtonText: 'Annulla',
+      confirmButtonColor: '#dc3545'
+    }).then(result => {
+      if (result.isConfirmed) {
+        this.propostaService.aggiornaStato(
+          this.contropropostaAgente.idProposta,
+          StatoProposta.RIFIUTATA
+        ).subscribe({
+          next: () => {
+            Swal.fire(
+              'Rifiutata',
+              'Hai rifiutato la controproposta.',
+              'info'
+            ).then(() => {});
+            this.contropropostaAgente.stato = 'RIFIUTATA';
+            this.haTrattativaInCorso = false;
+          },
+          error: (err) => {
+            Swal.fire(
+              'Errore',
+              err?.error?.message || 'Errore.',
+              'error'
+            ).then(() => {});
+          }
+        });
+      }
+    });
+  }
+
+  vaiAInserzione() {
+    this.router.navigate(['/inserzioni', this.inserzione.id]).then(() => {});
+  }
+
+  isAgente(): boolean {
+    const session = this.sessionService.getSnapshot();
+    return session.logged && session.role === 'AGENTE';
+  }
+
+  vaiAPropostaManuale(): void {
+    this.router.navigate(
+      ['/inserzione', this.inserzione.id, 'proposta-manuale']
+    ).then(() => {});
+  }
+
 
 }

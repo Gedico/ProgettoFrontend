@@ -1,30 +1,105 @@
-<h2 class="titolo">Le mie proposte inviate</h2>
+<h2 class="titolo">Le mie proposte</h2>
 
-<div *ngIf="caricamento" class="caricamento">
-  Caricamento in corso...
-</div>
-
-<div *ngIf="!caricamento && proposte.length === 0" class="vuoto">
-  <p>Non hai ancora inviato alcuna proposta.</p>
-</div>
-
-<div class="card" *ngFor="let p of proposte">
-
-  <div class="card-header">
-    <h3>{{ p.titoloInserzione }}</h3>
-
-    <span class="badge" [style.background]="coloreStato(p.stato)"> // TODO modificare in attesa senza trattino con ngif
-      {{ p.stato }}
-    </span>
+<!-- ===================== CARICAMENTO ===================== -->
+@if (caricamento) {
+  <div class="caricamento">
+    Caricamento in corso...
   </div>
+}
 
-  <div class="info">
-    <p><strong>Importo proposto:</strong> {{ p.importo }} €</p>
-    <p><strong>Data:</strong> {{ p.dataCreazione | date:'dd/MM/yyyy HH:mm' }}</p>
-
-    <button class="btn-dettagli" [routerLink]="['/proposta', p.idProposta]">
-      Vedi dettagli
-    </button>
+<!-- ===================== NESSUNA PROPOSTA ===================== -->
+@if (!caricamento && proposte.length === 0) {
+  <div class="vuoto">
+    <p>Non hai ancora inviato alcuna proposta.</p>
   </div>
+}
 
-</div>
+<!-- ===================== CONTROPROPOSTE AGENTE ===================== -->
+@if (!caricamento && controproposteAttive.length > 0) {
+  <h3 class="sottotitolo">Controproposte da gestire</h3>
+
+  @for (p of controproposteAttive; track p.idProposta) {
+    <div class="card controproposta">
+
+      <div class="card-header">
+        <h4>{{ p.titoloInserzione }}</h4>
+        <span class="badge badge-controproposta">
+          {{ labelStato(p.stato) }}
+        </span>
+      </div>
+
+      <div class="info">
+        <p>
+          <strong>Importo proposto dall’agente:</strong>
+          {{ p.importo | currency:'EUR':'symbol':'1.0-0' }}
+        </p>
+
+        <p>
+          <strong>Data:</strong>
+          {{ p.dataCreazione | date:'dd/MM/yyyy HH:mm' }}
+        </p>
+
+        <div class="azioni">
+          <button
+            class="btn-accetta"
+            (click)="accetta(p)">
+            ✔ Accetta
+          </button>
+
+          <button
+            class="btn-rifiuta"
+            (click)="rifiuta(p)">
+            ✖ Rifiuta
+          </button>
+
+          <button
+            class="btn-dettagli"
+            [routerLink]="['/inserzione', p.idInserzione]">
+            👁 Vedi inserzione
+          </button>
+
+        </div>
+      </div>
+
+    </div>
+  }
+}
+
+<!-- ===================== PROPOSTE INVIATE DALL’UTENTE ===================== -->
+@if (!caricamento && proposteInviate.length > 0) {
+  <h3 class="sottotitolo">Proposte inviate</h3>
+
+  @for (p of proposteInviate; track p.idProposta) {
+    <div class="card">
+
+      <div class="card-header">
+        <h4>{{ p.titoloInserzione }}</h4>
+
+        <span
+          class="badge"
+          [style.background]="coloreStato(p.stato)">
+          {{ labelStato(p.stato) }}
+        </span>
+      </div>
+
+      <div class="info">
+        <p>
+          <strong>Tua offerta:</strong>
+          {{ p.importo | currency:'EUR':'symbol':'1.0-0' }}
+        </p>
+
+        <p>
+          <strong>Data invio:</strong>
+          {{ p.dataCreazione | date:'dd/MM/yyyy HH:mm' }}
+        </p>
+
+        <button
+          class="btn-dettagli"
+          [routerLink]="['/inserzione', p.idInserzione]">
+          👁 Vedi inserzione
+        </button>
+      </div>
+
+    </div>
+  }
+}

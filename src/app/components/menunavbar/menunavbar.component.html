@@ -1,21 +1,21 @@
-<!-- MENU UTENTE -->
-<ng-container *ngIf="role === 'UTENTE'">
+<!-- ===================== MENU UTENTE ===================== -->
+@if (role === 'UTENTE') {
   <a routerLink="/profilo" (click)="close.emit()">Profilo</a>
-  <a routerLink="/proposte-inviate" (click)="close.emit()">Proposte</a>
+  <a routerLink="/proposte-inviate" (click)="close.emit()">Le mie proposte</a>
   <a (click)="logout(); close.emit()">Logout</a>
-</ng-container>
+}
 
-<!-- MENU AGENTE -->
-<ng-container *ngIf="role === 'AGENTE'">
+<!-- ===================== MENU AGENTE ===================== -->
+@if (role === 'AGENTE') {
   <a routerLink="/proposte-ricevute" (click)="close.emit()">Proposte ricevute</a>
-  <a routerLink="/registro-proposte" (click)="close.emit()">Registro proposte</a>
+  <a routerLink="/registro-proposte" (click)="close.emit()">Storico proposte</a>
   <a routerLink="/agente/inserzioni" (click)="close.emit()">Inserzioni</a>
   <a (click)="logout(); close.emit()">Logout</a>
-</ng-container>
+}
 
-<!-- MENU ADMIN -->
-<ng-container *ngIf="role === 'ADMIN'">
+<!-- ===================== MENU ADMIN ===================== -->
+@if (role === 'ADMIN') {
   <a routerLink="/admin/addagente" (click)="close.emit()">Aggiungi agente</a>
   <a routerLink="/admin/statistiche" (click)="close.emit()">Statistiche</a>
   <a (click)="logout(); close.emit()">Logout</a>
-</ng-container>
+}

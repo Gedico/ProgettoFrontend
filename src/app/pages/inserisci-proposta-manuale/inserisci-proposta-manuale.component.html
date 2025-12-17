@@ -1,0 +1,50 @@
+<div class="container-form">
+
+  <h2>Inserisci offerta manuale</h2>
+  <p class="subtitle">
+    Inserisci un’offerta ricevuta di persona o fuori dall’applicazione.
+  </p>
+  <form [formGroup]="form" (ngSubmit)="submit()">
+
+
+    <label>Importo offerta (€)</label>
+    <input type="text"  class = "input-field highlight" formControlName="prezzoProposta" appCurrencyInput />
+
+    @if (form.get('prezzoProposta')?.touched && form.get('prezzoProposta')?.invalid) {
+      <div class="error">
+        Inserisci un importo valido
+      </div>
+    }
+
+    <label>Nome cliente</label>
+    <input type="text" class="input-field" formControlName="nomeCliente" placeholder="Nome e cognome"/>
+
+    <label>Contatto cliente</label>
+    <input type="text" class="input-field" formControlName="contattoCliente" placeholder="telefono o email" />
+
+    <label>Note (opzionale)</label>
+    <textarea formControlName="note"></textarea>
+
+    <label>Data offerta</label>
+    <input type="date" class="input-field" formControlName="dataOfferta" />
+
+
+    <div class="actions">
+      <button
+        type="submit"
+        class="submit-btn"
+        [disabled]="form.invalid">
+        💾 Salva offerta
+      </button>
+
+      <button
+        type="button"
+        class="close-btn"
+        (click)="annulla()">
+        Annulla
+      </button>
+    </div>
+
+
+  </form>
+</div>
