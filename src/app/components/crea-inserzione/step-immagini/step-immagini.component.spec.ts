@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { NuovaInserzioneComponent } from './nuova-inserzione.component';
+import { StepImmaginiComponent } from './step-immagini.component';
 
-describe('NuovaInserzioneComponent', () => {
-  let component: NuovaInserzioneComponent;
-  let fixture: ComponentFixture<NuovaInserzioneComponent>;
+describe('StepImmaginiComponent', () => {
+  let component: StepImmaginiComponent;
+  let fixture: ComponentFixture<StepImmaginiComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [NuovaInserzioneComponent]
+      imports: [StepImmaginiComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(NuovaInserzioneComponent);
+    fixture = TestBed.createComponent(StepImmaginiComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

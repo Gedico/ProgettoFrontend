@@ -1,0 +1,90 @@
+<!-- STEP 3: DATI INSERZIONE -->
+<div [formGroup]="datiInserzioneForm">
+
+  <h2>Dati inserzione</h2>
+
+  <!-- TITOLO -->
+  <div class="form-group">
+    <label for="titolo">Titolo</label>
+    <input id="titolo" type="text" formControlName="titolo" />
+  </div>
+
+  <!-- DESCRIZIONE -->
+  <div class="form-group">
+    <label for="descrizione">Descrizione</label>
+    <textarea id="descrizione" formControlName="descrizione"></textarea>
+  </div>
+
+  <!-- PREZZO -->
+  <div class="form-group">
+    <label for="prezzo">Prezzo (€)</label>
+    <input
+      id="prezzo"
+      type="text"
+      inputmode="numeric"
+      formControlName="prezzo"
+      (input)="prezzoInput.emit($event)"
+      (blur)="prezzoBlur.emit()"
+      placeholder="Es. 100.000"
+      autocomplete="off"
+    />
+  </div>
+
+
+  <!-- DIMENSIONI -->
+  <div class="form-group">
+    <label for="dimensioni">Superficie (m²)</label>
+    <input id="dimensioni" type="number" formControlName="dimensioni" />
+  </div>
+
+  <!-- NUMERO STANZE -->
+  <div class="form-group">
+    <label for="numeroStanze">Numero stanze</label>
+    <input id="numeroStanze" type="number" formControlName="numeroStanze" />
+  </div>
+
+  <!-- PIANO -->
+  <div class="form-group">
+    <label for="piano">Piano</label>
+    <input id="piano" type="number" formControlName="piano" />
+  </div>
+
+  <!-- ASCENSORE -->
+  <div class="form-group">
+    <label>
+      <input type="checkbox" formControlName="ascensore" />
+      Ascensore
+    </label>
+  </div>
+
+  <!-- CLASSE ENERGETICA -->
+  <div class="form-group">
+    <label for="classeEnergetica">Classe energetica</label>
+    <select id="classeEnergetica" formControlName="classeEnergetica">
+      <option value="">Seleziona</option>
+      <option *ngFor="let c of ['A','B','C','D','E','F','G']" [value]="c">
+        {{ c }}
+      </option>
+    </select>
+  </div>
+
+  <!-- CATEGORIA -->
+  <div class="form-group">
+    <label for="categoria">Categoria</label>
+    <select id="categoria" formControlName="categoria">
+      <option value="">Seleziona</option>
+      <option value="VENDITA">Vendita</option>
+      <option value="AFFITTO">Affitto</option>
+    </select>
+  </div>
+
+  <!-- NAVIGAZIONE -->
+  <div class="actions">
+    <button type="button" (click)="indietro.emit()">Indietro</button>
+    <button type="button"
+            (click)="avanti.emit()"
+            [disabled]="!datiInserzioneForm.valid">
+      Avanti
+    </button>
+  </div>
+</div>

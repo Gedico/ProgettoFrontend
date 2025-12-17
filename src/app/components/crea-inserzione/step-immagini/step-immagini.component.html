@@ -1,0 +1,30 @@
+<!-- STEP 4: IMMAGINI + CONFERMA -->
+<div>
+
+  <h2>Carica immagini</h2>
+
+  <input
+    type="file"
+    accept="image/*"
+    multiple
+    (change)="fileSelezionati.emit($event)"
+  />
+
+  <div class="preview-container" *ngIf="anteprime.length > 0">
+    <div class="preview" *ngFor="let img of anteprime; let i = index">
+      <img [src]="img" />
+      <button type="button" (click)="rimuovi.emit(i)">✕</button>
+    </div>
+  </div>
+
+  <div class="actions">
+    <button type="button" (click)="indietro.emit()">Indietro</button>
+
+    <button
+      type="button"
+      [disabled]="immaginiCount === 0"
+      (click)="pubblica.emit()">
+      Pubblica inserzione
+    </button>
+  </div>
+</div>

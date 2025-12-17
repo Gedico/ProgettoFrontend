@@ -1,0 +1,58 @@
+<!-- PROGRESS BAR FISSA -->
+<div class="progress-wrapper">
+  <app-progress-bar
+    [stepCorrente]="stepCorrente"
+    [totaleStep]="totaleStep">
+  </app-progress-bar>
+</div>
+
+<!-- CONTENUTO STEP -->
+<div class="step-content">
+  <!-- qui cambiano gli step -->
+  <app-step-posizione
+    *ngIf="stepCorrente === 1"
+    [posizioneForm]="posizioneForm"
+    [comuniFiltrati]="comuniFiltrati"
+    (comuneChange)="onComuneInput($event)"
+    (selezionaComune)="onComuneSelezionato($event)"
+    (posizioneSelezionata)="onPosizioneSelezionata($event)"
+    (nextStep)="nextStep()">
+  </app-step-posizione>
+
+
+
+
+  <!-- STEP 2: MAPPA (COMPONENTE SEPARATO) -->
+<app-step-mappa
+  *ngIf="stepCorrente === 2"
+  [posizioneForm]="posizioneForm"
+  (avanti)="nextStep()"
+  (indietro)="previousStep()">
+</app-step-mappa>
+
+
+<app-step-dati-inserzione
+  *ngIf="stepCorrente === 3"
+  [datiInserzioneForm]="datiInserzioneForm"
+  (avanti)="nextStep()"
+  (indietro)="previousStep()"
+  (prezzoInput)="onPrezzoInput($event)"
+  (prezzoBlur)="formatPrezzo()">
+</app-step-dati-inserzione>
+
+
+<app-step-immagini
+  *ngIf="stepCorrente === 4"
+  [anteprime]="anteprime"
+  [immaginiCount]="immagini.length"
+  (fileSelezionati)="onFileSelected($event)"
+  (rimuovi)="rimuoviImmagine($event)"
+  (indietro)="previousStep()"
+  (pubblica)="submit()">
+</app-step-immagini>
+
+</div>
+
+
+
+

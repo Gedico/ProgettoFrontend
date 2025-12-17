@@ -124,13 +124,14 @@ export const routes: Routes = [
 
 
   {
-    path: 'crea-inserzione',
-    loadComponent: () => import('./pages/inserzioni/nuova-inserzione/nuova-inserzione.component')
-      .then(m => m.NuovaInserzioneComponent)
+    path: 'agente/inserzioni/nuova',
+    loadComponent: () => import('./components/crea-inserzione/crea-inserzione.component')
+      .then(m => m.CreaInserzioneComponent)
   },
 
 
-/*-------------------------------REDIRECT GENERICO---------------------------------------------------------------------------- */
+
+  /*-------------------------------REDIRECT GENERICO---------------------------------------------------------------------------- */
   {
   path: '**',
   redirectTo: '',

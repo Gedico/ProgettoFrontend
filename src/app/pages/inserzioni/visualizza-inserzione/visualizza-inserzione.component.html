@@ -68,10 +68,31 @@
     <p>{{ inserzione.dati.descrizione }}</p>
   </div>
 
+  <!-- INDICATORI DI PROSSIMITÀ -->
+  <div class="indicatori" *ngIf="inserzione?.indicatore">
+    <h3>Servizi nelle vicinanze</h3>
+
+    <p>
+      🏫 Scuole:
+      <strong>{{ inserzione.indicatore.scuoleVicine ? 'Sì' : 'No' }}</strong>
+    </p>
+
+    <p>
+      🌳 Parchi:
+      <strong>{{ inserzione.indicatore.parchiVicini ? 'Sì' : 'No' }}</strong>
+    </p>
+
+    <p>
+      🚉 Mezzi pubblici:
+      <strong>{{ inserzione.indicatore.mezziPubbliciVicini ? 'Sì' : 'No' }}</strong>
+    </p>
+  </div>
+
+
   <!-- POSIZIONE -->
   <div class="posizione" *ngIf="inserzione?.posizione">
     <h3>Posizione</h3>
-    <p>{{ inserzione.posizione.descrizione }}</p>
+    <p>{{ inserzione.posizione.indirizzo }}</p>
 
     <iframe width="100%" height="300" [src]="mappaUrl"></iframe>
   </div>

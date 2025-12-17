@@ -1,0 +1,86 @@
+/* Contenitore step centrato */
+:host {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+/* Card principale */
+h2,
+.map-container,
+.hint,
+.actions {
+  max-width: 520px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Titolo */
+h2 {
+  margin-bottom: 12px;
+  text-align: center;
+  font-size: 22px;
+  font-weight: 600;
+}
+
+/* MAPPA COMPATTA */
+.map-container {
+  width: 100%;
+  height: 280px; /* ⬅️ più bassa per evitare scroll */
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid #ddd;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+}
+
+/* Hint */
+.hint {
+  margin: 10px auto 18px;
+  text-align: center;
+  font-size: 13px;
+  color: #555;
+}
+
+/* Azioni */
+.actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+/* Bottoni */
+.actions button {
+  flex: 1;
+  padding: 10px 0;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s, opacity 0.2s;
+}
+
+/* Indietro */
+.actions button:first-child {
+  background-color: #e0e0e0;
+  color: #333;
+}
+
+.actions button:first-child:hover {
+  background-color: #d5d5d5;
+}
+
+/* Avanti */
+.actions button:last-child {
+  background-color: #3f51b5;
+  color: #fff;
+}
+
+.actions button:last-child:hover:not(:disabled) {
+  background-color: #334296;
+}
+
+.actions button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
