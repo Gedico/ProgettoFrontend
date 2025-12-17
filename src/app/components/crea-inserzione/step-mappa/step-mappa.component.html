@@ -1,0 +1,25 @@
+<h2>Verifica posizione sulla mappa</h2>
+
+<div id="map" class="map-container"></div>
+
+<p class="hint">
+  Sposta il puntino se necessario.
+</p>
+
+<div class="actions">
+  <button type="button" (click)="indietro.emit()">
+    Indietro
+  </button>
+
+  <button
+    type="button"
+    (click)="avanti.emit()"
+    [disabled]="
+      !posizioneForm.get('latitudine')?.value ||
+      !posizioneForm.get('longitudine')?.value
+    ">
+    Avanti
+  </button>
+</div>
+
+

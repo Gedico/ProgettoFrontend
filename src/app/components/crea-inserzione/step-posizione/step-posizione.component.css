@@ -1,0 +1,144 @@
+
+/* Contenitore principale dello step */
+:host {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+/* Card centrale */
+[formGroup] {
+  width: 100%;
+  max-width: 520px;
+  background: #ffffff;
+  padding: 24px 28px;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+}
+
+/* Titolo */
+h2 {
+  margin-bottom: 20px;
+  text-align: center;
+  font-size: 22px;
+  font-weight: 600;
+}
+
+/* Gruppo input */
+.form-group {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 18px;
+}
+
+/* Label */
+.form-group label {
+  margin-bottom: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+}
+
+/* Input */
+.form-group input {
+  padding: 10px 12px;
+  font-size: 14px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-group input:focus {
+  border-color: #3f51b5;
+  box-shadow: 0 0 0 2px rgba(63, 81, 181, 0.15);
+}
+
+/* Lista autocomplete comuni */
+.autocomplete-list {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  margin-top: 4px;
+  max-height: 180px;
+  overflow-y: auto;
+  z-index: 10;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+}
+
+.autocomplete-list li {
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.autocomplete-list li:hover {
+  background-color: #f2f4ff;
+}
+
+/* Messaggi di errore */
+.error {
+  margin-top: 4px;
+  font-size: 12px;
+  color: #d32f2f;
+}
+
+/* Azioni (Avanti) */
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 24px;
+}
+
+.actions button {
+  width: 100%;              /* ⬅️ stessa larghezza dei form */
+  padding: 12px 0;
+  font-size: 15px;
+  font-weight: 600;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  background-color: #3f51b5;
+  color: #fff;
+  transition: background-color 0.2s, transform 0.1s, box-shadow 0.2s;
+}
+
+.actions button:hover:not(:disabled) {
+  background-color: #334296;
+}
+
+.actions button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Titolo con accento decorativo */
+h2 {
+  position: relative;
+  margin-bottom: 28px;
+  text-align: center;
+  font-size: 22px;
+  font-weight: 600;
+}
+
+h2::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: -10px;
+  transform: translateX(-50%);
+  width: 48px;
+  height: 3px;
+  border-radius: 2px;
+  background: linear-gradient(
+    90deg,
+    #3f51b5,
+    #7986cb
+  );
+}
+

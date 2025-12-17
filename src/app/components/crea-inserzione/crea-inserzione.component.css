@@ -1,0 +1,16 @@
+/* ROADMAP sotto la navbar */
+.progress-wrapper {
+  position: fixed;
+  top: 64px;            /* 👈 sotto la navbar */
+  left: 0;
+  width: 100%;
+  background: #ffffff;
+  z-index: 1000;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+/* CONTENUTO STEP */
+.step-content {
+  margin-top: 128px;    /* 64 navbar + ~64 roadmap */
+  padding: 24px;
+}

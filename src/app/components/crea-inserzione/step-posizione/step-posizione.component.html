@@ -1,0 +1,75 @@
+  <!-- STEP 1: POSIZIONE (COMUNE + INDIRIZZO) -->
+  <div [formGroup]="posizioneForm">
+
+    <h2>Posizione</h2>
+
+    <!-- COMUNE (AUTOCOMPLETE, LISTA CHIUSA) -->
+    <div class="form-group">
+      <label for="comune">Comune</label>
+
+      <input
+        id="comune"
+        type="text"
+        formControlName="comune"
+        placeholder="Inserisci almeno 3 lettere"
+        autocomplete="off"
+      />
+
+
+      <ul class="autocomplete-list" *ngIf="comuniFiltrati.length > 0">
+        <li
+          *ngFor="let comune of comuniFiltrati"
+          (click)="selezionaComune.emit(comune)">
+          {{ comune }}
+        </li>
+      </ul>
+
+
+      <datalist id="lista-comuni">
+        <option *ngFor="let nome of nomiComuni" [value]="nome"></option>
+      </datalist>
+
+      <small class="error"
+             *ngIf="
+        posizioneForm.get('comune')?.touched &&
+        posizioneForm.get('comune')?.errors?.['required']
+      ">
+        Il comune è obbligatorio
+      </small>
+    </div>
+
+    <!-- INDIRIZZO CON AUTOCOMPLETE -->
+    <div class="form-group">
+      <label for="indirizzo">Indirizzo</label>
+
+      <input
+        #indirizzoInput
+        id="indirizzo"
+        type="text"
+        formControlName="indirizzo"
+        placeholder="Es. Viale Lenin 10"
+        autocomplete="off"
+      />
+
+      
+
+      <small class="error"
+             *ngIf="
+        posizioneForm.get('indirizzo')?.touched &&
+        posizioneForm.get('indirizzo')?.invalid
+      ">
+        L’indirizzo è obbligatorio
+      </small>
+    </div>
+
+
+    <!-- NAVIGAZIONE -->
+    <div class="actions">
+      <button
+        type="button"
+        (click)="nextStep.emit()"
+        [disabled]="!posizioneForm.valid">
+        Avanti
+      </button>
+    </div>
+  </div>

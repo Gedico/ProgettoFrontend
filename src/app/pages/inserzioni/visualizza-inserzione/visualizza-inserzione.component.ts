@@ -51,6 +51,13 @@ export class VisualizzaInserzioneComponent implements OnInit {
       note: ['']
     });
 
+    this.inserzioneService.getInserzioneById(this.id).subscribe(res => {
+      console.log('INSERZIONE COMPLETA', res);
+      console.log('INDICATORE', res.indicatore);
+      this.inserzione = res;
+    });
+
+
     this.inserzioneService.getInserzioneById(this.id).subscribe({
       next: (data) => {
         this.inserzione = data;

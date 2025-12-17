@@ -1,0 +1,16 @@
+<div class="progress-container">
+  <div
+    class="step"
+    *ngFor="let step of [].constructor(totaleStep); let i = index"
+    [class.active]="isCompletato(i + 1)">
+
+    <div class="circle">{{ i + 1 }}</div>
+
+    <div
+      class="line"
+      *ngIf="i < totaleStep - 1"
+      [class.active]="isCompletato(i + 1)">
+    </div>
+  </div>
+</div>
+
