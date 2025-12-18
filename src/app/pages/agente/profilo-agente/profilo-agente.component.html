@@ -1,0 +1,16 @@
+<div class="profilo-container">
+
+  <h1>Profilo agente</h1>
+
+  <div class="profilo-box" [class.loading]="loading">
+
+    <div class="info-riepilogo">
+      <p><strong>Email:</strong> {{ email }}</p>
+      <p><strong>Ruolo:</strong> {{ ruolo }}</p>
+    </div>
+
+    <!-- Sicurezza -->
+    <app-change-password></app-change-password>
+
+  </div>
+</div>

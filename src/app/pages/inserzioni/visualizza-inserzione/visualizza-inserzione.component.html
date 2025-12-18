@@ -9,7 +9,6 @@
 @if (inserzione.dati) {
 <div class="header">
   <h1>{{ inserzione.dati.titolo }}</h1>
-
   <div class="prezzo-dettaglio">
     {{ inserzione.dati.prezzo | currency:'EUR':'symbol':'1.0-0' }}
   </div>
@@ -17,12 +16,14 @@
 }
 
 <!-- BOTTONI -->
+@if (isUtente()) {
 <button
-class="proposta-btn"
-[disabled]="haTrattativaInCorso"
-(click)="toggleFormOfferta()">
-💶 Fai un'offerta
+  class="proposta-btn"
+  [disabled]="haTrattativaInCorso"
+  (click)="toggleFormOfferta()">
+  💶 Fai un'offerta
 </button>
+}
 
 @if (isAgente()) {
 <button
@@ -41,22 +42,33 @@ class="proposta-btn"
 <!-- CONTROPROPOSTA -->
 @if (contropropostaAgente && contropropostaAgente.stato === 'CONTROPROPOSTA') {
 <div class="alert-controproposta">
-  <h3>📩 Controproposta dell’agente</h3>
 
-  <p>
+  <div class="alert-header">
+    <span class="icon">📩</span>
+    <h3>Controproposta dell’agente</h3>
+  </div>
+
+  <p class="alert-text">
     Importo:
     <b>{{ contropropostaAgente.importo | currency:'EUR':'symbol':'1.0-0' }}</b>
   </p>
 
   @if (contropropostaAgente.messaggio) {
-  <p>
+  <p class="alert-note">
     <strong>Nota:</strong><br />
   {{ contropropostaAgente.messaggio }}
   </p>
   }
 
-  <button (click)="accettaControproposta()">✔ Accetta</button>
-  <button (click)="rifiutaControproposta()">✖ Rifiuta</button>
+  <div class="alert-actions">
+    <button class="btn-accetta" (click)="accettaControproposta()">✔ Accetta</button>
+    <button class="btn-rifiuta" (click)="rifiutaControproposta()">✖ Rifiuta</button>
+  </div>
+
+  <p class="alert-reminder">
+    Rispondi alla controproposta per proseguire la trattativa.
+  </p>
+
 </div>
 }
 
@@ -66,6 +78,11 @@ class="proposta-btn"
 
 <div class="modal-card">
   <h2>Invia una proposta</h2>
+
+  <p class="hint">
+    Prezzo minimo accettato:
+    <b>{{ prezzoMinimo | currency:'EUR':'symbol':'1.0-0' }}</b>
+  </p>
 
   <form [formGroup]="offertaForm" (ngSubmit)="inviaProposta()">
 
@@ -77,23 +94,42 @@ class="proposta-btn"
       appCurrencyInput />
 
     @if (prezzoProposta?.touched && prezzoProposta?.invalid) {
-    <div class="text-danger">
-      Minimo accettato:
-      <b>{{ prezzoMinimo | currency:'EUR':'symbol':'1.0-0' }}</b>
-            </div>
+    <div class="validation">
+      @if (prezzoProposta?.errors?.['required']) {
+    L'importo è obbligatorio.
+    }
+    @if (prezzoProposta?.errors?.['min']) {
+    L'importo deve essere almeno
+    {{ prezzoMinimo | currency:'EUR':'symbol':'1.0-0' }}.
+    }
+    </div>
     }
 
     <label>Note (opzionale)</label>
-    <textarea formControlName="note"></textarea>
+    <textarea
+      class="textarea-field"
+      formControlName="note">
+          </textarea>
 
-    <button type="submit">Invia proposta</button>
-    <button type="button" (click)="toggleFormOfferta()">Chiudi</button>
+    <button
+      type="submit"
+      class="submit-btn"
+      [disabled]="offertaForm.invalid">
+      Invia proposta
+    </button>
+
+    <button
+      type="button"
+      class="close-btn"
+      (click)="toggleFormOfferta()">
+      Chiudi
+    </button>
   </form>
 </div>
 }
 
 <!-- FOTO -->
-@if (inserzione.foto?.length) {
+@if (inserzione.foto.length) {
 <div class="galleria">
   <img
     class="foto-principale"
@@ -122,26 +158,15 @@ class="proposta-btn"
 </div>
 }
 
-<!-- INDICATORI -->
-@if (inserzione.indicatore) {
-<div class="indicatori">
-  <h3>Servizi nelle vicinanze</h3>
-  <p>🏫 Scuole: <strong>{{ inserzione.indicatore.scuoleVicine ? 'Sì' : 'No' }}</strong></p>
-  <p>🌳 Parchi: <strong>{{ inserzione.indicatore.parchiVicini ? 'Sì' : 'No' }}</strong></p>
-  <p>🚉 Mezzi pubblici: <strong>{{ inserzione.indicatore.mezziPubbliciVicini ? 'Sì' : 'No' }}</strong></p>
-</div>
-}
-
 <!-- POSIZIONE -->
 @if (inserzione.posizione) {
 <div class="posizione">
   <h3>Posizione</h3>
   <p>{{ inserzione.posizione.indirizzo }}</p>
-  <iframe width="100%" height="300" [src]="mappaUrl"></iframe>
+  <iframe [src]="mappaUrl"></iframe>
 </div>
 }
 
 </div>
 }
-
 

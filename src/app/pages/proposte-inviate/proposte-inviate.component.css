@@ -1,132 +1,35 @@
-/* ===================== TITOLI ===================== */
-
+/* ===============================
+   TITOLI PAGINA
+   =============================== */
 .titolo {
-  font-size: 1.6rem;
-  font-weight: 600;
-  margin-bottom: 20px;
+  font-size: 30px;
+  font-weight: 700;
+  margin-bottom: 32px;
+  color: #0f172a;
 }
 
 .sottotitolo {
-  font-size: 1.2rem;
+  font-size: 21px;
   font-weight: 600;
-  margin: 30px 0 15px;
-  color: #1f2937;
+  margin: 36px 0 16px;
+  color: #111827;
 }
 
-/* ===================== STATI GENERALI ===================== */
+.sottotitolo.success {
+  color: #166534;
+}
 
+.sottotitolo.muted {
+  color: #6b7280;
+}
+
+/* ===============================
+   STATI PAGINA
+   =============================== */
 .caricamento,
 .vuoto {
-  padding: 20px;
+  padding: 40px;
   text-align: center;
   color: #6b7280;
-  font-size: 1rem;
-}
-
-/* ===================== CARD ===================== */
-
-.card {
-  background: #ffffff;
-  border-radius: 10px;
-  padding: 18px;
-  margin-bottom: 20px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
-  border-left: 4px solid #e5e7eb;
-}
-
-/* Evidenzia le controproposte */
-.card.controproposta {
-  border-left-color: #2563eb;
-  background: #f5f9ff;
-}
-
-/* ===================== HEADER CARD ===================== */
-
-.card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 12px;
-}
-
-.card-header h4 {
-  margin: 0;
-  font-size: 1.1rem;
-  font-weight: 600;
-}
-
-/* ===================== BADGE STATO ===================== */
-
-.badge {
-  padding: 6px 12px;
-  border-radius: 12px;
-  color: #ffffff;
-  font-size: 0.8rem;
-  font-weight: 600;
-  text-transform: uppercase;
-}
-
-/* Badge specifico per controproposta */
-.badge-controproposta {
-  background-color: #2563eb;
-}
-
-/* ===================== INFO ===================== */
-
-.info p {
-  margin: 6px 0;
-  font-size: 0.95rem;
-  color: #374151;
-}
-
-/* ===================== AZIONI ===================== */
-
-.azioni {
-  margin-top: 14px;
-  display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
-}
-
-/* Pulsanti generici */
-button {
-  padding: 8px 16px;
-  border-radius: 6px;
-  border: none;
-  font-size: 0.9rem;
-  cursor: pointer;
-  transition: background 0.2s ease, transform 0.1s ease;
-}
-
-button:hover {
-  transform: translateY(-1px);
-}
-
-/* ===================== BOTTONI SPECIFICI ===================== */
-
-.btn-accetta {
-  background-color: #16a34a;
-  color: #ffffff;
-}
-
-.btn-accetta:hover {
-  background-color: #15803d;
-}
-
-.btn-rifiuta {
-  background-color: #dc2626;
-  color: #ffffff;
-}
-
-.btn-rifiuta:hover {
-  background-color: #b91c1c;
-}
-
-.btn-dettagli {
-  background-color: #2563eb;
-  color: #ffffff;
-}
-
-.btn-dettagli:hover {
-  background-color: #1e40af;
+  font-size: 15px;
 }

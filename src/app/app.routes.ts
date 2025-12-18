@@ -3,6 +3,7 @@ import { AuthGuard } from './guards/auth.guard';
 import { LoginGuard } from './guards/login.guard';
 import { RoleGuard } from './guards/role.guard';
 import { ProfiloComponent } from './pages/profilo/profilo.component';
+import { ProfiloAgenteComponent } from './pages/agente/profilo-agente/profilo-agente.component';
 
 
 
@@ -54,7 +55,12 @@ export const routes: Routes = [
     .then(m => m.ResetPasswordComponent)
   },
 
-
+  /*-------------------------------Profilo utente---------------------------------------------------------------------------- */
+  {
+    path: 'profilo',
+    component: ProfiloComponent,
+    canActivate: [AuthGuard, () => RoleGuard(['UTENTE'])]
+  },
 
 
   /*-------------------------------ADMIN DASHBOARD---------------------------------------------------------------------------- */
@@ -93,6 +99,12 @@ export const routes: Routes = [
     canActivate: [AuthGuard, () => RoleGuard(['AGENTE'])]
   },
 
+  {
+    path: 'agente/profilo',
+    component: ProfiloAgenteComponent,
+    canActivate: [AuthGuard, () => RoleGuard(['AGENTE'])]
+  },
+
 
   /*-------------------------------INSERZIONI---------------------------------------------------------------------------- */
   // Inserzione
@@ -111,18 +123,14 @@ export const routes: Routes = [
 
 
   {
-    path: 'profilo',
-    component: ProfiloComponent,
-    canActivate: [AuthGuard]
-  },
-
-  {
     path: 'proposte-inviate',
     loadComponent: () =>
       import('./pages/proposte-inviate/proposte-inviate.component')
         .then(c => c.ProposteInviateComponent),
     canActivate: [AuthGuard]
   },
+
+
 
   {
     path: 'ricerca',

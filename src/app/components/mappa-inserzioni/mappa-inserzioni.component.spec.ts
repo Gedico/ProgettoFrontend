@@ -1,18 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ProgressBarComponent } from '../crea-inserzione/progress-bar/progress-bar.component';
 
-import { MappaInserzioniComponent } from './mappa-inserzioni.component';
-
-describe('MappaInserzioniComponent', () => {
-  let component: MappaInserzioniComponent;
-  let fixture: ComponentFixture<MappaInserzioniComponent>;
+describe('ProgressBarComponent', () => {
+  let component: ProgressBarComponent;
+  let fixture: ComponentFixture<ProgressBarComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MappaInserzioniComponent]
-    })
-    .compileComponents();
+      imports: [ProgressBarComponent]
+    }).compileComponents();
 
-    fixture = TestBed.createComponent(MappaInserzioniComponent);
+    fixture = TestBed.createComponent(ProgressBarComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -16,51 +16,30 @@
     </p>
   }
 
-  <!-- Tabella registro -->
-  @if (!loading && registro.length > 0) {
-    <table mat-table
-           [dataSource]="registro"
-           class="mat-elevation-z2">
+  <!-- ===================== PROPOSTE ACCETTATE ===================== -->
+  @if (!loading && proposteAccettate.length > 0) {
+    <h3 class="sottotitolo success">Proposte accettate</h3>
 
-      <!-- Inserzione -->
-      <ng-container matColumnDef="titolo">
-        <th mat-header-cell *matHeaderCellDef> Inserzione </th>
-        <td mat-cell *matCellDef="let row">
-          {{ row.titoloInserzione }}
-        </td>
-      </ng-container>
+    @for (p of proposteAccettate; track p.idProposta) {
+      <app-proposta-card
+        [proposta]="p"
+        variant="accettata"
+        [showDetails]="true">
+      </app-proposta-card>
+    }
+  }
 
-      <!-- Importo -->
-      <ng-container matColumnDef="importo">
-        <th mat-header-cell *matHeaderCellDef> Offerta </th>
-        <td mat-cell *matCellDef="let row">
-          {{ row.importo | currency:'EUR':'symbol':'1.0-0':'it' }}
-        </td>
-      </ng-container>
+  <!-- ===================== PROPOSTE RIFIUTATE ===================== -->
+  @if (!loading && proposteRifiutate.length > 0) {
+    <h3 class="sottotitolo muted">Proposte rifiutate</h3>
 
-      <!-- Data -->
-      <ng-container matColumnDef="data">
-        <th mat-header-cell *matHeaderCellDef> Data </th>
-        <td mat-cell *matCellDef="let row">
-          {{ row.dataCreazione | date:'dd/MM/yyyy' }}
-        </td>
-      </ng-container>
-
-      <!-- Stato -->
-      <ng-container matColumnDef="stato">
-        <th mat-header-cell *matHeaderCellDef> Esito </th>
-        <td mat-cell *matCellDef="let row">
-          <span class="badge" [ngClass]="row.stato.toLowerCase()">
-            {{ row.stato }}
-          </span>
-        </td>
-      </ng-container>
-
-      <!-- Header & Rows -->
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-
-    </table>
+    @for (p of proposteRifiutate; track p.idProposta) {
+      <app-proposta-card
+        [proposta]="p"
+        variant="rifiutata"
+        [showDetails]="true">
+      </app-proposta-card>
+    }
   }
 
 </div>

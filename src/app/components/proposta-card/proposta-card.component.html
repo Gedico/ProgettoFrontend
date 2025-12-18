@@ -1,0 +1,47 @@
+<div class="card" [ngClass]="variant">
+
+  <div class="card-header">
+    <h4>{{ proposta.titoloInserzione }}</h4>
+
+    <span class="badge"
+          [ngClass]="badgeClass(proposta.stato)">
+      {{ labelStato(proposta.stato) }}
+    </span>
+  </div>
+
+  <div class="info">
+    <p>
+      <strong>Importo:</strong>
+      {{ proposta.importo | currency:'EUR':'symbol':'1.0-0' }}
+    </p>
+
+    <p>
+      <strong>Data:</strong>
+      {{ proposta.dataCreazione | date:'dd/MM/yyyy HH:mm' }}
+    </p>
+
+    @if (showActions) {
+      <div class="azioni">
+        <button type="button" class="btn-accetta" (click)="onAccept()">✔ Accetta</button>
+        <button type="button" class="btn-rifiuta" (click)="onReject()">✖ Rifiuta</button>
+
+        @if (showDetails) {
+          <button type="button"
+                  class="btn-dettagli"
+                  [routerLink]="['/inserzione', proposta.idInserzione]">
+            👁 Vedi inserzione
+          </button>
+        }
+      </div>
+    } @else {
+      @if (showDetails) {
+        <button type="button"
+                class="btn-dettagli"
+                [routerLink]="['/inserzione', proposta.idInserzione]">
+          👁 Vedi inserzione
+        </button>
+      }
+    }
+  </div>
+
+</div>
