@@ -1,46 +1,32 @@
-/* ===================== TITOLI ===================== */
-
 .titolo {
-  font-size: 1.6rem;
-  font-weight: 600;
-  margin-bottom: 20px;
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 30px;
 }
 
 .sottotitolo {
-  font-size: 1.2rem;
-  font-weight: 600;
+  font-size: 20px;
   margin: 30px 0 15px;
-  color: #1f2937;
 }
-
-/* ===================== STATI GENERALI ===================== */
 
 .caricamento,
 .vuoto {
-  padding: 20px;
+  padding: 30px;
   text-align: center;
   color: #6b7280;
-  font-size: 1rem;
 }
-
-/* ===================== CARD ===================== */
 
 .card {
   background: #ffffff;
-  border-radius: 10px;
+  border-radius: 12px;
   padding: 18px;
   margin-bottom: 20px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
-  border-left: 4px solid #e5e7eb;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
 }
 
-/* Evidenzia le controproposte */
-.card.controproposta {
-  border-left-color: #2563eb;
-  background: #f5f9ff;
+.controproposta {
+  border-left: 6px solid #2563eb;
 }
-
-/* ===================== HEADER CARD ===================== */
 
 .card-header {
   display: flex;
@@ -51,82 +37,66 @@
 
 .card-header h4 {
   margin: 0;
-  font-size: 1.1rem;
+  font-size: 16px;
   font-weight: 600;
 }
-
-/* ===================== BADGE STATO ===================== */
-
-.badge {
-  padding: 6px 12px;
-  border-radius: 12px;
-  color: #ffffff;
-  font-size: 0.8rem;
-  font-weight: 600;
-  text-transform: uppercase;
-}
-
-/* Badge specifico per controproposta */
-.badge-controproposta {
-  background-color: #2563eb;
-}
-
-/* ===================== INFO ===================== */
 
 .info p {
   margin: 6px 0;
-  font-size: 0.95rem;
-  color: #374151;
 }
 
-/* ===================== AZIONI ===================== */
+.badge {
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.badge-controproposta {
+  background: #2563eb;
+}
+
+.badge.in_attesa {
+  background: #f59e0b;
+}
+
+.badge.accettata {
+  background: #16a34a;
+}
+
+.badge.rifiutata {
+  background: #dc2626;
+}
 
 .azioni {
-  margin-top: 14px;
   display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 14px;
 }
 
-/* Pulsanti generici */
 button {
-  padding: 8px 16px;
-  border-radius: 6px;
   border: none;
-  font-size: 0.9rem;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 13px;
   cursor: pointer;
-  transition: background 0.2s ease, transform 0.1s ease;
 }
-
-button:hover {
-  transform: translateY(-1px);
-}
-
-/* ===================== BOTTONI SPECIFICI ===================== */
 
 .btn-accetta {
-  background-color: #16a34a;
-  color: #ffffff;
-}
-
-.btn-accetta:hover {
-  background-color: #15803d;
+  background: #16a34a;
+  color: white;
 }
 
 .btn-rifiuta {
-  background-color: #dc2626;
-  color: #ffffff;
-}
-
-.btn-rifiuta:hover {
-  background-color: #b91c1c;
+  background: #dc2626;
+  color: white;
 }
 
 .btn-dettagli {
-  background-color: #2563eb;
-  color: #ffffff;
+  background: #e5e7eb;
 }
 
-.btn-dettagli:hover {
-  background-color: #1e40af;
+button:hover {
+  opacity: 0.9;
 }

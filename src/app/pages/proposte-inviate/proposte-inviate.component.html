@@ -2,9 +2,7 @@
 
 <!-- ===================== CARICAMENTO ===================== -->
 @if (caricamento) {
-  <div class="caricamento">
-    Caricamento in corso...
-  </div>
+  <div class="caricamento">Caricamento in corso...</div>
 }
 
 <!-- ===================== NESSUNA PROPOSTA ===================== -->
@@ -30,7 +28,7 @@
 
       <div class="info">
         <p>
-          <strong>Importo proposto dall’agente:</strong>
+          <strong>Importo proposto:</strong>
           {{ p.importo | currency:'EUR':'symbol':'1.0-0' }}
         </p>
 
@@ -39,33 +37,30 @@
           {{ p.dataCreazione | date:'dd/MM/yyyy HH:mm' }}
         </p>
 
-        <div class="azioni">
-          <button
-            class="btn-accetta"
-            (click)="accetta(p)">
-            ✔ Accetta
-          </button>
+        @if (p.stato === 'CONTROPROPOSTA') {
+          <div class="azioni">
+            <button type="button" class="btn-accetta" (click)="accetta(p)">
+              ✔ Accetta
+            </button>
 
-          <button
-            class="btn-rifiuta"
-            (click)="rifiuta(p)">
-            ✖ Rifiuta
-          </button>
+            <button type="button" class="btn-rifiuta" (click)="rifiuta(p)">
+              ✖ Rifiuta
+            </button>
 
-          <button
-            class="btn-dettagli"
-            [routerLink]="['/inserzione', p.idInserzione]">
-            👁 Vedi inserzione
-          </button>
-
-        </div>
+            <button
+              type="button"
+              class="btn-dettagli"
+              [routerLink]="['/inserzione', p.idInserzione]">
+              👁 Vedi inserzione
+            </button>
+          </div>
+        }
       </div>
-
     </div>
   }
 }
 
-<!-- ===================== PROPOSTE INVIATE DALL’UTENTE ===================== -->
+<!-- ===================== PROPOSTE INVIATE ===================== -->
 @if (!caricamento && proposteInviate.length > 0) {
   <h3 class="sottotitolo">Proposte inviate</h3>
 
@@ -74,10 +69,7 @@
 
       <div class="card-header">
         <h4>{{ p.titoloInserzione }}</h4>
-
-        <span
-          class="badge"
-          [style.background]="coloreStato(p.stato)">
+        <span class="badge" [ngClass]="p.stato.toLowerCase()">
           {{ labelStato(p.stato) }}
         </span>
       </div>
@@ -94,12 +86,12 @@
         </p>
 
         <button
+          type="button"
           class="btn-dettagli"
           [routerLink]="['/inserzione', p.idInserzione]">
           👁 Vedi inserzione
         </button>
       </div>
-
     </div>
   }
 }
