@@ -13,6 +13,7 @@
       <p><strong>Ruolo:</strong> {{ ruolo }}</p>
     </div>
 
+    <!-- FORM DATI PROFILO -->
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
 
       <label>Nome</label>
@@ -27,17 +28,23 @@
       <label>Indirizzo</label>
       <input formControlName="indirizzo">
 
-      <label>Nuova password</label>
-      <input type="password" formControlName="password">
-
       <button class="btn-primary" [disabled]="saving || form.invalid">
         {{ saving ? 'Salvataggio...' : 'Salva modifiche' }}
       </button>
 
-      <div class="success-msg" *ngIf="showSuccess">
-        ✔ Modifiche salvate!
-      </div>
+      @if (showSuccess) {
+        <div class="success-msg">
+          ✔ Modifiche salvate!
+        </div>
+      }
 
     </form>
+
+    <!-- SEZIONE SICUREZZA solo per agente -->
+    @if (ruolo === 'AGENTE') {
+      <app-change-password></app-change-password>
+    }
+
+
   </div>
 </div>

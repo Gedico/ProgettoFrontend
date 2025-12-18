@@ -4,9 +4,9 @@
   <a routerLink="/proposte-inviate" (click)="close.emit()">Le mie proposte</a>
   <a (click)="logout(); close.emit()">Logout</a>
 }
-
 <!-- ===================== MENU AGENTE ===================== -->
 @if (role === 'AGENTE') {
+  <a routerLink="/agente/profilo">Profilo</a>
   <a routerLink="/proposte-ricevute" (click)="close.emit()">Proposte ricevute</a>
   <a routerLink="/registro-proposte" (click)="close.emit()">Storico proposte</a>
   <a routerLink="/agente/inserzioni" (click)="close.emit()">Inserzioni</a>

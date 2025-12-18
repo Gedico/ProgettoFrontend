@@ -52,8 +52,8 @@ export class ForgotPasswordComponent implements OnInit {
           this.message = "Se l'email è corretta, a breve riceverai un'email con il link per il reset.";
           this.loading = false;
 
-          // opzionale: chiudi dopo 2 secondi
-          setTimeout(() => this.dialogRef.close(), 2000);
+          // chiude dopo 5 secondi
+          setTimeout(() => this.dialogRef.close(), 5000);
         },
         error: () => {
           this.messageType = 'error';
