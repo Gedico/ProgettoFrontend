@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 @if (caricamento) {
 <div class="loading">Caricamento inserzione...</div>
 }
@@ -157,6 +158,29 @@
   <p>{{ inserzione.dati.descrizione }}</p>
 </div>
 }
+
+<!-- INDICATORI -->
+@if (inserzione.indicatore) {
+<div class="indicatori">
+  <h3>Servizi nelle vicinanze</h3>
+
+  <p>
+    🏫 Scuole:
+    <strong>{{ inserzione.indicatore.scuoleVicine ? 'Sì' : 'No' }}</strong>
+  </p>
+
+  <p>
+    🌳 Parchi:
+    <strong>{{ inserzione.indicatore.parchiVicini ? 'Sì' : 'No' }}</strong>
+  </p>
+
+  <p>
+    🚉 Mezzi pubblici:
+    <strong>{{ inserzione.indicatore.mezziPubbliciVicini ? 'Sì' : 'No' }}</strong>
+  </p>
+</div>
+}
+
 
 <!-- POSIZIONE -->
 @if (inserzione.posizione) {

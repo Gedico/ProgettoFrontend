@@ -10,12 +10,13 @@
     (change)="fileSelezionati.emit($event)"
   />
 
-  <div class="preview-container" *ngIf="anteprime.length > 0">
+  @if (anteprime.length > 0){
+  <div class="preview-container">
     <div class="preview" *ngFor="let img of anteprime; let i = index">
       <img [src]="img" />
       <button type="button" (click)="rimuovi.emit(i)">✕</button>
     </div>
-  </div>
+  </div>}
 
   <div class="actions">
     <button type="button" (click)="indietro.emit()">Indietro</button>

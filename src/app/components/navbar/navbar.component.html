@@ -9,17 +9,20 @@
   <div class="navbar-right">
 
     <!-- Bottone Login -->
-    <a *ngIf="showLoginButton" [routerLink]="'/login'" class="nav-button">
+     @if (showLoginButton){
+    <a [routerLink]="'/login'" class="nav-button">
       Login
-    </a>
+    </a>}
 
     <!-- Bottone Home -->
-    <a *ngIf="showHomeButton" [routerLink]="'/'" class="nav-button">
+     @if (showHomeButton){
+    <a [routerLink]="'/'" class="nav-button">
       Home
-    </a>
+    </a>}
 
     <!-- ICONA PROFILO -->
-    <div *ngIf="showProfileIcon" class="profile-container">
+     @if(showProfileIcon){
+    <div class="profile-container">
 
       <div class="profile-trigger" (click)="toggleMenu()">
         <div class="profile-img-wrapper">
@@ -34,14 +37,15 @@
       </div>
 
       <!-- MENU TENDINA -->
-      <div class="dropdown" *ngIf="menuAperto">
+       @if(menuAperto){
+      <div class="dropdown">
         <app-menunavbar
           [role]="userRole"
           [logout]="logout.bind(this)"
           (close)="chiudiMenu()">
         </app-menunavbar>
-      </div>
+      </div>}
 
-    </div>
+    </div>}
   </div>
 </nav>

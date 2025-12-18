@@ -2,11 +2,13 @@
 
   <h1>Risultati della ricerca</h1>
 
-  <p *ngIf="nessunRisultato" class="no-results">
+  @if(nessunRisultato){
+  <p class="no-results">
     Nessuna inserzione trovata. Prova a cambiare i filtri.
-  </p>
+  </p>}
 
-  <div class="grid" *ngIf="!nessunRisultato">
+  @if(!nessunRisultato){
+  <div class="grid">
     <app-inserzione-card
       *ngFor="let item of risultati"
       [inserzione]="{
@@ -20,6 +22,6 @@
 
       }"
     ></app-inserzione-card>
-  </div>
+  </div>}
 
 </div>
