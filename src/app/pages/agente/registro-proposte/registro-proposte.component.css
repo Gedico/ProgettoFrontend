@@ -1,3 +1,6 @@
+/* ===============================
+   CONTAINER & TITOLI
+   =============================== */
 .container {
   max-width: 1100px;
   margin: 40px auto;
@@ -5,64 +8,120 @@
 }
 
 h1 {
-  font-size: 2rem;
+  font-size: 30px;
   font-weight: 700;
-  margin-bottom: 25px;
-  color: #3f2b96;
+  margin-bottom: 32px;
+  color: #0f172a;
 }
 
+.sottotitolo {
+  font-size: 21px;
+  font-weight: 600;
+  margin: 36px 0 16px;
+  color: #111827;
+}
+
+.sottotitolo.success {
+  color: #166534;
+}
+
+.sottotitolo.muted {
+  color: #6b7280;
+}
+
+/* ===============================
+   STATI PAGINA
+   =============================== */
 .spinner-wrapper {
   display: flex;
   justify-content: center;
-  margin-top: 25px;
+  margin-top: 30px;
 }
 
 .empty {
   text-align: center;
-  color: #666;
-  font-size: 1.1rem;
-  margin-top: 30px;
+  color: #6b7280;
+  font-size: 15px;
+  margin-top: 40px;
 }
 
-/* Tabella */
-table {
-  width: 100%;
-  border-radius: 10px;
-  overflow: hidden;
+/* ===============================
+   CARD BASE
+   =============================== */
+.card {
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 18px 20px;
+  margin-bottom: 18px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
-th {
-  background: #ede7f6;
-  color: #4a148c;
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.12);
+}
+
+/* ===============================
+   GERARCHIA VISIVA (BOOKING STYLE)
+   =============================== */
+.card.accettata {
+  border-left: 6px solid #22c55e;
+  background: linear-gradient(90deg, #f6fff9, #ffffff);
+}
+
+.card.rifiutata {
+  opacity: 0.55;
+  filter: grayscale(85%);
+  background: #f7f7f7;
+  box-shadow: none;
+}
+
+.card.rifiutata:hover {
+  transform: none;
+}
+
+/* ===============================
+   HEADER CARD
+   =============================== */
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.card-header h4 {
+  margin: 0;
+  font-size: 16px;
   font-weight: 600;
-  font-size: 0.85rem;
-  text-transform: uppercase;
+  color: #111827;
 }
 
-td {
-  font-size: 1rem;
-  padding: 12px 10px;
+/* ===============================
+   CONTENUTO
+   =============================== */
+.info p {
+  margin: 6px 0;
+  font-size: 14px;
+  color: #374151;
 }
 
-tr:hover td {
-  background: #f3e5f5;
-}
-
-/* Badge stato */
+/* ===============================
+   BADGE STATO
+   =============================== */
 .badge {
-  padding: 6px 12px;
-  border-radius: 12px;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 12px;
   font-weight: 600;
-  font-size: 0.85rem;
-  text-transform: capitalize;
+  color: #ffffff;
 }
 
 .badge.accettata {
-  background: #c8e6c9;
-  color: #1b5e20;
+  background: #16a34a;
 }
 
 .badge.rifiutata {
-  background: #ffcdd2;
-  color: #b71c1c;
+  background: #dc2626;
 }

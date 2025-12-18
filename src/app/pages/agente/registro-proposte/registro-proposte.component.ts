@@ -17,10 +17,12 @@ import { PropostaResponse } from '../../../models/dto/proposta/proposta-response
   templateUrl: './registro-proposte.component.html',
   styleUrls: ['./registro-proposte.component.css']
 })
+
 export class RegistroProposteComponent implements OnInit {
 
-  displayedColumns = ['titolo', 'importo', 'data', 'stato'];
   registro: PropostaResponse[] = [];
+  proposteAccettate: PropostaResponse[] = [];
+  proposteRifiutate: PropostaResponse[] = [];
   loading = false;
 
   constructor(private propostaService: PropostaService) {}
@@ -34,6 +36,15 @@ export class RegistroProposteComponent implements OnInit {
     this.propostaService.getRegistroProposte().subscribe({
       next: res => {
         this.registro = res || [];
+
+        this.proposteAccettate = this.registro.filter(
+          p => p.stato === 'ACCETTATA'
+        );
+
+        this.proposteRifiutate = this.registro.filter(
+          p => p.stato === 'RIFIUTATA'
+        );
+
         this.loading = false;
       },
       error: () => {
