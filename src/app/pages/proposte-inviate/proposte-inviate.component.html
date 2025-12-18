@@ -12,10 +12,11 @@
   </div>
 }
 
-<!-- ===================== CONTROPROPOSTE AGENTE ===================== -->
-@if (!caricamento && controproposteAttive.length > 0) {
-  <h3 class="sottotitolo">Controproposte da gestire</h3>
+<!-- ===================== PROPOSTE ATTIVE ===================== -->
+@if (!caricamento && (controproposteAttive.length > 0 || proposteAttive.length > 0)) {
+  <h3 class="sottotitolo">Proposte attive</h3>
 
+  <!-- 🔸 CONTROPROPOSTE DA GESTIRE -->
   @for (p of controproposteAttive; track p.idProposta) {
     <div class="card controproposta">
 
@@ -37,39 +38,103 @@
           {{ p.dataCreazione | date:'dd/MM/yyyy HH:mm' }}
         </p>
 
-        @if (p.stato === 'CONTROPROPOSTA') {
-          <div class="azioni">
-            <button type="button" class="btn-accetta" (click)="accetta(p)">
-              ✔ Accetta
-            </button>
+        <div class="azioni">
+          <button type="button" class="btn-accetta" (click)="accetta(p)">
+            ✔ Accetta
+          </button>
 
-            <button type="button" class="btn-rifiuta" (click)="rifiuta(p)">
-              ✖ Rifiuta
-            </button>
+          <button type="button" class="btn-rifiuta" (click)="rifiuta(p)">
+            ✖ Rifiuta
+          </button>
 
-            <button
-              type="button"
-              class="btn-dettagli"
-              [routerLink]="['/inserzione', p.idInserzione]">
-              👁 Vedi inserzione
-            </button>
-          </div>
-        }
+          <button
+            type="button"
+            class="btn-dettagli"
+            [routerLink]="['/inserzione', p.idInserzione]">
+            👁 Vedi inserzione
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- 🔸 PROPOSTE IN ATTESA -->
+  @for (p of proposteAttive; track p.idProposta) {
+    <div class="card attiva">
+
+      <div class="card-header">
+        <h4>{{ p.titoloInserzione }}</h4>
+        <span class="badge badge-attesa">In attesa</span>
+      </div>
+
+      <div class="info">
+        <p>
+          <strong>Tua offerta:</strong>
+          {{ p.importo | currency:'EUR':'symbol':'1.0-0' }}
+        </p>
+
+        <p>
+          <strong>Data invio:</strong>
+          {{ p.dataCreazione | date:'dd/MM/yyyy HH:mm' }}
+        </p>
+
+        <button
+          type="button"
+          class="btn-dettagli"
+          [routerLink]="['/inserzione', p.idInserzione]">
+          👁 Vedi inserzione
+        </button>
       </div>
     </div>
   }
 }
 
-<!-- ===================== PROPOSTE INVIATE ===================== -->
-@if (!caricamento && proposteInviate.length > 0) {
-  <h3 class="sottotitolo">Proposte inviate</h3>
+<!-- ===================== PROPOSTE ACCETTATE ===================== -->
+@if (!caricamento && proposteAccettate.length > 0) {
+  <h3 class="sottotitolo success">Proposte accettate</h3>
 
-  @for (p of proposteInviate; track p.idProposta) {
-    <div class="card">
+  @for (p of proposteAccettate; track p.idProposta) {
+    <div class="card accettata">
 
       <div class="card-header">
         <h4>{{ p.titoloInserzione }}</h4>
-        <span class="badge" [ngClass]="p.stato.toLowerCase()">
+        <span class="badge badge-accettata">
+          {{ labelStato(p.stato) }}
+        </span>
+      </div>
+
+      <div class="info">
+        <p>
+          <strong>Tua offerta:</strong>
+          {{ p.importo | currency:'EUR':'symbol':'1.0-0' }}
+        </p>
+
+        <p>
+          <strong>Data invio:</strong>
+          {{ p.dataCreazione | date:'dd/MM/yyyy HH:mm' }}
+        </p>
+
+        <button
+          type="button"
+          class="btn-dettagli"
+          [routerLink]="['/inserzione', p.idInserzione]">
+          👁 Vedi inserzione
+        </button>
+      </div>
+    </div>
+  }
+}
+
+<!-- ===================== PROPOSTE RIFIUTATE ===================== -->
+@if (!caricamento && proposteRifiutate.length > 0) {
+  <h3 class="sottotitolo muted">Proposte rifiutate</h3>
+
+  @for (p of proposteRifiutate; track p.idProposta) {
+    <div class="card rifiutata">
+
+      <div class="card-header">
+        <h4>{{ p.titoloInserzione }}</h4>
+        <span class="badge badge-rifiutata">
           {{ labelStato(p.stato) }}
         </span>
       </div>

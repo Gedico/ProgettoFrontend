@@ -1,33 +1,88 @@
+/* ===============================
+   TITOLI
+   =============================== */
 .titolo {
-  font-size: 28px;
+  font-size: 30px;
   font-weight: 700;
-  margin-bottom: 30px;
+  margin-bottom: 32px;
+  color: #0f172a;
 }
 
 .sottotitolo {
-  font-size: 20px;
-  margin: 30px 0 15px;
+  font-size: 21px;
+  font-weight: 600;
+  margin: 36px 0 16px;
+  color: #111827;
 }
 
-.caricamento,
-.vuoto {
-  padding: 30px;
-  text-align: center;
+/* varianti semantiche */
+.sottotitolo.success {
+  color: #166534;
+}
+
+.sottotitolo.muted {
   color: #6b7280;
 }
 
-.card {
-  background: #ffffff;
-  border-radius: 12px;
-  padding: 18px;
-  margin-bottom: 20px;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+/* ===============================
+   STATI PAGINA
+   =============================== */
+.caricamento,
+.vuoto {
+  padding: 40px;
+  text-align: center;
+  color: #6b7280;
+  font-size: 15px;
 }
 
-.controproposta {
+/* ===============================
+   CARD BASE
+   =============================== */
+.card {
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 18px 20px;
+  margin-bottom: 18px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.12);
+}
+
+/* ===============================
+   GERARCHIA VISIVA
+   =============================== */
+.card.attiva {
+  border-left: 6px solid #f59e0b;
+}
+
+.card.accettata {
+  border-left: 6px solid #22c55e;
+  background: linear-gradient(90deg, #f6fff9, #ffffff);
+}
+
+.card.rifiutata {
+  opacity: 0.55;
+  filter: grayscale(85%);
+  background: #f7f7f7;
+  box-shadow: none;
+}
+
+.card.rifiutata:hover {
+  transform: none;
+}
+
+/* controproposta */
+.card.controproposta {
   border-left: 6px solid #2563eb;
 }
 
+/* ===============================
+   HEADER CARD
+   =============================== */
 .card-header {
   display: flex;
   justify-content: space-between;
@@ -39,64 +94,96 @@
   margin: 0;
   font-size: 16px;
   font-weight: 600;
+  color: #111827;
 }
 
+/* ===============================
+   CONTENUTO
+   =============================== */
 .info p {
   margin: 6px 0;
+  font-size: 14px;
+  color: #374151;
 }
 
+/* ===============================
+   BADGE STATO
+   =============================== */
 .badge {
-  padding: 4px 10px;
+  padding: 4px 12px;
   border-radius: 999px;
   font-size: 12px;
   font-weight: 600;
-  color: #fff;
+  color: #ffffff;
+  letter-spacing: 0.02em;
 }
 
 .badge-controproposta {
   background: #2563eb;
 }
 
+.badge-attesa,
 .badge.in_attesa {
   background: #f59e0b;
 }
 
+.badge-accettata,
 .badge.accettata {
   background: #16a34a;
 }
 
+.badge-rifiutata,
 .badge.rifiutata {
   background: #dc2626;
 }
 
+/* ===============================
+   AZIONI
+   =============================== */
 .azioni {
   display: flex;
   gap: 10px;
   margin-top: 14px;
+  flex-wrap: wrap;
 }
 
 button {
   border: none;
-  border-radius: 8px;
-  padding: 8px 12px;
+  border-radius: 10px;
+  padding: 8px 14px;
   font-size: 13px;
+  font-weight: 600;
   cursor: pointer;
+  transition: background 0.15s ease, transform 0.15s ease;
 }
 
+/* bottoni specifici */
 .btn-accetta {
   background: #16a34a;
-  color: white;
+  color: #ffffff;
+}
+
+.btn-accetta:hover {
+  background: #15803d;
+  transform: translateY(-1px);
 }
 
 .btn-rifiuta {
   background: #dc2626;
-  color: white;
+  color: #ffffff;
+}
+
+.btn-rifiuta:hover {
+  background: #b91c1c;
+  transform: translateY(-1px);
 }
 
 .btn-dettagli {
   background: #e5e7eb;
+  color: #111827;
 }
 
-button:hover {
-  opacity: 0.9;
+.btn-dettagli:hover {
+  background: #d1d5db;
+  transform: translateY(-1px);
 }

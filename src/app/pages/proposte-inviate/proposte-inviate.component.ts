@@ -18,6 +18,11 @@ export class ProposteInviateComponent implements OnInit {
 
   // Tutte le proposte dell’utente
   proposte: PropostaResponse[] = [];
+  // sezioni gestioni stato proposta
+  proposteAttive: PropostaResponse[] = [];
+  proposteAccettate: PropostaResponse[] = [];
+  proposteRifiutate: PropostaResponse[] = [];
+
 
   // Suddivisione logica necessaria
   controproposteAttive: PropostaResponse[] = [];
@@ -36,21 +41,29 @@ export class ProposteInviateComponent implements OnInit {
       next: (res) => {
         this.proposte = res || [];
 
-        // 🔹 Controproposte ricevute dall’agente
+        // 🔹 CONTROPROPOSTE (azioni richieste)
         this.controproposteAttive = this.proposte.filter(
-          p => p.proponente === 'AGENTE'
+          p => p.stato === StatoProposta.CONTROPROPOSTA
         );
 
-        // 🔹 Proposte inviate dall’utente
-        this.proposteInviate = this.proposte.filter(
-          p => p.proponente === 'UTENTE'
+        // 🔹 PROPOSTE ATTIVE (in attesa)
+        this.proposteAttive = this.proposte.filter(
+          p => p.stato === StatoProposta.IN_ATTESA
         );
 
-        this.caricamento = false;
-      },
-      error: () => {
+        // 🔹 PROPOSTE ACCETTATE
+        this.proposteAccettate = this.proposte.filter(
+          p => p.stato === StatoProposta.ACCETTATA
+        );
+
+        // 🔹 PROPOSTE RIFIUTATE (storico)
+        this.proposteRifiutate = this.proposte.filter(
+          p => p.stato === StatoProposta.RIFIUTATA
+        );
+
         this.caricamento = false;
       }
+
     });
   }
 
