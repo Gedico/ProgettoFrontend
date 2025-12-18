@@ -16,53 +16,29 @@
     </p>
   }
 
-  <!-- ===================== ACCETTATE ===================== -->
+  <!-- ===================== PROPOSTE ACCETTATE ===================== -->
   @if (!loading && proposteAccettate.length > 0) {
     <h3 class="sottotitolo success">Proposte accettate</h3>
 
     @for (p of proposteAccettate; track p.idProposta) {
-      <div class="card accettata">
-
-        <div class="card-header">
-          <h4>{{ p.titoloInserzione }}</h4>
-          <span class="badge accettata">Accettata</span>
-        </div>
-
-        <div class="info">
-          <p><strong>Offerta:</strong>
-            {{ p.importo | currency:'EUR':'symbol':'1.0-0':'it' }}
-          </p>
-
-          <p><strong>Data:</strong>
-            {{ p.dataCreazione | date:'dd/MM/yyyy' }}
-          </p>
-        </div>
-      </div>
+      <app-proposta-card
+        [proposta]="p"
+        variant="accettata"
+        [showDetails]="true">
+      </app-proposta-card>
     }
   }
 
-  <!-- ===================== RIFIUTATE ===================== -->
+  <!-- ===================== PROPOSTE RIFIUTATE ===================== -->
   @if (!loading && proposteRifiutate.length > 0) {
     <h3 class="sottotitolo muted">Proposte rifiutate</h3>
 
     @for (p of proposteRifiutate; track p.idProposta) {
-      <div class="card rifiutata">
-
-        <div class="card-header">
-          <h4>{{ p.titoloInserzione }}</h4>
-          <span class="badge rifiutata">Rifiutata</span>
-        </div>
-
-        <div class="info">
-          <p><strong>Offerta:</strong>
-            {{ p.importo | currency:'EUR':'symbol':'1.0-0':'it' }}
-          </p>
-
-          <p><strong>Data:</strong>
-            {{ p.dataCreazione | date:'dd/MM/yyyy' }}
-          </p>
-        </div>
-      </div>
+      <app-proposta-card
+        [proposta]="p"
+        variant="rifiutata"
+        [showDetails]="true">
+      </app-proposta-card>
     }
   }
 
