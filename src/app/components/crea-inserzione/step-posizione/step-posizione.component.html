@@ -16,26 +16,25 @@
       />
 
 
-      <ul class="autocomplete-list" *ngIf="comuniFiltrati.length > 0">
+      @if (comuniFiltrati.length > 0){
+      <ul class="autocomplete-list">
         <li
           *ngFor="let comune of comuniFiltrati"
           (click)="selezionaComune.emit(comune)">
           {{ comune }}
         </li>
-      </ul>
+      </ul>}
 
 
       <datalist id="lista-comuni">
         <option *ngFor="let nome of nomiComuni" [value]="nome"></option>
       </datalist>
 
-      <small class="error"
-             *ngIf="
-        posizioneForm.get('comune')?.touched &&
-        posizioneForm.get('comune')?.errors?.['required']
-      ">
+
+      @if (posizioneForm.get('comune')?.touched && posizioneForm.get('comune')?.errors?.['required']){
+      <small class="error">
         Il comune è obbligatorio
-      </small>
+      </small>>}
     </div>
 
     <!-- INDIRIZZO CON AUTOCOMPLETE -->
@@ -52,14 +51,10 @@
       />
 
       
-
-      <small class="error"
-             *ngIf="
-        posizioneForm.get('indirizzo')?.touched &&
-        posizioneForm.get('indirizzo')?.invalid
-      ">
+      @if (posizioneForm.get('indirizzo')?.touched && posizioneForm.get('indirizzo')?.invalid){
+      <small class="error">
         L’indirizzo è obbligatorio
-      </small>
+      </small>}
     </div>
 
 

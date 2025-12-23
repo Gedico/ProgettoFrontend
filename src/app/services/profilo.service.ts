@@ -22,5 +22,15 @@ export class ProfiloService {
   updateProfilo(payload: UpdateProfiloRequest): Observable<UpdateProfiloResponse> {
     return this.http.put<UpdateProfiloResponse>(`${this.api}`, payload);
   }
+
+  changePassword(oldPassword: string, newPassword: string) {
+    return this.http.put(
+      `${this.api}/change-password`,
+      {
+        oldPassword,
+        newPassword
+      }
+    );
+  }
 }
 

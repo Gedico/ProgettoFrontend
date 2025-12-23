@@ -1,65 +1,128 @@
+/* ===============================
+   CONTAINER
+   =============================== */
 .profilo-container {
-  max-width: 650px;
-  margin: 30px auto;
-  padding: 20px;
+  max-width: 700px;
+  margin: 40px auto;
+  padding: 24px;
+  font-family: 'Inter', system-ui, sans-serif;
 }
 
 .profilo-container h1 {
   text-align: center;
-  font-size: 30px;
-  margin-bottom: 20px;
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 28px;
+  color: #0f172a;
 }
 
+/* ===============================
+   BACK BUTTON
+   =============================== */
 .btn-back {
   background: none;
   border: none;
-  color: #2962ff;
+  color: #2563eb;
   cursor: pointer;
-  font-size: 16px;
-  margin-bottom: 15px;
+  font-size: 15px;
+  margin-bottom: 20px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
 }
 
+.btn-back:hover {
+  text-decoration: underline;
+}
+
+/* ===============================
+   CARD
+   =============================== */
 .profilo-box {
-  background: white;
-  padding: 25px;
-  border-radius: 15px;
-  box-shadow: 0px 3px 12px rgba(0,0,0,0.1);
+  background: #ffffff;
+  padding: 28px;
+  border-radius: 18px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
 }
 
+/* ===============================
+   RIEPILOGO
+   =============================== */
+.info-riepilogo {
+  margin-bottom: 26px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.info-riepilogo p {
+  margin: 4px 0;
+  color: #374151;
+}
+
+/* ===============================
+   FORM
+   =============================== */
 label {
   font-weight: 600;
-  margin-top: 12px;
+  margin-top: 16px;
   display: block;
+  font-size: 14px;
+  color: #111827;
 }
 
 input {
   width: 100%;
-  padding: 12px;
-  border: 1px solid #d5d5d5;
-  border-radius: 10px;
-  margin-top: 5px;
-  background: #f7f9ff;
+  padding: 12px 14px;
+  border: 1px solid #d1d5db;
+  border-radius: 12px;
+  margin-top: 6px;
+  background: #f9fafb;
+  font-size: 15px;
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
 
+input:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+  background: #ffffff;
+}
+
+/* ===============================
+   PRIMARY BUTTON
+   =============================== */
 .btn-primary {
   width: 100%;
-  margin-top: 25px;
+  margin-top: 28px;
   padding: 14px;
-  background: #2f45c5;
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
   color: white;
   border: none;
-  border-radius: 10px;
+  border-radius: 14px;
+  font-size: 15px;
+  font-weight: 600;
   cursor: pointer;
-  transition: 0.2s;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
 .btn-primary:hover {
-  background: #2036a8;
+  transform: translateY(-1px);
+  box-shadow: 0 8px 20px rgba(37, 99, 235, 0.35);
 }
 
+.btn-primary:disabled {
+  background: #c7d2fe;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* ===============================
+   SUCCESS MESSAGE
+   =============================== */
 .success-msg {
-  margin-top: 20px;
-  color: #0a8f3a;
+  margin-top: 22px;
+  color: #15803d;
   text-align: center;
-  font-weight: bold;
+  font-weight: 600;
+  font-size: 14px;
 }

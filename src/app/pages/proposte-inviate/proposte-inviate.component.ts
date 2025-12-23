@@ -1,16 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
-
 import { PropostaService } from '../../services/proposta.service';
 import { PropostaResponse } from '../../models/dto/proposta/proposta-response.dto';
 import {StatoProposta} from '../../models/dto/enums/stato-proposta';
+
+import { PropostaCardComponent } from '../../components/proposta-card/proposta-card.component';
+
 import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-proposte-inviate',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, PropostaCardComponent],
   templateUrl: './proposte-inviate.component.html',
   styleUrls: ['./proposte-inviate.component.css']
 })
@@ -18,10 +19,15 @@ export class ProposteInviateComponent implements OnInit {
 
   // Tutte le proposte dell’utente
   proposte: PropostaResponse[] = [];
+  // sezioni gestioni stato proposta
+  proposteAttive: PropostaResponse[] = [];
+  proposteAccettate: PropostaResponse[] = [];
+  proposteRifiutate: PropostaResponse[] = [];
+
 
   // Suddivisione logica necessaria
   controproposteAttive: PropostaResponse[] = [];
-  proposteInviate: PropostaResponse[] = [];
+
 
   caricamento = true;
 
@@ -36,52 +42,31 @@ export class ProposteInviateComponent implements OnInit {
       next: (res) => {
         this.proposte = res || [];
 
-        // 🔹 Controproposte ricevute dall’agente
+        // 🔹 CONTROPROPOSTE (azioni richieste)
         this.controproposteAttive = this.proposte.filter(
-          p => p.proponente === 'AGENTE'
+          p => p.stato === StatoProposta.CONTROPROPOSTA
         );
 
-        // 🔹 Proposte inviate dall’utente
-        this.proposteInviate = this.proposte.filter(
-          p => p.proponente === 'UTENTE'
+        // 🔹 PROPOSTE ATTIVE (in attesa)
+        this.proposteAttive = this.proposte.filter(
+          p => p.stato === StatoProposta.IN_ATTESA
         );
 
-        this.caricamento = false;
-      },
-      error: () => {
+        // 🔹 PROPOSTE ACCETTATE
+        this.proposteAccettate = this.proposte.filter(
+          p => p.stato === StatoProposta.ACCETTATA
+        );
+
+        // 🔹 PROPOSTE RIFIUTATE (storico)
+        this.proposteRifiutate = this.proposte.filter(
+          p => p.stato === StatoProposta.RIFIUTATA
+        );
+
         this.caricamento = false;
       }
+
     });
   }
-
-  coloreStato(stato: StatoProposta): string {
-    switch (stato) {
-      case StatoProposta.ACCETTATA:
-        return 'green';
-      case StatoProposta.RIFIUTATA:
-        return 'red';
-      case StatoProposta.CONTROPROPOSTA:
-        return 'blue';
-      default:
-        return 'orange';
-    }
-  }
-
-  labelStato(stato: string): string {
-    switch (stato) {
-      case 'IN_ATTESA':
-        return 'In attesa';
-      case 'CONTROPROPOSTA':
-        return 'Controproposta';
-      case 'ACCETTATA':
-        return 'Accettata';
-      case 'RIFIUTATA':
-        return 'Rifiutata';
-      default:
-        return stato;
-    }
-  }
-
   accetta(proposta: PropostaResponse): void {
     Swal.fire({
       title: 'Accettare la controproposta?',

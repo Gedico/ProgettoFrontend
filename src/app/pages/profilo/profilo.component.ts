@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { Location } from '@angular/common';
+
 import { ProfiloService } from '../../services/profilo.service';
 import { SessionService } from '../../services/session.service';
-import { Location } from '@angular/common';
+import { ChangePasswordComponent } from '../../components/change-password/change-password.component';
 
 import { ProfiloResponse } from '../../models/dto/profilo/profilo-response';
 import { UpdateProfiloRequest } from '../../models/dto/profilo/update-profilo-request';
@@ -15,7 +17,8 @@ import { Role } from '../../models/dto/enums/role';
   imports: [
     CommonModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    ChangePasswordComponent
   ],
   templateUrl: './profilo.component.html',
   styleUrls: ['./profilo.component.css']
@@ -27,8 +30,8 @@ export class ProfiloComponent implements OnInit {
   saving = false;
   showSuccess = false;
 
-  email: string = '';
-  ruolo: string = '';
+  email = '';
+  ruolo = '';
 
   constructor(
     private fb: FormBuilder,
@@ -49,8 +52,7 @@ export class ProfiloComponent implements OnInit {
       nome: [{ value: '', disabled: this.isReadOnlyField('nome', role) }, Validators.required],
       cognome: [{ value: '', disabled: this.isReadOnlyField('cognome', role) }, Validators.required],
       numero: [{ value: '', disabled: this.isReadOnlyField('numero', role) }],
-      indirizzo: [{ value: '', disabled: this.isReadOnlyField('indirizzo', role) }],
-      password: [{ value: '', disabled: this.isReadOnlyField('password', role) }]
+      indirizzo: [{ value: '', disabled: this.isReadOnlyField('indirizzo', role) }]
     });
   }
 
@@ -61,7 +63,7 @@ export class ProfiloComponent implements OnInit {
       case Role.ADMIN:
         return true;
       case Role.AGENTE:
-        return (field === 'nome' || field === 'cognome');
+        return field === 'nome' || field === 'cognome';
       case Role.USER:
       default:
         return false;
@@ -79,7 +81,6 @@ export class ProfiloComponent implements OnInit {
           cognome: res.cognome,
           numero: res.numero,
           indirizzo: res.indirizzo ?? ''
-
         });
 
         this.loading = false;
@@ -100,8 +101,7 @@ export class ProfiloComponent implements OnInit {
       nome: this.form.get('nome')!.value,
       cognome: this.form.get('cognome')!.value,
       numero: this.form.get('numero')!.value,
-      indirizzo: this.form.get('indirizzo')!.value || null,
-      password: this.form.get('password')!.value || undefined
+      indirizzo: this.form.get('indirizzo')!.value || null
     };
 
     this.profiloService.updateProfilo(payload).subscribe({
@@ -109,7 +109,6 @@ export class ProfiloComponent implements OnInit {
         this.saving = false;
         this.showSuccess = true;
 
-        // 🔄 Ricarica automaticamente i dati aggiornati dopo 1 sec
         setTimeout(() => {
           this.loadProfilo();
           this.showSuccess = false;
@@ -120,8 +119,8 @@ export class ProfiloComponent implements OnInit {
       }
     });
   }
+
   goBack(): void {
     this.location.back();
   }
-
 }
