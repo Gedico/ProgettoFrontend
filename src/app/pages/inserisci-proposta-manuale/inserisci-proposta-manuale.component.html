@@ -1,50 +1,104 @@
-<div class="container-form">
+<!-- Wrapper con sfondo moderno -->
+<div class="page-wrapper">
 
-  <h2>Inserisci offerta manuale</h2>
-  <p class="subtitle">
-    Inserisci un’offerta ricevuta di persona o fuori dall’applicazione.
-  </p>
-  <form [formGroup]="form" (ngSubmit)="submit()">
+  <div class="container-form">
 
+    <h2>Inserisci offerta manuale</h2>
+    <p class="subtitle">
+      Inserisci un'offerta ricevuta di persona o fuori dall'applicazione.
+    </p>
 
-    <label>Importo offerta (€)</label>
-    <input type="text"  class = "input-field highlight" formControlName="prezzoProposta" appCurrencyInput />
-
-    @if (form.get('prezzoProposta')?.touched && form.get('prezzoProposta')?.invalid) {
-      <div class="error">
-        Inserisci un importo valido
+    <!-- Sezione animazione omino che aspetta -->
+    <div class="waiting-animation">
+      <div class="waiting-icon">🧑‍💼</div>
+      <div class="waiting-text">
+        In attesa dei dati<span class="dots"><span></span><span></span><span></span></span>
       </div>
-    }
-
-    <label>Nome cliente</label>
-    <input type="text" class="input-field" formControlName="nomeCliente" placeholder="Nome e cognome"/>
-
-    <label>Contatto cliente</label>
-    <input type="text" class="input-field" formControlName="contattoCliente" placeholder="telefono o email" />
-
-    <label>Note (opzionale)</label>
-    <textarea formControlName="note"></textarea>
-
-    <label>Data offerta</label>
-    <input type="date" class="input-field" formControlName="dataOfferta" />
-
-
-    <div class="actions">
-      <button
-        type="submit"
-        class="submit-btn"
-        [disabled]="form.invalid">
-        💾 Salva offerta
-      </button>
-
-      <button
-        type="button"
-        class="close-btn"
-        (click)="annulla()">
-        Annulla
-      </button>
     </div>
 
+    <form [formGroup]="form" (ngSubmit)="submit()">
 
-  </form>
+      <!-- Campo Importo Offerta -->
+      <label class="required">Importo offerta (€)</label>
+      <input
+        type="text"
+        class="input-field highlight"
+        formControlName="prezzoProposta"
+        appCurrencyInput
+        placeholder="Es. 150.000" />
+
+      @if (form.get('prezzoProposta')?.touched && form.get('prezzoProposta')?.invalid) {
+        <div class="error">
+          Inserisci un importo valido
+        </div>
+      }
+
+      <!-- Campo Nome Cliente -->
+      <label class="required">Nome cliente</label>
+      <input
+        type="text"
+        class="input-field"
+        formControlName="nomeCliente"
+        placeholder="Nome e cognome" />
+
+      @if (form.get('nomeCliente')?.touched && form.get('nomeCliente')?.invalid) {
+        <div class="error">
+          Inserisci un nome valido (minimo 2 caratteri)
+        </div>
+      }
+
+      <!-- Campo Contatto Cliente -->
+      <label class="required">Contatto cliente</label>
+      <input
+        type="text"
+        class="input-field"
+        formControlName="contattoCliente"
+        placeholder="Telefono o email" />
+
+      @if (form.get('contattoCliente')?.touched && form.get('contattoCliente')?.invalid) {
+        <div class="error">
+          Inserisci un contatto valido (minimo 5 caratteri)
+        </div>
+      }
+
+      <!-- Campo Note -->
+      <label>Note <span class="optional">(opzionale)</span></label>
+      <textarea
+        class="input-field"
+        formControlName="note"
+        placeholder="Aggiungi eventuali dettagli o informazioni aggiuntive..."
+        rows="4"></textarea>
+      <small class="hint">Puoi aggiungere informazioni extra sull'offerta</small>
+
+      <!-- Campo Data Offerta -->
+      <label class="required">Data offerta</label>
+      <input
+        type="date"
+        class="input-field"
+        formControlName="dataOfferta" />
+
+      @if (form.get('dataOfferta')?.touched && form.get('dataOfferta')?.invalid) {
+        <div class="error">
+          Seleziona una data valida
+        </div>
+      }
+
+      <!-- Action Buttons -->
+      <div class="actions">
+        <button
+          type="submit"
+          [disabled]="form.invalid">
+          💾 Salva offerta
+        </button>
+
+        <button
+          type="button"
+          (click)="annulla()">
+          Annulla
+        </button>
+      </div>
+
+    </form>
+  </div>
+
 </div>

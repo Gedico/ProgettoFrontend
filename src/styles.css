@@ -1,7 +1,214 @@
 /* You can add global styles to this file, and also import other style files */
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+/* =========================================================
+   BASE STYLES
+   ========================================================= */
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+/* =========================================================
+   SWEETALERT2 CUSTOM STYLES
+   ========================================================= */
+
+/* Popup principale */
+.swal-custom-popup {
+  border-radius: 20px !important;
+  padding: 30px !important;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3) !important;
+  font-family: inherit !important;
+}
+
+/* Titolo */
+.swal2-title {
+  font-size: 24px !important;
+  font-weight: 700 !important;
+  color: #1a1a1a !important;
+  margin-bottom: 12px !important;
+}
+
+/* Testo contenuto */
+.swal2-html-container {
+  font-size: 15px !important;
+  color: #4a5568 !important;
+  line-height: 1.6 !important;
+}
+
+/* Icone */
+.swal2-icon {
+  border-width: 3px !important;
+  margin: 20px auto !important;
+}
+
+.swal2-success {
+  border-color: #48bb78 !important;
+}
+
+.swal2-success [class^='swal2-success-line'] {
+  background-color: #48bb78 !important;
+}
+
+.swal2-success .swal2-success-ring {
+  border-color: rgba(72, 187, 120, 0.3) !important;
+}
+
+.swal2-error {
+  border-color: #e74c3c !important;
+}
+
+.swal2-error [class^='swal2-x-mark-line'] {
+  background-color: #e74c3c !important;
+}
+
+.swal2-warning {
+  border-color: #f6ad55 !important;
+  color: #f6ad55 !important;
+}
+
+/* Pulsanti custom */
+.swal-custom-confirm,
+.swal-custom-cancel {
+  padding: 12px 28px !important;
+  border-radius: 10px !important;
+  font-size: 15px !important;
+  font-weight: 600 !important;
+  border: none !important;
+  cursor: pointer !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+}
+
+.swal-custom-confirm {
+  background: linear-gradient(135deg, #4facfe 0%, #00c9ff 100%) !important;
+  color: white !important;
+}
+
+.swal-custom-confirm:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 20px rgba(79, 172, 254, 0.4) !important;
+}
+
+.swal-custom-cancel {
+  background: #f7fafc !important;
+  color: #4a5568 !important;
+  border: 2px solid #e2e8f0 !important;
+}
+
+.swal-custom-cancel:hover {
+  background: #edf2f7 !important;
+  border-color: #cbd5e0 !important;
+}
+
+/* Progress bar del timer */
+.swal2-timer-progress-bar {
+  background: linear-gradient(90deg, #4facfe 0%, #00c9ff 100%) !important;
+  height: 4px !important;
+}
+
+/* Animazione entrata popup */
+.swal2-show {
+  animation: swalSlideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+@keyframes swalSlideIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9) translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Backdrop */
+.swal2-backdrop-show {
+  background: rgba(0, 0, 0, 0.6) !important;
+  backdrop-filter: blur(4px) !important;
+}
+
+/* Container pulsanti */
+.swal2-actions {
+  gap: 12px !important;
+  margin-top: 24px !important;
+}
+
+/* Responsive SweetAlert */
+@media (max-width: 600px) {
+  .swal-custom-popup {
+    padding: 24px 20px !important;
+    border-radius: 16px !important;
+  }
+
+  .swal2-title {
+    font-size: 20px !important;
+  }
+
+  .swal2-html-container {
+    font-size: 14px !important;
+  }
+
+  .swal-custom-confirm,
+  .swal-custom-cancel {
+    padding: 10px 20px !important;
+    font-size: 14px !important;
+  }
+}
+
+/* =========================================================
+   UTILITY CLASSES GLOBALI (opzionali)
+   ========================================================= */
+
+/* Smooth scroll */
+* {
+  scroll-behavior: smooth;
+}
+
+/* Box sizing */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Rimuovi outline sui focus per mouse (mantienilo per keyboard) */
+*:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* Focus visible per accessibilità */
+*:focus-visible {
+  outline: 2px solid #4facfe;
+  outline-offset: 2px;
+}
+
+/* =========================================================
+   SCROLLBAR PERSONALIZZATA (opzionale)
+   ========================================================= */
+
+/* Per browser basati su Webkit (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #4facfe 0%, #00c9ff 100%);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, #3a8fd9 0%, #00a8d9 100%);
+}
+
+/* Per Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #4facfe #f1f1f1;
+}
