@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
-import { CommonModule } from '@angular/common';
-import { Location } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { finalize } from 'rxjs/operators';
+import Swal from 'sweetalert2';
 
 import { ProfiloService } from '../../services/profilo.service';
 import { SessionService } from '../../services/session.service';
@@ -14,18 +15,13 @@ import { Role } from '../../models/dto/enums/role';
 @Component({
   selector: 'app-profilo',
   standalone: true,
-  imports: [
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
-    ChangePasswordComponent
-  ],
+  imports: [CommonModule, ReactiveFormsModule, ChangePasswordComponent],
   templateUrl: './profilo.component.html',
   styleUrls: ['./profilo.component.css']
 })
 export class ProfiloComponent implements OnInit {
-
   form!: FormGroup;
+
   loading = true;
   saving = false;
   showSuccess = false;
@@ -71,24 +67,27 @@ export class ProfiloComponent implements OnInit {
   }
 
   private loadProfilo(): void {
-    this.profiloService.getProfilo().subscribe({
-      next: (res: ProfiloResponse) => {
-        this.email = res.mail;
-        this.ruolo = String(res.ruolo);
+    this.loading = true;
 
-        this.form.patchValue({
-          nome: res.nome,
-          cognome: res.cognome,
-          numero: res.numero,
-          indirizzo: res.indirizzo ?? ''
-        });
+    this.profiloService.getProfilo()
+      .pipe(finalize(() => (this.loading = false)))
+      .subscribe({
+        next: (res: ProfiloResponse) => {
+          this.email = res.mail;
+          this.ruolo = String(res.ruolo);
 
-        this.loading = false;
-      },
-      error: () => {
-        this.loading = false;
-      }
-    });
+          this.form.patchValue({
+            nome: res.nome,
+            cognome: res.cognome,
+            numero: res.numero,
+            indirizzo: res.indirizzo ?? ''
+          });
+        },
+        error: (err) => {
+          console.error('Errore caricamento profilo', err);
+          Swal.fire('Errore', 'Impossibile caricare i dati del profilo. Riprova più tardi.', 'error');
+        }
+      });
   }
 
   onSubmit(): void {
@@ -97,6 +96,9 @@ export class ProfiloComponent implements OnInit {
     this.saving = true;
     this.showSuccess = false;
 
+    // disabilita durante salvataggio (evita doppi click)
+    this.form.disable();
+
     const payload: UpdateProfiloRequest = {
       nome: this.form.get('nome')!.value,
       cognome: this.form.get('cognome')!.value,
@@ -104,20 +106,33 @@ export class ProfiloComponent implements OnInit {
       indirizzo: this.form.get('indirizzo')!.value || null
     };
 
-    this.profiloService.updateProfilo(payload).subscribe({
-      next: () => {
+    this.profiloService.updateProfilo(payload)
+      .pipe(finalize(() => {
         this.saving = false;
-        this.showSuccess = true;
 
-        setTimeout(() => {
+        // riabilita ma rispetta campi readonly per ruolo
+        const role = this.sessionService.getRole();
+        this.form.enable();
+        if (this.isReadOnlyField('nome', role)) this.form.get('nome')?.disable();
+        if (this.isReadOnlyField('cognome', role)) this.form.get('cognome')?.disable();
+        if (this.isReadOnlyField('numero', role)) this.form.get('numero')?.disable();
+        if (this.isReadOnlyField('indirizzo', role)) this.form.get('indirizzo')?.disable();
+      }))
+      .subscribe({
+        next: () => {
+          this.showSuccess = true;
           this.loadProfilo();
-          this.showSuccess = false;
-        }, 1000);
-      },
-      error: () => {
-        this.saving = false;
-      }
-    });
+          setTimeout(() => (this.showSuccess = false), 1200);
+        },
+        error: (err) => {
+          console.error('Errore salvataggio profilo', err);
+          Swal.fire(
+            'Errore',
+            err?.error?.message || 'Errore durante il salvataggio delle modifiche.',
+            'error'
+          );
+        }
+      });
   }
 
   goBack(): void {

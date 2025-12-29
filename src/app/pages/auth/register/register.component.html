@@ -1,49 +1,112 @@
 <app-navbar></app-navbar>
 
-<div class="page-container">
-  <div class="register-card">
+<div class="auth-page">
+  <!-- Background decor -->
+  <div class="bg-gradient"></div>
+  <div class="bg-orb orb-1"></div>
+  <div class="bg-orb orb-2"></div>
 
-    <h2>Crea il tuo account</h2>
-
-    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-
-      <div class="form-group">
-        <label>Nome</label>
-        <input type="text" formControlName="nome" />
-        @if(nome?.touched && nome?.invalid){
-        <small >Inserisci il nome</small>}
+  <div class="auth-shell">
+    <!-- Pannello sinistro  -->
+    <aside class="brand-panel">
+      <div class="brand-top">
+        <div class="pill">Immobiliare • DietiEstate25</div>
+        <h1 class="brand-title">
+          Crea il tuo account,<br />
+          inizia subito.
+        </h1>
+        <p class="brand-subtitle">
+          Registrati per salvare preferiti, inviare proposte e seguire le trattative in modo ordinato.
+        </p>
       </div>
 
-      <div class="form-group">
-        <label>Cognome</label>
-        <input type="text" formControlName="cognome" />
-        @if(cognome?.touched && cognome?.invalid){
-        <small>Inserisci il cognome</small>}
+      <div class="brand-features">
+        <div class="feature">
+          <span class="dot"></span>
+          <div>
+            <div class="feature-title">Preferiti & ricerche</div>
+            <div class="feature-text">Tieni traccia degli immobili migliori per te.</div>
+          </div>
+        </div>
+
+        <div class="feature">
+          <span class="dot"></span>
+          <div>
+            <div class="feature-title">Proposte & notifiche</div>
+            <div class="feature-text">Aggiornamenti rapidi sulle tue offerte.</div>
+          </div>
+        </div>
+
+        <div class="feature">
+          <span class="dot"></span>
+          <div>
+            <div class="feature-title">Sicurezza</div>
+            <div class="feature-text">Credenziali protette e gestione ruoli.</div>
+          </div>
+        </div>
       </div>
 
-      <div class="form-group">
-        <label>Email</label>
-        <input type="email" formControlName="mail" />
-        @if(mail?.touched && mail?.invalid){
-        <small>Email non valida</small>}
+      <div class="brand-footer">
+        <div class="mini-card">
+          <div class="mini-kpi">Premium experience</div>
+          <div class="mini-text">UI moderna, responsive e coerente col tema immobiliare.</div>
+        </div>
       </div>
+    </aside>
 
-      <div class="form-group">
-        <label>Password</label>
-        <input type="password" formControlName="password" />
-        @if (password?.touched && password?.invalid){
-        <small>Inserisci la password</small>}
+    <!-- Card registrazione -->
+    <section class="form-wrap">
+      <div class="register-card">
+        <header class="form-head">
+          <h2>Crea il tuo account</h2>
+          <p class="subtitle">Compila i campi per completare la registrazione</p>
+        </header>
+
+        <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+          <div class="grid-2">
+            <div class="form-group">
+              <label>Nome</label>
+              <input type="text" formControlName="nome" autocomplete="given-name" />
+              @if(nome?.touched && nome?.invalid){
+                <small>Inserisci il nome</small>
+              }
+            </div>
+
+            <div class="form-group">
+              <label>Cognome</label>
+              <input type="text" formControlName="cognome" autocomplete="family-name" />
+              @if(cognome?.touched && cognome?.invalid){
+                <small>Inserisci il cognome</small>
+              }
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" formControlName="mail" autocomplete="email" />
+            @if(mail?.touched && mail?.invalid){
+              <small>Email non valida</small>
+            }
+          </div>
+
+          <div class="form-group">
+            <label>Password</label>
+            <input type="password" formControlName="password" autocomplete="new-password" />
+            @if (password?.touched && password?.invalid){
+              <small>Inserisci la password</small>
+            }
+          </div>
+
+          <button class="primary-btn" type="submit" [disabled]="registerForm.invalid">
+            Registrati
+          </button>
+        </form>
+
+        <p class="login-link">
+          Hai già un account?
+          <a routerLink="/login" class="login-anchor">Accedi</a>
+        </p>
       </div>
-
-      <button class="primary-btn" type="submit" [disabled]="registerForm.invalid">
-        Registrati
-      </button>
-    </form>
-
-    <p class="login-link">
-      Hai già un account?
-      <a routerLink="/login" class="login-anchor">Accedi</a>
-    </p>
-
+    </section>
   </div>
 </div>

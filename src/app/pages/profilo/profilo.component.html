@@ -1,50 +1,150 @@
-<div class="profilo-container">
+<div class="profile-page">
+  <div class="profile-wrap">
+    <!-- HERO -->
+    <header class="profile-hero">
+      <div class="hero-inner">
+        <div class="hero-text">
+          <h1 class="hero-title">Il mio profilo</h1>
+          <p class="hero-subtitle">Aggiorna i tuoi dati e gestisci la sicurezza dell’account</p>
 
-  <h1>Il mio profilo</h1>
+          <div class="hero-actions">
+            <button class="btn-back" type="button" (click)="goBack()">
+              ← Indietro
+            </button>
 
-  <button class="btn-back" (click)="goBack()">
-    ← Indietro
-  </button>
-
-  <div class="profilo-box" [class.loading]="loading">
-
-    <div class="info-riepilogo">
-      <p><strong>Email:</strong> {{ email }}</p>
-      <p><strong>Ruolo:</strong> {{ ruolo }}</p>
-    </div>
-
-    <!-- FORM DATI PROFILO -->
-    <form [formGroup]="form" (ngSubmit)="onSubmit()">
-
-      <label>Nome</label>
-      <input formControlName="nome">
-
-      <label>Cognome</label>
-      <input formControlName="cognome">
-
-      <label>Numero di telefono</label>
-      <input formControlName="numero">
-
-      <label>Indirizzo</label>
-      <input formControlName="indirizzo">
-
-      <button class="btn-primary" [disabled]="saving || form.invalid">
-        {{ saving ? 'Salvataggio...' : 'Salva modifiche' }}
-      </button>
-
-      @if (showSuccess) {
-        <div class="success-msg">
-          ✔ Modifiche salvate!
+            <div class="badge badge-role">
+              <span class="dot"></span>
+              <span>{{ ruolo }}</span>
+            </div>
+          </div>
         </div>
-      }
 
-    </form>
+        <div class="hero-avatar" aria-hidden="true">
+          <div class="avatar-ring">
+            <div class="avatar">
+              <span class="avatar-fallback">{{ (ruolo || 'U').slice(0, 1) }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
 
-    <!-- SEZIONE SICUREZZA solo per agente -->
-    @if (ruolo === 'AGENTE') {
-      <app-change-password></app-change-password>
-    }
+    <!-- CONTENT -->
+    <main class="profile-content profile-content--spaced">
+      <section class="card surface" [class.is-loading]="loading">
+        <!-- LOADING -->
+        @if (loading) {
+          <div class="loading">
+            <div class="spinner"></div>
+            <p>Caricamento profilo...</p>
+          </div>
+        } @else {
 
+          <!-- RIEPILOGO -->
+          <div class="summary">
+            <div class="summary-item surface">
+              <span class="summary-label">Email</span>
+              <span class="summary-value">{{ email }}</span>
+            </div>
 
+            <div class="summary-item surface">
+              <span class="summary-label">Ruolo</span>
+              <span class="summary-value">{{ ruolo }}</span>
+            </div>
+          </div>
+
+          <div class="divider"></div>
+
+          <!-- FORM DATI PROFILO -->
+          <form class="profile-form" [formGroup]="form" (ngSubmit)="onSubmit()">
+            <div class="form-grid">
+              <div class="field">
+                <label for="nome">Nome</label>
+                <input
+                  id="nome"
+                  formControlName="nome"
+                  [class.readonly]="form.get('nome')?.disabled"
+                  placeholder="Inserisci il nome"
+                />
+                @if (form.get('nome')?.disabled) {
+                  <small class="hint">Campo bloccato per il tuo ruolo</small>
+                }
+              </div>
+
+              <div class="field">
+                <label for="cognome">Cognome</label>
+                <input
+                  id="cognome"
+                  formControlName="cognome"
+                  [class.readonly]="form.get('cognome')?.disabled"
+                  placeholder="Inserisci il cognome"
+                />
+                @if (form.get('cognome')?.disabled) {
+                  <small class="hint">Campo bloccato per il tuo ruolo</small>
+                }
+              </div>
+
+              <div class="field">
+                <label for="numero">Numero di telefono</label>
+                <input
+                  id="numero"
+                  formControlName="numero"
+                  [class.readonly]="form.get('numero')?.disabled"
+                  placeholder="Es. +39 3xx xxx xxxx"
+                />
+                @if (form.get('numero')?.disabled) {
+                  <small class="hint">Campo bloccato per il tuo ruolo</small>
+                }
+              </div>
+
+              <div class="field">
+                <label for="indirizzo">Indirizzo</label>
+                <input
+                  id="indirizzo"
+                  formControlName="indirizzo"
+                  [class.readonly]="form.get('indirizzo')?.disabled"
+                  placeholder="Via, città, CAP"
+                />
+                @if (form.get('indirizzo')?.disabled) {
+                  <small class="hint">Campo bloccato per il tuo ruolo</small>
+                }
+              </div>
+            </div>
+
+            <button class="btn-primary" type="submit" [disabled]="saving || form.invalid || form.disabled">
+              @if (saving) {
+                <span class="btn-spinner"></span>
+                Salvataggio...
+              } @else {
+                Salva modifiche
+              }
+            </button>
+
+            @if (showSuccess) {
+              <div class="success-msg">
+                ✔ Modifiche salvate!
+              </div>
+            }
+          </form>
+
+          <!-- SICUREZZA: solo AGENTE -->
+          @if (ruolo === 'AGENTE') {
+            <div class="divider"></div>
+
+            <div class="section-head">
+              <div class="section-title">
+                <span class="section-kicker">Sicurezza</span>
+                <h2 class="section-h2">Cambio password</h2>
+              </div>
+              <p class="section-desc">Consigliato aggiornare periodicamente le credenziali.</p>
+            </div>
+
+            <div class="security-panel surface">
+              <app-change-password></app-change-password>
+            </div>
+          }
+        }
+      </section>
+    </main>
   </div>
 </div>
