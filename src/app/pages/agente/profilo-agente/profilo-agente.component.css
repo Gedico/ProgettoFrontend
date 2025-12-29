@@ -1,32 +1,295 @@
-.profilo-container {
-  max-width: 700px;
-  margin: 40px auto;
-  padding: 24px;
-  font-family: 'Inter', system-ui, sans-serif;
+:host {
+  display: block;
 }
 
-.profilo-container h1 {
-  text-align: center;
-  font-size: 32px;
+/* Pagina con sfondo + spacing alto (utile se navbar fixed) */
+.profile-page {
+  font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+  min-height: 100%;
+  background:
+    radial-gradient(1200px 600px at 20% 0%, rgba(59,130,246,0.10), transparent 60%),
+    radial-gradient(900px 600px at 85% 10%, rgba(6,182,212,0.10), transparent 60%),
+    #ffffff;
+
+  /* ✅ QUI forziamo lo "stacco" dall'alto */
+  padding: 56px 16px 56px;
+}
+
+/* Wrapper centrale */
+.profile-wrap {
+  max-width: 980px;
+  margin: 0 auto;
+}
+
+/* HERO */
+.profile-hero {
+  border-radius: 24px;
+  padding: 26px 22px;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, #0b1220 0%, #111c33 55%, #0b1220 100%);
+  color: #fff;
+  box-shadow: 0 18px 40px -24px rgba(2, 6, 23, 0.55);
+}
+
+.profile-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(600px 240px at 20% 15%, rgba(59,130,246,0.35), transparent 60%),
+    radial-gradient(520px 260px at 90% 30%, rgba(6,182,212,0.25), transparent 60%);
+  pointer-events: none;
+}
+
+.hero-inner {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 18px;
+  align-items: center;
+}
+
+.hero-title {
+  font-size: 34px;
+  font-weight: 800;
+  letter-spacing: -0.6px;
+  margin: 0 0 8px;
+}
+
+.hero-subtitle {
+  margin: 0 0 14px;
+  color: rgba(226, 232, 240, 0.85);
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+  width: fit-content;
+}
+
+.badge-verified {
+  background: rgba(255,255,255,0.10);
+  border: 1px solid rgba(255,255,255,0.18);
+  backdrop-filter: blur(8px);
+}
+
+.badge-icon {
+  width: 18px;
+  height: 18px;
+  color: #60a5fa;
+}
+
+.hero-avatar {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.avatar-ring {
+  width: 64px;
+  height: 64px;
+  border-radius: 999px;
+  padding: 2px;
+  background: linear-gradient(135deg, rgba(59,130,246,0.8), rgba(6,182,212,0.8));
+  box-shadow: 0 12px 26px -18px rgba(59,130,246,0.75);
+}
+
+.avatar {
+  width: 100%;
+  height: 100%;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.10);
+  border: 1px solid rgba(255,255,255,0.18);
+  display: grid;
+  place-items: center;
+}
+
+.avatar-fallback {
+  font-weight: 800;
+  letter-spacing: -0.4px;
+  color: #e2e8f0;
+}
+
+/* ✅ CONTENUTO: qui lo abbassiamo SICURO */
+.profile-content {
+  max-width: 980px;
+  margin: 0 auto;
+}
+
+/* Questa classe forza la distanza dall'hero */
+.profile-content--spaced {
+  margin-top: 22px !important;  /* ✅ stacco certo */
+}
+
+/* CARD */
+.card {
+  border-radius: 24px;
+  background: #ffffff;
+  border: 1px solid #eef2f7;
+  box-shadow:
+    0 4px 8px -6px rgba(2, 6, 23, 0.10),
+    0 20px 50px -40px rgba(2, 6, 23, 0.22);
+  padding: 26px;
+}
+
+.card.is-loading {
+  min-height: 360px;
+  display: grid;
+  place-items: center;
+}
+
+/* INFO GRID */
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.info-item {
+  display: flex;
+  gap: 12px;
+  padding: 16px;
+  border-radius: 18px;
+  background: #f8fafc;
+  border: 1px solid #eef2f7;
+  transition: transform 0.18s ease, background 0.18s ease;
+}
+
+.info-item:hover {
+  background: #ffffff;
+  transform: translateY(-2px);
+}
+
+.icon-wrap {
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  background: rgba(59,130,246,0.10);
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+}
+
+.info-icon {
+  width: 20px;
+  height: 20px;
+  color: #3b82f6;
+}
+
+.info-label {
+  display: block;
+  font-size: 12px;
   font-weight: 700;
-  margin-bottom: 28px;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 6px;
+}
+
+.info-value {
+  font-size: 15px;
+  font-weight: 600;
+  color: #0f172a;
+  word-break: break-word;
+}
+
+/* DIVIDER + SECURITY */
+.divider {
+  height: 1px;
+  background: #eef2f7;
+  margin: 18px 0 18px;
+}
+
+.section-head {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.section-icon {
+  width: 22px;
+  height: 22px;
+  color: #ef4444;
+}
+
+.section-kicker {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 800;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.section-h2 {
+  margin: 2px 0 0;
+  font-size: 18px;
+  font-weight: 800;
   color: #0f172a;
 }
 
-.profilo-box {
-  background: #ffffff;
-  padding: 28px;
+.section-desc {
+  margin: 0;
+  font-size: 14px;
+  color: #64748b;
+}
+
+/* ✅ Wrapper bello per il form senza toccare ChangePassword */
+.security-panel {
+  margin-top: 14px;
+  padding: 18px;
   border-radius: 18px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  background: #f8fafc;
+  border: 1px solid #eef2f7;
 }
 
-.info-riepilogo {
-  margin-bottom: 26px;
-  padding-bottom: 16px;
-  border-bottom: 1px solid #e5e7eb;
+/* LOADING / ERROR */
+.loading {
+  display: grid;
+  place-items: center;
+  gap: 12px;
+  color: #64748b;
+  font-weight: 600;
 }
 
-.info-riepilogo p {
-  margin: 4px 0;
-  color: #374151;
+.spinner {
+  width: 46px;
+  height: 46px;
+  border-radius: 999px;
+  border: 3px solid #eef2f7;
+  border-top-color: #3b82f6;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.error {
+  padding: 16px;
+  border-radius: 16px;
+  background: #fff1f2;
+  border: 1px solid #ffe4e6;
+  color: #9f1239;
+  font-weight: 600;
+}
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  .info-grid { grid-template-columns: 1fr; }
+  .hero-inner { grid-template-columns: 1fr; }
+  .hero-avatar { justify-content: flex-start; }
 }

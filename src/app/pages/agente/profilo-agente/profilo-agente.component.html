@@ -1,16 +1,115 @@
-<div class="profilo-container">
+<div class="profile-page">
+  <div class="profile-wrap">
+    <!-- HERO -->
+    <header class="profile-hero">
+      <div class="hero-inner">
+        <div class="hero-text">
+          <h1 class="hero-title">Profilo Agente</h1>
+          <p class="hero-subtitle">Gestisci il tuo account e le impostazioni di sicurezza</p>
 
-  <h1>Profilo agente</h1>
+          <div class="badge badge-verified">
+            <svg class="badge-icon" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+              <path fill-rule="evenodd"
+                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                    clip-rule="evenodd"/>
+            </svg>
+            <span>Profilo verificato • Agente immobiliare</span>
+          </div>
+        </div>
 
-  <div class="profilo-box" [class.loading]="loading">
+        <div class="hero-avatar" aria-hidden="true">
+          <div class="avatar-ring">
+            <div class="avatar">
+              <span class="avatar-fallback">{{ ruolo?.slice(0, 1) || 'A' }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
 
-    <div class="info-riepilogo">
-      <p><strong>Email:</strong> {{ email }}</p>
-      <p><strong>Ruolo:</strong> {{ ruolo }}</p>
-    </div>
+    <!-- CONTENT (✅ abbassato in modo certo) -->
+    <main class="profile-content profile-content--spaced">
+      <section class="card" [class.is-loading]="loading">
+        <!-- LOADING -->
+        <div *ngIf="loading" class="loading">
+          <div class="spinner"></div>
+          <p>Caricamento profilo...</p>
+        </div>
 
-    <!-- Sicurezza -->
-    <app-change-password></app-change-password>
+        <!-- ERROR -->
+        <div *ngIf="!loading && errore" class="error">
+          <p>Non riesco a recuperare le informazioni del profilo. Riprova più tardi.</p>
+        </div>
 
+        <!-- DATA -->
+        <div *ngIf="!loading && !errore">
+          <div class="info-grid">
+            <div class="info-item">
+              <div class="icon-wrap">
+                <svg class="info-icon" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                  <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/>
+                  <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/>
+                </svg>
+              </div>
+              <div class="info-content">
+                <span class="info-label">Email</span>
+                <span class="info-value">{{ email }}</span>
+              </div>
+            </div>
+
+            <div class="info-item">
+              <div class="icon-wrap">
+                <svg class="info-icon" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                  <path fill-rule="evenodd"
+                        d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+                        clip-rule="evenodd"/>
+                </svg>
+              </div>
+              <div class="info-content">
+                <span class="info-label">Ruolo</span>
+                <span class="info-value">{{ ruolo }}</span>
+              </div>
+            </div>
+
+            <div class="info-item">
+              <div class="icon-wrap">
+                <svg class="info-icon" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                  <path fill-rule="evenodd"
+                        d="M4 4a2 2 0 012-2h8a2 2 0 012 2v12a1 1 0 110 2H5a1 1 0 110-2V4zm3 1h2v2H7V5zm2 4H7v2h2V9zm2-4h2v2h-2V5zm2 4h-2v2h2V9z"
+                        clip-rule="evenodd"/>
+                </svg>
+              </div>
+              <div class="info-content">
+                <span class="info-label">Specializzazione</span>
+                <span class="info-value">{{ specializzazione }}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="divider"></div>
+
+          <div class="section-head">
+            <div class="section-title">
+              <svg class="section-icon" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                <path fill-rule="evenodd"
+                      d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
+                      clip-rule="evenodd"/>
+              </svg>
+              <div>
+                <p class="section-kicker">Sicurezza</p>
+                <h2 class="section-h2">Sicurezza account</h2>
+              </div>
+            </div>
+
+            <p class="section-desc">Aggiorna la password per mantenere il tuo account protetto.</p>
+          </div>
+
+          <!-- ✅ wrapper che abbellisce senza toccare ancora il componente -->
+          <div class="security-panel">
+            <app-change-password></app-change-password>
+          </div>
+        </div>
+      </section>
+    </main>
   </div>
 </div>
