@@ -6,11 +6,12 @@
   import { InserzioneService} from '../../services/inserzioni.service';
   import { InserzioneCard } from '../../models/inserzionecard';
   import {Subject, takeUntil} from 'rxjs';
+  import { ReactiveFormsModule } from '@angular/forms';
 
   @Component({
     selector: 'app-landing',
     standalone: true,
-    imports: [ RouterModule, SearchBarComponent, CommonModule, InserzioneCardComponent],
+    imports: [ RouterModule, SearchBarComponent, CommonModule, InserzioneCardComponent,ReactiveFormsModule],
     templateUrl: './landing.component.html',
     styleUrls: ['./landing.component.css']
   })

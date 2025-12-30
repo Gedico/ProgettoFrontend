@@ -75,7 +75,12 @@ export class VisualizzaInserzioneComponent implements OnInit {
           `https://maps.google.com/maps?q=${data.posizione.latitudine},${data.posizione.longitudine}&z=15&output=embed`
         );
 
-        this.caricaControproposta();
+        const session = this.sessionService.getSnapshot();
+
+        if (session.logged && session.role === 'UTENTE') {
+          this.caricaControproposta();
+        }
+
         this.caricamento = false;
       },
       error: () => this.caricamento = false
