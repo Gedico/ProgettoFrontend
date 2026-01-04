@@ -1,40 +1,40 @@
-<form [formGroup]="form" (ngSubmit)="cerca()" class="search-wrapper">
+<form [formGroup]="form" (ngSubmit)="onSearch()">
+  <div class="autocomplete-container">
+    <input
+      type="text"
+      placeholder="Inserisci il comune"
+      formControlName="comune"
+      autocomplete="off"
+    />
 
-  <div class="search-box">
-
-    <div class="item">
-      <span class="icon">🔍</span>
-      <input type="text" formControlName="query" placeholder="Cosa cerchi? (villa, bilocale...)">
-    </div>
-
-    <div class="item">
-      <span class="icon">📍</span>
-      <input type="text" formControlName="citta" placeholder="Città">
-    </div>
-
-    <div class="item">
-      <span class="icon">🏷️</span>
-      <select formControlName="categoria">
-        <option value="">Categoria</option>
-        <option value="VILLA">Villa</option>
-        <option value="APPARTAMENTO">Appartamento</option>
-        <option value="MONOLOCALE">Monolocale</option>
-        <option value="BILOCALE">Bilocale</option>
-      </select>
-    </div>
-
-    <div class="item short">
-      <span class="icon">💳</span>
-      <input type="number" formControlName="prezzoMin" placeholder="Min">
-    </div>
-
-    <div class="item short">
-      <span class="icon">💳</span>
-      <input type="number" formControlName="prezzoMax" placeholder="Max">
-    </div>
-
-    <button type="submit" class="btn-search">Cerca</button>
-
+    <ul *ngIf="comuniSuggeriti.length > 0" class="suggerimenti">
+      <li *ngFor="let c of comuniSuggeriti" (click)="selezionaComune(c)">
+        {{ c }}
+      </li>
+    </ul>
   </div>
 
+  <button type="button" (click)="toggleFiltriAggiuntivi()">
+    Filtri aggiuntivi
+  </button>
+
+  <div *ngIf="mostraFiltriAggiuntivi" class="filtri-avanzati">
+    <input type="text" placeholder="Categoria" formControlName="categoria" />
+    <input type="number" placeholder="Prezzo Min" formControlName="prezzoMin" />
+    <input type="number" placeholder="Prezzo Max" formControlName="prezzoMax" />
+    <input type="number" placeholder="Dimensioni Min" formControlName="dimensioniMin" />
+    <input type="number" placeholder="Dimensioni Max" formControlName="dimensioniMax" />
+    <input type="number" placeholder="Numero Stanze" formControlName="numeroStanze" />
+    <label>
+      <input type="checkbox" formControlName="ascensore" /> Ascensore
+    </label>
+    <input type="text" placeholder="Stato" formControlName="stato" />
+  </div>
+
+  <button type="submit" [disabled]="form.invalid">
+    Cerca
+  </button>
 </form>
+
+
+

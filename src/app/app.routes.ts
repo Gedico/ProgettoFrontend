@@ -123,6 +123,22 @@ export const routes: Routes = [
 
 
   {
+    path: 'agente/inserzioni/nuova',
+    loadComponent: () => import('./components/crea-inserzione/crea-inserzione.component')
+      .then(m => m.CreaInserzioneComponent)
+  },
+
+
+  {
+    path: 'search',
+    loadComponent: () => import('./pages/risultati/risultati.component').then(m => m.RisultatiComponent)
+  },
+
+
+/*------------------PROPOSTE--------------------------------------------------------------------------------------------------- */
+
+
+  {
     path: 'proposte-inviate',
     loadComponent: () =>
       import('./pages/proposte-inviate/proposte-inviate.component')
@@ -131,19 +147,7 @@ export const routes: Routes = [
   },
 
 
-
-  {
-    path: 'ricerca',
-    loadComponent: () => import('./pages/risultati-ricerca/risultati-ricerca.component')
-      .then(m => m.RisultatiRicercaComponent)
-  },
-
-
-  {
-    path: 'agente/inserzioni/nuova',
-    loadComponent: () => import('./components/crea-inserzione/crea-inserzione.component')
-      .then(m => m.CreaInserzioneComponent)
-  },
+  
 
 
 
