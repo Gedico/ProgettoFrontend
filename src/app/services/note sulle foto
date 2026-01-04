@@ -1,3 +1,0 @@
-Nella gestione delle foto sto utilizzando google claud che mi permette di accedere a degli url pubblici che mi riportano a delle immagini
-in questo modo le immagini sono salvate nel claud e non vanno ad appenantire il peso dell'applicativo, quello che adesso vado a fare è costruire un service che
-si interfaccerà con il backend in modo che il backend gestisce la dinamica della gestione foto ed il frontend riceve solo glu url giusti.

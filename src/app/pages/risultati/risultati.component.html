@@ -1,0 +1,17 @@
+<h2>Risultati ricerca</h2>
+<p>Comune selezionato: <strong>{{ comune }}</strong></p>
+
+<div class="container-risultati" style="display: flex; gap: 16px;">
+  
+  <!-- Lista a sinistra -->
+ <div class="lista-inserzioni" style="flex: 2;">
+  <app-lista-inserzioni [inserzioni]="inserzioni"></app-lista-inserzioni>
+</div>
+
+
+  <!-- Preview mappa / destro -->
+  <div class="preview-mappa" style="flex: 1;">
+  <app-mappa-interattiva [inserzioniPreview]="markerInserzioni"></app-mappa-interattiva>
+
+</div>
+

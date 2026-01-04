@@ -12,7 +12,7 @@ registerLocaleData(localeIt);
 bootstrapApplication(AppComponent, {
   ...appConfig,
   providers: [
-    provideRouter(routes, withHashLocation()),
+    provideRouter(routes),
     provideHttpClient(
       withFetch(),
       withInterceptors([AuthInterceptor])

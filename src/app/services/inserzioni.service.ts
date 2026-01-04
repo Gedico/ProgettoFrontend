@@ -3,6 +3,9 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { InserzioneCard } from '../models/inserzionecard';
 import { InserzioneResponse } from '../models/inserzioneresponse';
+import { InserzioneSearchRequest } from '../models/dto/Search/inserzioneserchrequest';
+import { InserzioneSearchResponse } from '../models/dto/Search/inserzionesearchresponse';
+
 
 
 @Injectable({
@@ -10,6 +13,11 @@ import { InserzioneResponse } from '../models/inserzioneresponse';
 })
 export class InserzioneService {
   private apiUrl = 'http://localhost:8080/api/inserzioni';
+
+
+  private risultatiSearch: InserzioneResponse[] = [];
+
+
 
   constructor(private http: HttpClient) {
   }
@@ -33,8 +41,6 @@ export class InserzioneService {
   }
 
 
-
-
   getUltimeInserzioni(): Observable<InserzioneCard[]> {
     return this.http.get<InserzioneCard[]>(`${this.apiUrl}/recenti`);
   }
@@ -44,21 +50,19 @@ export class InserzioneService {
     return this.http.get<InserzioneResponse>(`${this.apiUrl}/${id}`);
   }
 
-  // 🔹 Ricerca avanzata
-  ricercaInserzioni(filtri: any): Observable<InserzioneResponse[]> {
-    let params = new HttpParams();
-
-    Object.keys(filtri).forEach(key => {
-      if (filtri[key] !== null && filtri[key] !== '') {
-        params = params.set(key, filtri[key]);
-      }
-    });
-
-    return this.http.get<InserzioneResponse[]>(`${this.apiUrl}/ricerca`, {params});
+  // 🔹 Ricerca inserzioni corretta
+  ricercaInserzioni(
+    filtri: InserzioneSearchRequest
+  ): Observable<InserzioneSearchResponse[]> {
+    return this.http.post<InserzioneSearchResponse[]>(`${this.apiUrl}/search`, filtri);
   }
+
 
   // 🔹 ottiene le inserzioni dell'agente loggato
   getInserzioniAgente(): Observable<InserzioneCard[]> {
     return this.http.get<InserzioneCard[]>(`${this.apiUrl}/mie`);
   }
+
+
 }
+
