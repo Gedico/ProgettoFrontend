@@ -35,7 +35,7 @@
           [class.ng-valid]="datiInserzioneForm.get('titolo')?.touched && datiInserzioneForm.get('titolo')?.valid"
         />
         <small class="form-text">
-          {{ datiInserzioneForm.get('titolo')?.value?.length || 0 }}/100 caratteri
+          {{ (datiInserzioneForm.get('titolo')?.value || '').length }}/100
         </small>
         @if (datiInserzioneForm.get('titolo')?.touched && datiInserzioneForm.get('titolo')?.invalid) {
           <small class="error-message">
@@ -60,7 +60,7 @@
           [class.ng-valid]="datiInserzioneForm.get('descrizione')?.touched && datiInserzioneForm.get('descrizione')?.valid"
         ></textarea>
         <small class="form-text">
-          {{ datiInserzioneForm.get('descrizione')?.value?.length || 0 }}/1000 caratteri
+          {{ (datiInserzioneForm.get('descrizione')?.value || '').length }}/100
         </small>
         @if (datiInserzioneForm.get('descrizione')?.touched && datiInserzioneForm.get('descrizione')?.invalid) {
           <small class="error-message">
@@ -201,10 +201,11 @@
 
       <!-- CLASSE ENERGETICA -->
       <div class="form-group">
-        <label for="classeEnergetica" class="form-label required">
+        <label class="form-label required">
           <span class="label-icon">⚡</span>
           Classe energetica
         </label>
+
         <div class="energy-class-grid">
           @for (classe of ['A+', 'A', 'B', 'C', 'D', 'E', 'F', 'G']; track classe) {
             <button
@@ -216,6 +217,7 @@
             </button>
           }
         </div>
+
         @if (datiInserzioneForm.get('classeEnergetica')?.touched && datiInserzioneForm.get('classeEnergetica')?.invalid) {
           <small class="error-message">
             ⚠️ Seleziona la classe energetica

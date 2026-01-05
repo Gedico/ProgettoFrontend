@@ -1,31 +1,45 @@
-<!-- STEP 4: IMMAGINI + CONFERMA -->
-<div>
+<div class="step-container">
+  <h2>Carica le foto dell'immobile</h2>
+  <p class="subtitle">La prima foto sarà la copertina dell'annuncio</p>
 
-  <h2>Carica immagini</h2>
+  <div class="upload-zone" (click)="fileInput.click()">
+    <input
+      #fileInput
+      type="file"
+      multiple
+      accept="image/*"
+      (change)="fileSelezionati.emit($event)"
+      style="display: none;">
 
-  <input
-    type="file"
-    accept="image/*"
-    multiple
-    (change)="fileSelezionati.emit($event)"
-  />
-
-  @if (anteprime.length > 0){
-  <div class="preview-container">
-    <div class="preview" *ngFor="let img of anteprime; let i = index">
-      <img [src]="img" />
-      <button type="button" (click)="rimuovi.emit(i)">✕</button>
+    <div class="upload-content">
+      <span class="upload-icon">📸</span>
+      <p>Trascina qui le foto o <strong>clicca per sfogliare</strong></p>
+      <small>{{ immaginiCount }} foto caricate</small>
     </div>
-  </div>}
+  </div>
+
+  <div class="preview-grid" *ngIf="anteprime.length > 0">
+    <div *ngFor="let url of anteprime; let i = index" class="preview-card" [class.is-cover]="i === 0">
+      <img [src]="url" alt="Anteprima immobile">
+
+      <div class="badge-cover" *ngIf="i === 0">Copertina</div>
+
+      <button class="btn-remove" (click)="rimuovi.emit(i)" title="Rimuovi immagine">
+        &times;
+      </button>
+    </div>
+  </div>
 
   <div class="actions">
-    <button type="button" (click)="indietro.emit()">Indietro</button>
-
+    <button type="button" class="btn-back" (click)="indietro.emit()">
+      ← Indietro
+    </button>
     <button
       type="button"
-      [disabled]="immaginiCount === 0"
+      class="btn-submit"
+      [disabled]="anteprime.length === 0"
       (click)="pubblica.emit()">
-      Pubblica inserzione
+      Pubblica Annuncio
     </button>
   </div>
 </div>
