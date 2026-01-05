@@ -1,90 +1,276 @@
-<!-- STEP 3: DATI INSERZIONE -->
-<div [formGroup]="datiInserzioneForm">
+<div [formGroup]="datiInserzioneForm" class="step-dati-container">
 
-  <h2>Dati inserzione</h2>
-
-  <!-- TITOLO -->
-  <div class="form-group">
-    <label for="titolo">Titolo</label>
-    <input id="titolo" type="text" formControlName="titolo" />
+  <!-- Introduzione Step -->
+  <div class="step-intro">
+    <div class="step-icon">📝</div>
+    <h2 class="step-main-title">Dettagli dell'immobile</h2>
+    <p class="step-description">
+      Fornisci tutte le informazioni necessarie per rendere l'inserzione completa e attraente
+    </p>
   </div>
 
-  <!-- DESCRIZIONE -->
-  <div class="form-group">
-    <label for="descrizione">Descrizione</label>
-    <textarea id="descrizione" formControlName="descrizione"></textarea>
+  <!-- Form Content -->
+  <div class="form-content">
+
+    <!-- Sezione Informazioni Principali -->
+    <div class="form-section">
+      <h3 class="section-title">
+        <span class="section-icon">✍️</span>
+        Informazioni principali
+      </h3>
+
+      <!-- TITOLO -->
+      <div class="form-group">
+        <label for="titolo" class="form-label required">
+          Titolo annuncio
+        </label>
+        <input
+          id="titolo"
+          type="text"
+          class="form-control"
+          formControlName="titolo"
+          placeholder="Es. Appartamento luminoso in centro"
+          maxlength="100"
+          [class.ng-invalid]="datiInserzioneForm.get('titolo')?.touched && datiInserzioneForm.get('titolo')?.invalid"
+          [class.ng-valid]="datiInserzioneForm.get('titolo')?.touched && datiInserzioneForm.get('titolo')?.valid"
+        />
+        <small class="form-text">
+          {{ datiInserzioneForm.get('titolo')?.value?.length || 0 }}/100 caratteri
+        </small>
+        @if (datiInserzioneForm.get('titolo')?.touched && datiInserzioneForm.get('titolo')?.invalid) {
+          <small class="error-message">
+            ⚠️ Il titolo è obbligatorio
+          </small>
+        }
+      </div>
+
+      <!-- DESCRIZIONE -->
+      <div class="form-group">
+        <label for="descrizione" class="form-label required">
+          Descrizione dettagliata
+        </label>
+        <textarea
+          id="descrizione"
+          class="form-control"
+          formControlName="descrizione"
+          placeholder="Descrivi l'immobile, i suoi punti di forza, la zona..."
+          rows="6"
+          maxlength="1000"
+          [class.ng-invalid]="datiInserzioneForm.get('descrizione')?.touched && datiInserzioneForm.get('descrizione')?.invalid"
+          [class.ng-valid]="datiInserzioneForm.get('descrizione')?.touched && datiInserzioneForm.get('descrizione')?.valid"
+        ></textarea>
+        <small class="form-text">
+          {{ datiInserzioneForm.get('descrizione')?.value?.length || 0 }}/1000 caratteri
+        </small>
+        @if (datiInserzioneForm.get('descrizione')?.touched && datiInserzioneForm.get('descrizione')?.invalid) {
+          <small class="error-message">
+            ⚠️ La descrizione è obbligatoria
+          </small>
+        }
+      </div>
+
+      <!-- PREZZO E CATEGORIA in row -->
+      <div class="form-row">
+        <!-- PREZZO -->
+        <div class="form-group">
+          <label for="prezzo" class="form-label required">
+            <span class="label-icon">💰</span>
+            Prezzo
+          </label>
+          <div class="input-group">
+            <input
+              id="prezzo"
+              type="text"
+              inputmode="numeric"
+              class="form-control"
+              formControlName="prezzo"
+              (input)="prezzoInput.emit($event)"
+              (blur)="prezzoBlur.emit()"
+              placeholder="100000"
+              autocomplete="off"
+              [class.ng-invalid]="datiInserzioneForm.get('prezzo')?.touched && datiInserzioneForm.get('prezzo')?.invalid"
+              [class.ng-valid]="datiInserzioneForm.get('prezzo')?.touched && datiInserzioneForm.get('prezzo')?.valid"
+            />
+            <span class="input-suffix">€</span>
+          </div>
+          @if (datiInserzioneForm.get('prezzo')?.touched && datiInserzioneForm.get('prezzo')?.invalid) {
+            <small class="error-message">
+              ⚠️ Inserisci un prezzo valido
+            </small>
+          }
+        </div>
+
+        <!-- CATEGORIA -->
+        <div class="form-group">
+          <label for="categoria" class="form-label required">
+            <span class="label-icon">🏷️</span>
+            Tipo annuncio
+          </label>
+          <div class="select-wrapper">
+            <select
+              id="categoria"
+              class="form-control"
+              formControlName="categoria"
+              [class.ng-invalid]="datiInserzioneForm.get('categoria')?.touched && datiInserzioneForm.get('categoria')?.invalid"
+              [class.ng-valid]="datiInserzioneForm.get('categoria')?.touched && datiInserzioneForm.get('categoria')?.valid"
+            >
+              <option value="">Seleziona...</option>
+              <option value="VENDITA">Vendita</option>
+              <option value="AFFITTO">Affitto</option>
+            </select>
+          </div>
+          @if (datiInserzioneForm.get('categoria')?.touched && datiInserzioneForm.get('categoria')?.invalid) {
+            <small class="error-message">
+              ⚠️ Seleziona il tipo di annuncio
+            </small>
+          }
+        </div>
+      </div>
+    </div>
+
+    <!-- Sezione Caratteristiche -->
+    <div class="form-section">
+      <h3 class="section-title">
+        <span class="section-icon">📐</span>
+        Caratteristiche
+      </h3>
+
+      <div class="form-row">
+        <!-- DIMENSIONI -->
+        <div class="form-group">
+          <label for="dimensioni" class="form-label required">
+            Superficie
+          </label>
+          <div class="input-group">
+            <input
+              id="dimensioni"
+              type="number"
+              class="form-control"
+              formControlName="dimensioni"
+              placeholder="80"
+              min="1"
+              [class.ng-invalid]="datiInserzioneForm.get('dimensioni')?.touched && datiInserzioneForm.get('dimensioni')?.invalid"
+              [class.ng-valid]="datiInserzioneForm.get('dimensioni')?.touched && datiInserzioneForm.get('dimensioni')?.valid"
+            />
+            <span class="input-suffix">m²</span>
+          </div>
+          @if (datiInserzioneForm.get('dimensioni')?.touched && datiInserzioneForm.get('dimensioni')?.invalid) {
+            <small class="error-message">
+              ⚠️ Inserisci la superficie
+            </small>
+          }
+        </div>
+
+        <!-- NUMERO STANZE -->
+        <div class="form-group">
+          <label for="numeroStanze" class="form-label required">
+            N° Stanze
+          </label>
+          <input
+            id="numeroStanze"
+            type="number"
+            class="form-control"
+            formControlName="numeroStanze"
+            placeholder="3"
+            min="1"
+            [class.ng-invalid]="datiInserzioneForm.get('numeroStanze')?.touched && datiInserzioneForm.get('numeroStanze')?.invalid"
+            [class.ng-valid]="datiInserzioneForm.get('numeroStanze')?.touched && datiInserzioneForm.get('numeroStanze')?.valid"
+          />
+          @if (datiInserzioneForm.get('numeroStanze')?.touched && datiInserzioneForm.get('numeroStanze')?.invalid) {
+            <small class="error-message">
+              ⚠️ Inserisci il numero di stanze
+            </small>
+          }
+        </div>
+
+        <!-- PIANO -->
+        <div class="form-group">
+          <label for="piano" class="form-label">
+            Piano
+          </label>
+          <input
+            id="piano"
+            type="number"
+            class="form-control"
+            formControlName="piano"
+            placeholder="2"
+          />
+          <small class="form-text">Opzionale</small>
+        </div>
+      </div>
+
+      <!-- CLASSE ENERGETICA -->
+      <div class="form-group">
+        <label for="classeEnergetica" class="form-label required">
+          <span class="label-icon">⚡</span>
+          Classe energetica
+        </label>
+        <div class="energy-class-grid">
+          @for (classe of ['A+', 'A', 'B', 'C', 'D', 'E', 'F', 'G']; track classe) {
+            <button
+              type="button"
+              class="energy-class-btn"
+              [class.selected]="datiInserzioneForm.get('classeEnergetica')?.value === classe"
+              (click)="datiInserzioneForm.patchValue({classeEnergetica: classe})">
+              {{ classe }}
+            </button>
+          }
+        </div>
+        @if (datiInserzioneForm.get('classeEnergetica')?.touched && datiInserzioneForm.get('classeEnergetica')?.invalid) {
+          <small class="error-message">
+            ⚠️ Seleziona la classe energetica
+          </small>
+        }
+      </div>
+
+      <!-- ASCENSORE -->
+      <div class="checkbox-group">
+        <input
+          type="checkbox"
+          id="ascensore"
+          formControlName="ascensore"
+        />
+        <label for="ascensore" class="checkbox-label">
+          🛗 Ascensore presente
+        </label>
+      </div>
+    </div>
+
+    <!-- Progress Indicator -->
+    <div class="field-progress">
+      <div class="progress-bar">
+        <div
+          class="progress-fill"
+          [style.width]="getProgressPercentage() + '%'">
+        </div>
+      </div>
+      <small class="progress-text">
+        {{ getFilledFieldsCount() }} di 8 campi compilati
+      </small>
+    </div>
+
   </div>
 
-  <!-- PREZZO -->
-  <div class="form-group">
-    <label for="prezzo">Prezzo (€)</label>
-    <input
-      id="prezzo"
-      type="text"
-      inputmode="numeric"
-      formControlName="prezzo"
-      (input)="prezzoInput.emit($event)"
-      (blur)="prezzoBlur.emit()"
-      placeholder="Es. 100.000"
-      autocomplete="off"
-    />
-  </div>
+  <!-- Bottoni Navigazione -->
+  <div class="button-group">
+    <button
+      type="button"
+      class="btn btn-secondary"
+      (click)="indietro.emit()">
+      ← Indietro
+    </button>
 
-
-  <!-- DIMENSIONI -->
-  <div class="form-group">
-    <label for="dimensioni">Superficie (m²)</label>
-    <input id="dimensioni" type="number" formControlName="dimensioni" />
-  </div>
-
-  <!-- NUMERO STANZE -->
-  <div class="form-group">
-    <label for="numeroStanze">Numero stanze</label>
-    <input id="numeroStanze" type="number" formControlName="numeroStanze" />
-  </div>
-
-  <!-- PIANO -->
-  <div class="form-group">
-    <label for="piano">Piano</label>
-    <input id="piano" type="number" formControlName="piano" />
-  </div>
-
-  <!-- ASCENSORE -->
-  <div class="form-group">
-    <label>
-      <input type="checkbox" formControlName="ascensore" />
-      Ascensore
-    </label>
-  </div>
-
-  <!-- CLASSE ENERGETICA -->
-  <div class="form-group">
-    <label for="classeEnergetica">Classe energetica</label>
-    <select id="classeEnergetica" formControlName="classeEnergetica">
-      <option value="">Seleziona</option>
-      <option *ngFor="let c of ['A','B','C','D','E','F','G']" [value]="c">
-        {{ c }}
-      </option>
-    </select>
-  </div>
-
-  <!-- CATEGORIA -->
-  <div class="form-group">
-    <label for="categoria">Categoria</label>
-    <select id="categoria" formControlName="categoria">
-      <option value="">Seleziona</option>
-      <option value="VENDITA">Vendita</option>
-      <option value="AFFITTO">Affitto</option>
-    </select>
-  </div>
-
-  <!-- NAVIGAZIONE -->
-  <div class="actions">
-    <button type="button" (click)="indietro.emit()">Indietro</button>
-    <button type="button"
-            (click)="avanti.emit()"
-            [disabled]="!datiInserzioneForm.valid">
-      Avanti
+    <button
+      type="button"
+      class="btn btn-primary"
+      (click)="avanti.emit()"
+      [disabled]="!datiInserzioneForm.valid">
+      @if (datiInserzioneForm.valid) {
+        Continua →
+      } @else {
+        Completa i campi obbligatori
+      }
     </button>
   </div>
+
 </div>

@@ -1,70 +1,143 @@
-  <!-- STEP 1: POSIZIONE (COMUNE + INDIRIZZO) -->
-  <div [formGroup]="posizioneForm">
+<div [formGroup]="posizioneForm" class="step-posizione-container">
 
-    <h2>Posizione</h2>
+  <!-- Introduzione Step -->
+  <div class="step-intro">
+    <div class="step-icon">📍</div>
+    <h2 class="step-main-title">Dove si trova l'immobile?</h2>
+    <p class="step-description">
+      Inserisci la posizione esatta per aiutare i potenziali acquirenti a trovare la proprietà
+    </p>
+  </div>
 
-    <!-- COMUNE (AUTOCOMPLETE, LISTA CHIUSA) -->
+  <!-- Form Content -->
+  <div class="form-content">
+
+    <!-- COMUNE -->
     <div class="form-group">
-      <label for="comune">Comune</label>
+      <label for="comune" class="form-label required">
+        <span class="label-icon">🏘️</span>
+        Comune
+      </label>
 
-      <input
-        id="comune"
-        type="text"
-        formControlName="comune"
-        placeholder="Inserisci almeno 3 lettere"
-        autocomplete="off"
-      />
+      <div class="autocomplete-container">
+        <input
+          id="comune"
+          type="text"
+          class="form-control"
+          [class.has-value]="posizioneForm.get('comune')?.value"
+          [class.ng-invalid]="posizioneForm.get('comune')?.touched && posizioneForm.get('comune')?.invalid"
+          [class.ng-valid]="posizioneForm.get('comune')?.touched && posizioneForm.get('comune')?.valid"
+          formControlName="comune"
+          placeholder="Es. Napoli, Roma, Milano..."
+          autocomplete="off"
+        />
 
+        <!-- Dropdown Suggerimenti -->
+        @if (comuniFiltrati.length > 0) {
+          <ul class="autocomplete-dropdown">
+            @for (comune of comuniFiltrati; track comune) {
+              <li
+                class="autocomplete-item"
+                (click)="selezionaComune.emit(comune)">
+                <span class="item-icon">📌</span>
+                <span class="item-text">{{ comune }}</span>
+              </li>
+            }
+          </ul>
+        }
+      </div>
 
-      @if (comuniFiltrati.length > 0){
-      <ul class="autocomplete-list">
-        <li
-          *ngFor="let comune of comuniFiltrati"
-          (click)="selezionaComune.emit(comune)">
-          {{ comune }}
-        </li>
-      </ul>}
+      <!-- Messaggi di Validazione -->
+      @if (posizioneForm.get('comune')?.touched && posizioneForm.get('comune')?.errors?.['required']) {
+        <small class="error-message">
+          ⚠️ Il comune è obbligatorio
+        </small>
+      }
 
-
-      <datalist id="lista-comuni">
-        <option *ngFor="let nome of nomiComuni" [value]="nome"></option>
-      </datalist>
-
-
-      @if (posizioneForm.get('comune')?.touched && posizioneForm.get('comune')?.errors?.['required']){
-      <small class="error">
-        Il comune è obbligatorio
-      </small>>}
+      @if (posizioneForm.get('comune')?.valid && posizioneForm.get('comune')?.value) {
+        <small class="success-message">
+          ✓ Comune valido
+        </small>
+      }
     </div>
 
-    <!-- INDIRIZZO CON AUTOCOMPLETE -->
+    <!-- INDIRIZZO -->
     <div class="form-group">
-      <label for="indirizzo">Indirizzo</label>
+      <label for="indirizzo" class="form-label required">
+        <span class="label-icon">🏠</span>
+        Indirizzo completo
+      </label>
 
       <input
         #indirizzoInput
         id="indirizzo"
         type="text"
+        class="form-control"
+        [class.has-value]="posizioneForm.get('indirizzo')?.value"
+        [class.ng-invalid]="posizioneForm.get('indirizzo')?.touched && posizioneForm.get('indirizzo')?.invalid"
+        [class.ng-valid]="posizioneForm.get('indirizzo')?.touched && posizioneForm.get('indirizzo')?.valid"
         formControlName="indirizzo"
-        placeholder="Es. Viale Lenin 10"
+        placeholder="Es. Via Roma 123"
         autocomplete="off"
       />
 
-      
-      @if (posizioneForm.get('indirizzo')?.touched && posizioneForm.get('indirizzo')?.invalid){
-      <small class="error">
-        L’indirizzo è obbligatorio
-      </small>}
+      <small class="form-text">
+        💡 Inizia a digitare per vedere i suggerimenti automatici
+      </small>
+
+      <!-- Messaggi di Validazione -->
+      @if (posizioneForm.get('indirizzo')?.touched && posizioneForm.get('indirizzo')?.invalid) {
+        <small class="error-message">
+          ⚠️ L'indirizzo è obbligatorio
+        </small>
+      }
+
+      @if (posizioneForm.get('indirizzo')?.valid && posizioneForm.get('indirizzo')?.value) {
+        <small class="success-message">
+          ✓ Indirizzo completo
+        </small>
+      }
     </div>
 
+    <!-- Info Box -->
+    @if (!posizioneForm.get('comune')?.value) {
+      <div class="info-box">
+        <div class="info-icon">ℹ️</div>
+        <div class="info-content">
+          <strong>Suggerimento:</strong> Seleziona prima il comune, poi inserisci l'indirizzo specifico.
+          Questo ci aiuta a posizionare correttamente l'immobile sulla mappa.
+        </div>
+      </div>
+    }
 
-    <!-- NAVIGAZIONE -->
-    <div class="actions">
-      <button
-        type="button"
-        (click)="nextStep.emit()"
-        [disabled]="!posizioneForm.valid">
-        Avanti
-      </button>
+    <!-- Progress Indicator -->
+    <div class="field-progress">
+      <div class="progress-bar">
+        <div
+          class="progress-fill"
+          [style.width]="getProgressPercentage() + '%'">
+        </div>
+      </div>
+      <small class="progress-text">
+        {{ getFilledFieldsCount() }} di 2 campi compilati
+      </small>
     </div>
+
   </div>
+
+  <!-- Navigazione -->
+  <div class="button-group">
+    <button
+      type="button"
+      class="btn btn-primary"
+      (click)="nextStep.emit()"
+      [disabled]="!posizioneForm.valid">
+      @if (posizioneForm.valid) {
+        Continua →
+      } @else {
+        Compila tutti i campi
+      }
+    </button>
+  </div>
+
+</div>

@@ -1,7 +1,6 @@
-import { Component, EventEmitter, Input, Output, ViewChild, ElementRef } from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {FormGroup, ReactiveFormsModule} from '@angular/forms';
-
+import { Component, EventEmitter, Input, Output, ViewChild, ElementRef, PLATFORM_ID, Inject } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 
 declare const google: any;
 
@@ -31,6 +30,7 @@ export class StepPosizioneComponent {
     indirizzo: string;
   }>();
 
+  constructor(@Inject(PLATFORM_ID) private platformId: Object) {}
 
   ngOnInit(): void {
     this.posizioneForm.get('comune')!
@@ -40,10 +40,14 @@ export class StepPosizioneComponent {
       });
   }
 
-
   ngAfterViewInit(): void {
+    // Verifica che siamo nel browser e che Google Maps sia caricato
+    if (!isPlatformBrowser(this.platformId)) {
+      return;
+    }
 
-    if (!this.indirizzoInput) {
+    if (!this.indirizzoInput || typeof google === 'undefined') {
+      console.warn('Google Maps non è ancora caricato');
       return;
     }
 
@@ -82,6 +86,24 @@ export class StepPosizioneComponent {
     });
   }
 
+  /**
+   * Calcola quanti campi sono stati compilati
+   */
+  getFilledFieldsCount(): number {
+    let count = 0;
 
+    if (this.posizioneForm.get('comune')?.value) count++;
+    if (this.posizioneForm.get('indirizzo')?.value) count++;
+
+    return count;
+  }
+
+  /**
+   * Calcola la percentuale di completamento
+   */
+  getProgressPercentage(): number {
+    const totalFields = 2;
+    const filledFields = this.getFilledFieldsCount();
+    return (filledFields / totalFields) * 100;
+  }
 }
-

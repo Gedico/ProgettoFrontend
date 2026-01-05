@@ -13,8 +13,15 @@ export class ProgressBarComponent {
   @Input() stepCorrente!: number;
   @Input() totaleStep!: number;
 
+  // Etichette descrittive per ogni step
+  stepLabels: string[] = [
+    '📍 Posizione',
+    '🗺️ Mappa',
+    '📝 Dettagli',
+    '📸 Immagini'
+  ];
+
   isCompletato(step: number): boolean {
     return step <= this.stepCorrente;
   }
 }
-

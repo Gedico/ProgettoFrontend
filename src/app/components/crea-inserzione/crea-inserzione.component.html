@@ -8,53 +8,65 @@
 
 <!-- CONTENUTO STEP -->
 <div class="step-content">
-  <!-- qui cambiano gli step -->
 
-  @if (stepCorrente === 1){
-  <app-step-posizione
-    [posizioneForm]="posizioneForm"
-    [comuniFiltrati]="comuniFiltrati"
-    (comuneChange)="onComuneInput($event)"
-    (selezionaComune)="onComuneSelezionato($event)"
-    (posizioneSelezionata)="onPosizioneSelezionata($event)"
-    (nextStep)="nextStep()">
-  </app-step-posizione>}
+  <!-- STEP 1: POSIZIONE -->
+  @if (stepCorrente === 1) {
+    <div class="section-card">
+      <h2 class="section-title">Dove si trova l'immobile?</h2>
 
+      <app-step-posizione
+        [posizioneForm]="posizioneForm"
+        [comuniFiltrati]="comuniFiltrati"
+        (comuneChange)="onComuneInput($event)"
+        (selezionaComune)="onComuneSelezionato($event)"
+        (posizioneSelezionata)="onPosizioneSelezionata($event)"
+        (nextStep)="nextStep()">
+      </app-step-posizione>
+    </div>
+  }
 
+  <!-- STEP 2: MAPPA -->
+  @if (stepCorrente === 2) {
+    <div class="section-card">
+      <h2 class="section-title">Conferma la posizione sulla mappa</h2>
 
+      <app-step-mappa
+        [posizioneForm]="posizioneForm"
+        (avanti)="nextStep()"
+        (indietro)="previousStep()">
+      </app-step-mappa>
+    </div>
+  }
 
-  <!-- STEP 2: MAPPA (COMPONENTE SEPARATO) -->
+  <!-- STEP 3: DATI INSERZIONE -->
+  @if (stepCorrente === 3) {
+    <div class="section-card">
+      <h2 class="section-title">Dettagli dell'immobile</h2>
 
-@if (stepCorrente === 2){  
-<app-step-mappa
-  [posizioneForm]="posizioneForm"
-  (avanti)="nextStep()"
-  (indietro)="previousStep()">
-</app-step-mappa>}
+      <app-step-dati-inserzione
+        [datiInserzioneForm]="datiInserzioneForm"
+        (avanti)="nextStep()"
+        (indietro)="previousStep()"
+        (prezzoInput)="onPrezzoInput($event)"
+        (prezzoBlur)="formatPrezzo()">
+      </app-step-dati-inserzione>
+    </div>
+  }
 
+  <!-- STEP 4: IMMAGINI -->
+  @if (stepCorrente === 4) {
+    <div class="section-card">
+      <h2 class="section-title">Carica le foto dell'immobile</h2>
 
-@if (stepCorrente === 3){
-<app-step-dati-inserzione
-  [datiInserzioneForm]="datiInserzioneForm"
-  (avanti)="nextStep()"
-  (indietro)="previousStep()"
-  (prezzoInput)="onPrezzoInput($event)"
-  (prezzoBlur)="formatPrezzo()">
-</app-step-dati-inserzione>}
-
-
-@if (stepCorrente === 4){
-<app-step-immagini
-  [anteprime]="anteprime"
-  [immaginiCount]="immagini.length"
-  (fileSelezionati)="onFileSelected($event)"
-  (rimuovi)="rimuoviImmagine($event)"
-  (indietro)="previousStep()"
-  (pubblica)="submit()">
-</app-step-immagini>}
+      <app-step-immagini
+        [anteprime]="anteprime"
+        [immaginiCount]="immagini.length"
+        (fileSelezionati)="onFileSelected($event)"
+        (rimuovi)="rimuoviImmagine($event)"
+        (indietro)="previousStep()"
+        (pubblica)="submit()">
+      </app-step-immagini>
+    </div>
+  }
 
 </div>
-
-
-
-

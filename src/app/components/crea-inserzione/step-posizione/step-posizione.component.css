@@ -1,144 +1,468 @@
+/* ==================== CONTAINER PRINCIPALE ==================== */
 
-/* Contenitore principale dello step */
-:host {
-  display: flex;
-  justify-content: center;
-  width: 100%;
+.step-posizione-container {
+  max-width: 700px;
+  margin: 0 auto;
 }
 
-/* Card centrale */
-[formGroup] {
-  width: 100%;
-  max-width: 520px;
-  background: #ffffff;
-  padding: 24px 28px;
-  border-radius: 12px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
-}
+/* ==================== INTRODUZIONE STEP ==================== */
 
-/* Titolo */
-h2 {
-  margin-bottom: 20px;
+.step-intro {
   text-align: center;
-  font-size: 22px;
-  font-weight: 600;
+  margin-bottom: 48px;
+  padding-bottom: 32px;
+  border-bottom: 2px solid #e9ecef;
 }
 
-/* Gruppo input */
+.step-icon {
+  font-size: 64px;
+  margin-bottom: 16px;
+  animation: bounce 2s ease-in-out infinite;
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.step-main-title {
+  font-size: 32px;
+  font-weight: 700;
+  color: #1a4d7a;
+  margin-bottom: 12px;
+  line-height: 1.2;
+}
+
+.step-description {
+  font-size: 16px;
+  color: #6c757d;
+  line-height: 1.6;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* ==================== FORM CONTENT ==================== */
+
+.form-content {
+  background: #ffffff;
+  padding: 32px;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  border: 1px solid #e9ecef;
+}
+
+/* ==================== FORM GROUP ==================== */
+
 .form-group {
+  margin-bottom: 32px;
   position: relative;
+}
+
+.form-label {
   display: flex;
-  flex-direction: column;
-  margin-bottom: 18px;
+  align-items: center;
+  gap: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #495057;
+  margin-bottom: 10px;
 }
 
-/* Label */
-.form-group label {
-  margin-bottom: 6px;
-  font-size: 14px;
-  font-weight: 500;
-  color: #333;
+.label-icon {
+  font-size: 20px;
 }
 
-/* Input */
-.form-group input {
-  padding: 10px 12px;
-  font-size: 14px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
+.form-label.required::after {
+  content: '*';
+  color: #dc3545;
+  margin-left: 4px;
+  font-size: 18px;
+}
+
+/* ==================== INPUT STYLING ==================== */
+
+.form-control {
+  width: 100%;
+  padding: 16px 20px;
+  font-size: 16px;
+  border: 2px solid #dee2e6;
+  border-radius: 10px;
+  transition: all 0.3s ease;
+  background: #ffffff;
+  color: #495057;
+  font-family: inherit;
+}
+
+.form-control::placeholder {
+  color: #adb5bd;
+  font-weight: 400;
+}
+
+.form-control:focus {
   outline: none;
-  transition: border-color 0.2s, box-shadow 0.2s;
+  border-color: #2c5f8d;
+  box-shadow: 0 0 0 4px rgba(44, 95, 141, 0.1);
+  transform: translateY(-2px);
 }
 
-.form-group input:focus {
-  border-color: #3f51b5;
-  box-shadow: 0 0 0 2px rgba(63, 81, 181, 0.15);
+.form-control:disabled {
+  background: #f8f9fa;
+  cursor: not-allowed;
+  color: #6c757d;
+  border-color: #e9ecef;
 }
 
-/* Lista autocomplete comuni */
-.autocomplete-list {
+/* Stati di validazione */
+.form-control.ng-invalid.ng-touched {
+  border-color: #dc3545;
+  background: #fff5f5;
+}
+
+.form-control.ng-invalid.ng-touched:focus {
+  box-shadow: 0 0 0 4px rgba(220, 53, 69, 0.1);
+}
+
+.form-control.ng-valid.ng-touched {
+  border-color: #28a745;
+  background: #f0fdf4;
+}
+
+.form-control.ng-valid.ng-touched:focus {
+  box-shadow: 0 0 0 4px rgba(40, 167, 69, 0.1);
+}
+
+.form-control.has-value {
+  font-weight: 500;
+}
+
+/* ==================== AUTOCOMPLETE DROPDOWN ==================== */
+
+.autocomplete-container {
+  position: relative;
+}
+
+.autocomplete-dropdown {
   position: absolute;
-  top: 100%;
+  top: calc(100% + 4px);
   left: 0;
   right: 0;
-  background: #fff;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  margin-top: 4px;
-  max-height: 180px;
-  overflow-y: auto;
-  z-index: 10;
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
-}
-
-.autocomplete-list li {
-  padding: 8px 12px;
-  cursor: pointer;
-  font-size: 14px;
-}
-
-.autocomplete-list li:hover {
-  background-color: #f2f4ff;
-}
-
-/* Messaggi di errore */
-.error {
-  margin-top: 4px;
-  font-size: 12px;
-  color: #d32f2f;
-}
-
-/* Azioni (Avanti) */
-.actions {
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 24px;
-}
-
-.actions button {
-  width: 100%;              /* ⬅️ stessa larghezza dei form */
-  padding: 12px 0;
-  font-size: 15px;
-  font-weight: 600;
+  background: #ffffff;
+  border: 2px solid #2c5f8d;
   border-radius: 10px;
-  border: none;
+  max-height: 320px;
+  overflow-y: auto;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  animation: slideDown 0.3s ease-out;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.autocomplete-item {
+  padding: 16px 20px;
   cursor: pointer;
-  background-color: #3f51b5;
-  color: #fff;
-  transition: background-color 0.2s, transform 0.1s, box-shadow 0.2s;
+  transition: all 0.2s ease;
+  border-bottom: 1px solid #f8f9fa;
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
-.actions button:hover:not(:disabled) {
-  background-color: #334296;
+.autocomplete-item:hover {
+  background: linear-gradient(to right, #e9f3f9 0%, #f0f7fc 100%);
+  padding-left: 24px;
 }
 
-.actions button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
+.autocomplete-item:last-child {
+  border-bottom: none;
 }
 
-/* Titolo con accento decorativo */
-h2 {
-  position: relative;
-  margin-bottom: 28px;
-  text-align: center;
-  font-size: 22px;
+.item-icon {
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.item-text {
+  font-size: 15px;
+  color: #495057;
+  font-weight: 500;
+}
+
+.autocomplete-item:hover .item-text {
+  color: #2c5f8d;
   font-weight: 600;
 }
 
-h2::after {
-  content: '';
-  position: absolute;
-  left: 50%;
-  bottom: -10px;
-  transform: translateX(-50%);
-  width: 48px;
-  height: 3px;
-  border-radius: 2px;
-  background: linear-gradient(
-    90deg,
-    #3f51b5,
-    #7986cb
-  );
+/* Scrollbar personalizzata per dropdown */
+.autocomplete-dropdown::-webkit-scrollbar {
+  width: 8px;
 }
 
+.autocomplete-dropdown::-webkit-scrollbar-track {
+  background: #f8f9fa;
+  border-radius: 10px;
+}
+
+.autocomplete-dropdown::-webkit-scrollbar-thumb {
+  background: #2c5f8d;
+  border-radius: 10px;
+}
+
+.autocomplete-dropdown::-webkit-scrollbar-thumb:hover {
+  background: #1a4d7a;
+}
+
+/* ==================== MESSAGGI DI VALIDAZIONE ==================== */
+
+.form-text {
+  display: block;
+  margin-top: 8px;
+  font-size: 13px;
+  color: #6c757d;
+  padding-left: 4px;
+}
+
+.error-message {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #dc3545;
+  font-size: 14px;
+  margin-top: 8px;
+  font-weight: 500;
+  padding: 8px 12px;
+  background: #fff5f5;
+  border-radius: 6px;
+  border-left: 3px solid #dc3545;
+  animation: shake 0.3s ease-in-out;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-4px); }
+  75% { transform: translateX(4px); }
+}
+
+.success-message {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #28a745;
+  font-size: 14px;
+  margin-top: 8px;
+  font-weight: 500;
+  padding: 8px 12px;
+  background: #f0fdf4;
+  border-radius: 6px;
+  border-left: 3px solid #28a745;
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* ==================== INFO BOX ==================== */
+
+.info-box {
+  display: flex;
+  gap: 16px;
+  padding: 20px;
+  background: linear-gradient(135deg, #e3f2fd 0%, #f0f7fc 100%);
+  border-radius: 10px;
+  border: 2px solid #2c5f8d;
+  margin-bottom: 24px;
+  animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.info-icon {
+  font-size: 28px;
+  flex-shrink: 0;
+}
+
+.info-content {
+  font-size: 14px;
+  color: #495057;
+  line-height: 1.6;
+}
+
+.info-content strong {
+  color: #2c5f8d;
+  font-weight: 600;
+}
+
+/* ==================== PROGRESS INDICATOR ==================== */
+
+.field-progress {
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid #e9ecef;
+}
+
+.progress-bar {
+  height: 8px;
+  background: #e9ecef;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(to right, #2c5f8d 0%, #3d7eb5 100%);
+  border-radius: 10px;
+  transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 0 8px rgba(44, 95, 141, 0.4);
+}
+
+.progress-text {
+  font-size: 13px;
+  color: #6c757d;
+  font-weight: 500;
+  display: block;
+  text-align: center;
+}
+
+/* ==================== BOTTONI NAVIGAZIONE ==================== */
+
+.button-group {
+  margin-top: 40px;
+  display: flex;
+  gap: 16px;
+}
+
+.btn {
+  padding: 16px 40px;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #2c5f8d 0%, #1a4d7a 100%);
+  color: #ffffff;
+  box-shadow: 0 4px 16px rgba(44, 95, 141, 0.3);
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: linear-gradient(135deg, #1a4d7a 0%, #0d3557 100%);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(44, 95, 141, 0.4);
+}
+
+.btn-primary:active:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none !important;
+  background: #6c757d;
+  box-shadow: none;
+}
+
+/* ==================== RESPONSIVE ==================== */
+
+@media (max-width: 768px) {
+  .step-posizione-container {
+    padding: 0;
+  }
+
+  .step-icon {
+    font-size: 48px;
+  }
+
+  .step-main-title {
+    font-size: 24px;
+  }
+
+  .step-description {
+    font-size: 14px;
+  }
+
+  .form-content {
+    padding: 24px 20px;
+  }
+
+  .form-control {
+    padding: 14px 16px;
+    font-size: 16px;
+  }
+
+  .autocomplete-item {
+    padding: 14px 16px;
+  }
+
+  .info-box {
+    padding: 16px;
+    gap: 12px;
+  }
+
+  .info-icon {
+    font-size: 24px;
+  }
+}
+
+@media (max-width: 480px) {
+  .step-intro {
+    margin-bottom: 32px;
+  }
+
+  .step-main-title {
+    font-size: 22px;
+  }
+
+  .form-content {
+    padding: 20px 16px;
+  }
+
+  .form-group {
+    margin-bottom: 24px;
+  }
+
+  .btn {
+    padding: 14px 32px;
+    font-size: 15px;
+  }
+}

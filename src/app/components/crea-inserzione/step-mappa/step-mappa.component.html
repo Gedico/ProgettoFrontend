@@ -1,25 +1,103 @@
-<h2>Verifica posizione sulla mappa</h2>
+<div class="step-mappa-container">
 
-<div id="map" class="map-container"></div>
+  <!-- Introduzione Step -->
+  <div class="step-intro">
+    <div class="step-icon">🗺️</div>
+    <h2 class="step-main-title">Conferma la posizione sulla mappa</h2>
+    <p class="step-description">
+      Assicurati che il marker sia posizionato esattamente dove si trova l'immobile. Puoi trascinarlo per maggiore precisione.
+    </p>
+  </div>
 
-<p class="hint">
-  Sposta il puntino se necessario.
-</p>
+  <!-- Map Container con overlay -->
+  <div class="map-wrapper">
+    <div id="map" class="map-container"></div>
 
-<div class="actions">
-  <button type="button" (click)="indietro.emit()">
-    Indietro
-  </button>
+    <!-- Overlay istruzioni -->
+    <div class="map-overlay">
+      <div class="overlay-card">
+        <span class="overlay-icon">👆</span>
+        <span class="overlay-text">Trascina il marker per regolare la posizione</span>
+      </div>
+    </div>
 
-  <button
-    type="button"
-    (click)="avanti.emit()"
-    [disabled]="
-      !posizioneForm.get('latitudine')?.value ||
-      !posizioneForm.get('longitudine')?.value
-    ">
-    Avanti
-  </button>
+    <!-- Info coordinate -->
+    <div class="coordinates-info">
+      <div class="coordinate-item">
+        <span class="coordinate-label">Latitudine:</span>
+        <span class="coordinate-value">
+          {{ posizioneForm.get('latitudine')?.value | number:'1.6-6' }}
+        </span>
+      </div>
+      <div class="coordinate-divider">•</div>
+      <div class="coordinate-item">
+        <span class="coordinate-label">Longitudine:</span>
+        <span class="coordinate-value">
+          {{ posizioneForm.get('longitudine')?.value | number:'1.6-6' }}
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Indirizzo corrente -->
+  @if (posizioneForm.get('indirizzo')?.value) {
+    <div class="current-address">
+      <div class="address-icon">📍</div>
+      <div class="address-content">
+        <div class="address-label">Indirizzo selezionato:</div>
+        <div class="address-text">{{ posizioneForm.get('indirizzo')?.value }}</div>
+      </div>
+    </div>
+  }
+
+  <!-- Info box suggerimenti -->
+  <div class="info-box">
+    <div class="info-icon">💡</div>
+    <div class="info-content">
+      <strong>Suggerimenti:</strong>
+      <ul>
+        <li>Posiziona il marker con precisione per aiutare gli acquirenti a trovare l'immobile</li>
+        <li>Puoi usare lo zoom per vedere meglio la zona</li>
+        <li>Il marker può essere trascinato anche dopo averlo posizionato</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Validazione visiva -->
+  <div class="validation-status">
+    @if (posizioneForm.get('latitudine')?.value && posizioneForm.get('longitudine')?.value) {
+      <div class="status-valid">
+        <span class="status-icon">✓</span>
+        <span class="status-text">Posizione confermata</span>
+      </div>
+    } @else {
+      <div class="status-invalid">
+        <span class="status-icon">⚠️</span>
+        <span class="status-text">Posiziona il marker sulla mappa</span>
+      </div>
+    }
+  </div>
+
+  <!-- Bottoni Navigazione -->
+  <div class="button-group">
+    <button
+      type="button"
+      class="btn btn-secondary"
+      (click)="indietro.emit()">
+      ← Indietro
+    </button>
+
+    <button
+      type="button"
+      class="btn btn-primary"
+      (click)="avanti.emit()"
+      [disabled]="!posizioneForm.get('latitudine')?.value || !posizioneForm.get('longitudine')?.value">
+      @if (posizioneForm.get('latitudine')?.value && posizioneForm.get('longitudine')?.value) {
+        Continua →
+      } @else {
+        Posiziona il marker
+      }
+    </button>
+  </div>
+
 </div>
-
-
