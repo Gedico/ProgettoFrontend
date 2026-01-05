@@ -1,121 +1,144 @@
-/* ======================= */
-/*        NAVBAR BASE       */
-/* ======================= */
-
 .navbar {
   width: 100%;
-  height: 75px;
+  height: 85px;
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 50;
+  z-index: 1000;
   background: transparent;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 35px;
-  transition: background 0.3s ease, box-shadow 0.3s ease;
-  overflow: visible !important;
+  padding: 0 8%; /* Allineata con la hero */
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+/* Effetto al caricamento/scroll */
 .navbar.scrolled {
-  background: #1e293b;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.12);
+  height: 70px;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(15px);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
 }
 
-/* LOGO */
+/* LOGO REATTIVO */
 .logo {
   font-size: 1.6rem;
-  font-weight: 600;
+  font-weight: 800;
   color: white;
   cursor: pointer;
+  letter-spacing: -1px;
+  transition: color 0.3s ease;
 }
 
-/* SEZIONE DESTRA */
-.navbar-right {
-  display: flex;
-  align-items: center;
-  gap: 18px;
+.logo span { color: #f59e0b; }
+
+.navbar.scrolled .logo {
+  color: #0f172a;
 }
 
-/* BOTTONI LOGIN E HOME */
+/* BOTTONI NAVBAR */
 .nav-button {
-  color: #e2e8f0;
-  font-size: 1rem;
-  font-weight: 500;
-  padding: 8px 16px;
-  border-radius: 8px;
-  text-decoration: none;
-  border: 1px solid rgba(255,255,255,0.25);
-  transition: 0.25s;
-}
-
-.nav-button:hover {
-  background-color: rgba(255,255,255,0.15);
   color: white;
+  font-size: 0.95rem;
+  font-weight: 600;
+  padding: 10px 22px;
+  border-radius: 12px;
+  text-decoration: none;
+  transition: all 0.3s ease;
 }
 
-/* ======================= */
-/*        ICONA PROFILO     */
-/* ======================= */
-
-.profile-container {
-  position: relative;
-  margin-right: 40px; /* più spazio a sinistra = niente tagli */
+/* Pulsante Accedi evidenziato */
+.login-accent {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
-.profile-trigger {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 46px;     /* spazio esterno cliccabile */
-  height: 46px;
-  border-radius: 50%;
-  padding: 4px;
-  cursor: pointer;
-  transition: 0.25s;
-}
-
-.profile-trigger:hover {
-  background: rgba(255,255,255,0.2);
-}
-
-/* cerchio immagine */
-.profile-img-wrapper {
-  width: 38px;
-  height: 38px;
-  border-radius: 50%;
-  overflow: hidden;
+.login-accent:hover {
   background: white;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  color: #2563eb !important;
+  transform: translateY(-2px);
 }
 
-.profile-img-wrapper img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+/* Adattamento bottoni allo scroll */
+.navbar.scrolled .nav-button {
+  color: #475569;
+}
+.navbar.scrolled .login-accent {
+  border-color: #2563eb;
+  color: #2563eb;
 }
 
-/* ======================= */
-/*        DROPDOWN          */
-/* ======================= */
+/* PROFILO E DROPDOWN */
+.profile-img-wrapper {
+  width: 42px;
+  height: 42px;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 2px solid rgba(255,255,255,0.3);
+  transition: all 0.3s ease;
+}
+
+.navbar.scrolled .profile-img-wrapper {
+  border-color: #2563eb;
+}
+
+.profile-img-wrapper.active {
+  transform: scale(0.9);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+}
 
 .dropdown {
   position: absolute;
   right: 0;
-  top: 58px;
+  top: 65px;
   background: #ffffff;
-  border-radius: 10px;
-  padding: 12px 0;
-  min-width: 220px;
-  z-index: 3000;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-  animation: fadeIn 0.2s ease;
+  border-radius: 16px;
+  padding: 8px;
+  min-width: 240px;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+  animation: slideIn 0.3s ease-out;
+  border: 1px solid #f1f5f9;
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(-5px); }
-  to   { opacity: 1; transform: translateY(0); }
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.navbar.scrolled .logo {
+  color: #0f172a !important;
+}
+
+.navbar.scrolled .nav-button {
+  color: #475569 !important;
+  border-color: rgba(0,0,0,0.1);
+}
+
+/* ICONA PROFILO */
+.profile-img-wrapper {
+  width: 42px;
+  height: 42px;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 2px solid rgba(255,255,255,0.5);
+  background: #f1f5f9;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.3s ease;
+}
+
+.navbar.scrolled .profile-img-wrapper {
+  border-color: #2563eb;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.15);
+}
+
+/* Se l'immagine del profilo ha uno sfondo trasparente, assicuriamoci che si veda */
+.profile-img-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }

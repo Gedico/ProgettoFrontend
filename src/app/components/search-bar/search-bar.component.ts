@@ -1,8 +1,8 @@
+import { Component, OnInit, HostListener, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import comuniList from '../../../../public/comuni.json'; // JSON dei comuni
+import comuniList from '../../../../public/comuni.json';
 
 @Component({
   selector: 'app-search-bar',
@@ -14,12 +14,14 @@ import comuniList from '../../../../public/comuni.json'; // JSON dei comuni
 export class SearchBarComponent implements OnInit {
 
   form: FormGroup;
-  mostraFiltriAggiuntivi = false; // toggler per filtri extra
+  mostraFiltriAggiuntivi = false;
   comuniSuggeriti: string[] = [];
+  isAutocompleteOpen = false;
 
   constructor(
     private fb: FormBuilder,
-    private router: Router
+    private router: Router,
+    private eRef: ElementRef // Necessario per rilevare il click fuori
   ) {
     this.form = this.fb.group({
       comune: ['', Validators.required],
@@ -30,25 +32,55 @@ export class SearchBarComponent implements OnInit {
       dimensioniMax: [null],
       numeroStanze: [null],
       ascensore: [false],
-      stato: ['']
+      piano: ['']
     });
   }
 
   ngOnInit(): void {
-    // Aggiorna i suggerimenti al cambiare dell'input
     this.form.get('comune')?.valueChanges.subscribe(value => {
       const input = value?.toLowerCase() || '';
-      this.comuniSuggeriti = comuniList
-        .map(c => c.denominazione_ita)            // estrai il campo del nome
-        .filter(c => c.toLowerCase().includes(input))
-        .slice(0, 10);                             // massimo 10 suggerimenti
+      if (input.length > 0) {
+        this.comuniSuggeriti = comuniList
+          .map(c => c.denominazione_ita)
+          .filter(c => c.toLowerCase().includes(input))
+          .slice(0, 10);
+        this.isAutocompleteOpen = true;
+      } else {
+        this.comuniSuggeriti = [];
+        this.isAutocompleteOpen = false;
+      }
     });
   }
 
+  // Chiude i menu se si clicca fuori dal componente
+  @HostListener('document:click', ['$event'])
+  clickout(event: any) {
+    if (!this.eRef.nativeElement.contains(event.target)) {
+      this.comuniSuggeriti = [];
+      this.isAutocompleteOpen = false;
+      // Opzionale: puoi decidere se chiudere anche i filtri avanzati
+      // this.mostraFiltriAggiuntivi = false;
+    }
+  }
+
+  // Gestisce il secondo click sull'input
+  toggleAutocomplete() {
+    if (this.comuniSuggeriti.length > 0) {
+      this.comuniSuggeriti = [];
+      this.isAutocompleteOpen = false;
+    } else {
+      // Se c'è già del testo, lo ri-attiviamo per mostrare i suggerimenti
+      const val = this.form.get('comune')?.value;
+      if (val && val.length > 0) {
+        this.form.get('comune')?.setValue(val);
+      }
+    }
+  }
 
   selezionaComune(comune: string) {
     this.form.get('comune')?.setValue(comune);
     this.comuniSuggeriti = [];
+    this.isAutocompleteOpen = false;
   }
 
   toggleFiltriAggiuntivi() {
@@ -58,7 +90,6 @@ export class SearchBarComponent implements OnInit {
   onSearch(): void {
     if (this.form.invalid) return;
 
-    // Creo un oggetto con solo i campi definiti
     const queryParams: any = {};
     Object.keys(this.form.value).forEach(key => {
       const value = this.form.value[key];
@@ -70,4 +101,3 @@ export class SearchBarComponent implements OnInit {
     this.router.navigate(['/search'], { queryParams });
   }
 }
-

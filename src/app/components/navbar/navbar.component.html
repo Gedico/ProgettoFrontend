@@ -1,51 +1,42 @@
-<nav class="navbar" [ngClass]="{ 'scrolled': currentRoute !== '/' }">
-
-  <!-- LOGO -->
-  <div class="logo" [routerLink]="'/'">
-    DietiEstate25
+<nav class="navbar" [class.scrolled]="isScrolled">
+  <div class="logo" routerLink="/">
+    DietiEstate<span>25</span>
   </div>
 
-  <!-- SEZIONE DESTRA -->
   <div class="navbar-right">
+    @if(showLoginButton) {
+      <a routerLink="/login" class="nav-button login-accent">
+        Accedi
+      </a>
+    }
 
-    <!-- Bottone Login -->
-     @if (showLoginButton){
-    <a [routerLink]="'/login'" class="nav-button">
-      Login
-    </a>}
+    @if(showHomeButton) {
+      <a routerLink="/" class="nav-button">
+        Torna alla Home
+      </a>
+    }
 
-    <!-- Bottone Home -->
-     @if (showHomeButton){
-    <a [routerLink]="'/'" class="nav-button">
-      Home
-    </a>}
-
-    <!-- ICONA PROFILO -->
-     @if(showProfileIcon){
-    <div class="profile-container">
-
-      <div class="profile-trigger" (click)="toggleMenu()">
-        <div class="profile-img-wrapper">
-          <img
-            src="https://storage.googleapis.com/database-dietiestate25/assets/user.png"
-            alt="Profilo"
-            width="42"
-            height="42"
-            priority
-          />
+    @if(showProfileIcon) {
+      <div class="profile-container">
+        <div class="profile-trigger" (click)="toggleMenu()">
+          <div class="profile-img-wrapper" [class.active]="menuAperto">
+            <img
+              src="https://storage.googleapis.com/database-dietiestate25/assets/user.png"
+              alt="Profilo"
+            />
+          </div>
         </div>
+
+        @if(menuAperto) {
+          <div class="dropdown">
+            <app-menunavbar
+              [role]="userRole"
+              [logout]="logout.bind(this)"
+              (close)="chiudiMenu()">
+            </app-menunavbar>
+          </div>
+        }
       </div>
-
-      <!-- MENU TENDINA -->
-       @if(menuAperto){
-      <div class="dropdown">
-        <app-menunavbar
-          [role]="userRole"
-          [logout]="logout.bind(this)"
-          (close)="chiudiMenu()">
-        </app-menunavbar>
-      </div>}
-
-    </div>}
+    }
   </div>
 </nav>

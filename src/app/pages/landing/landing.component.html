@@ -1,32 +1,41 @@
-
-
-<!-- HERO MODERNA -->
 <section class="hero">
-
   <div class="overlay"></div>
 
   <div class="hero-content">
-    <h1>Trova la tua prossima casa</h1>
-    <p>Scopri gli immobili disponibili vicino a te o nella città che preferisci.</p>
+    <div class="badge-container">
+      <span class="hero-badge">Esplora le novità 2026</span>
+    </div>
 
-    <!-- Search bar al centro, come nel tuo codice -->
+    <h1>Trova la tua prossima <span>casa</span></h1>
+    <p>
+      Semplifichiamo la tua ricerca immobiliare con annunci verificati
+      e una navigazione pensata per le tue esigenze.
+    </p>
+
     <div class="search-wrapper">
       <app-search-bar></app-search-bar>
     </div>
   </div>
 
+  <div class="scroll-down">
+    <div class="mouse"></div>
+  </div>
 </section>
 
-<!-- SEZIONE ULTIME INSERZIONI -->
 <section class="ultime-inserzioni">
-
-  <h2>Ultime inserzioni</h2>
+  <div class="section-header">
+    <div class="title-box">
+      <span class="subtitle">Recenti</span>
+      <h2>Ultime inserzioni caricate</h2>
+    </div>
+    <button class="btn-outline">Scopri tutte le case</button>
+  </div>
 
   <div class="grid-inserzioni">
     <app-inserzione-card
       *ngFor="let inserzione of ultime"
-      [inserzione]="inserzione">
+      [inserzione]="inserzione"
+      class="card-animate">
     </app-inserzione-card>
   </div>
-
 </section>

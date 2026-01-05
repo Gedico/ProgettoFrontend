@@ -1,40 +1,85 @@
-<form [formGroup]="form" (ngSubmit)="onSearch()">
-  <div class="autocomplete-container">
-    <input
-      type="text"
-      placeholder="Inserisci il comune"
-      formControlName="comune"
-      autocomplete="off"
-    />
+<form [formGroup]="form" (ngSubmit)="onSearch()" class="modern-search-form">
+  <div class="search-main-container">
 
-    <ul *ngIf="comuniSuggeriti.length > 0" class="suggerimenti">
-      <li *ngFor="let c of comuniSuggeriti" (click)="selezionaComune(c)">
-        {{ c }}
-      </li>
-    </ul>
+    <div class="search-segment autocomplete-container">
+      <label>Località</label>
+      <div class="input-wrapper">
+        <span class="segment-icon"></span>
+        <input
+          type="text"
+          placeholder="In quale comune?"
+          formControlName="comune"
+          autocomplete="off"
+          (click)="toggleAutocomplete()"
+        />
+      </div>
+
+      <ul *ngIf="comuniSuggeriti.length > 0" class="suggerimenti-glass">
+        <li *ngFor="let c of comuniSuggeriti" (click)="selezionaComune(c)">
+          <span class="geo-icon">🏙️</span> {{ c }}
+        </li>
+      </ul>
+    </div>
+
+    <div class="search-segment">
+      <label>Categoria</label>
+      <input type="text" placeholder="Es. Villa, Loft..." formControlName="categoria" />
+    </div>
+
+    <button type="button" class="btn-icon-filter" (click)="toggleFiltriAggiuntivi()" [class.active]="mostraFiltriAggiuntivi">
+      <span class="icon">⚙️</span>
+      <span class="text-label">Filtri</span>
+    </button>
+
+    <button type="submit" class="btn-search-submit" [disabled]="form.invalid">
+      <span>Cerca</span>
+    </button>
   </div>
 
-  <button type="button" (click)="toggleFiltriAggiuntivi()">
-    Filtri aggiuntivi
-  </button>
+  <div *ngIf="mostraFiltriAggiuntivi" class="filtri-avanzati-panel">
+    <div class="filter-grid">
 
-  <div *ngIf="mostraFiltriAggiuntivi" class="filtri-avanzati">
-    <input type="text" placeholder="Categoria" formControlName="categoria" />
-    <input type="number" placeholder="Prezzo Min" formControlName="prezzoMin" />
-    <input type="number" placeholder="Prezzo Max" formControlName="prezzoMax" />
-    <input type="number" placeholder="Dimensioni Min" formControlName="dimensioniMin" />
-    <input type="number" placeholder="Dimensioni Max" formControlName="dimensioniMax" />
-    <input type="number" placeholder="Numero Stanze" formControlName="numeroStanze" />
-    <label>
-      <input type="checkbox" formControlName="ascensore" /> Ascensore
-    </label>
-    <input type="text" placeholder="Stato" formControlName="stato" />
+      <div class="filter-section">
+        <div class="filter-group">
+          <label>Prezzo (€)</label>
+          <div class="dual-inputs">
+            <input type="number" placeholder="Min" formControlName="prezzoMin" />
+            <input type="number" placeholder="Max" formControlName="prezzoMax" />
+          </div>
+        </div>
+        <div class="filter-group">
+          <label>Superficie (m²)</label>
+          <div class="dual-inputs">
+            <input type="number" placeholder="Min" formControlName="dimensioniMin" />
+            <input type="number" placeholder="Max" formControlName="dimensioniMax" />
+          </div>
+        </div>
+      </div>
+
+      <div class="filter-section">
+        <div class="filter-group">
+          <label>N° Stanze</label>
+          <input type="number" placeholder="Es. 3" formControlName="numeroStanze" />
+        </div>
+        <div class="filter-group">
+          <label>Piano</label>
+          <input type="text" placeholder="Es. Terra, 2°, Attico" formControlName="piano" />
+        </div>
+      </div>
+
+      <div class="filter-section center-items">
+        <div class="filter-group checkbox-wrapper-modern">
+          <label class="modern-checkbox">
+            <input type="checkbox" formControlName="ascensore" />
+            <div class="checkmark"></div>
+            <span class="label-text">Ascensore</span>
+          </label>
+        </div>
+        <div class="filter-actions">
+          <button type="button" class="btn-reset" (click)="form.reset()">Svuota filtri</button>
+        </div>
+      </div>
+
+    </div>
   </div>
-
-  <button type="submit" [disabled]="form.invalid">
-    Cerca
-  </button>
 </form>
-
-
-

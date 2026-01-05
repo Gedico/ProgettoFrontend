@@ -1,43 +1,55 @@
-  import { Component, OnInit } from '@angular/core';
-  import { RouterModule } from '@angular/router';
-  import { SearchBarComponent } from '../../components/search-bar/search-bar.component';
-  import { CommonModule } from '@angular/common';
-  import { InserzioneCardComponent } from '../../components/inserzioni/inserzione-card/inserzione-card.component';
-  import { InserzioneService} from '../../services/inserzioni.service';
-  import { InserzioneCard } from '../../models/inserzionecard';
-  import {Subject, takeUntil} from 'rxjs';
-  import { ReactiveFormsModule } from '@angular/forms';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { RouterModule } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule } from '@angular/forms';
+import { Subject, takeUntil } from 'rxjs';
 
-  @Component({
-    selector: 'app-landing',
-    standalone: true,
-    imports: [ RouterModule, SearchBarComponent, CommonModule, InserzioneCardComponent,ReactiveFormsModule],
-    templateUrl: './landing.component.html',
-    styleUrls: ['./landing.component.css']
-  })
-  export class LandingPageComponent implements OnInit {
+// Componenti
+import { SearchBarComponent } from '../../components/search-bar/search-bar.component';
+import { InserzioneCardComponent } from '../../components/inserzioni/inserzione-card/inserzione-card.component';
 
-    ultime: InserzioneCard[] = [];
+// Servizi e Modelli
+import { InserzioneService } from '../../services/inserzioni.service';
+import { InserzioneCard } from '../../models/inserzionecard';
 
-    constructor(private inserzioneService: InserzioneService) {}
+@Component({
+  selector: 'app-landing',
+  standalone: true,
+  imports: [
+    CommonModule,
+    RouterModule,
+    ReactiveFormsModule,
+    SearchBarComponent,
+    InserzioneCardComponent
+  ],
+  templateUrl: './landing.component.html',
+  styleUrls: ['./landing.component.css']
+})
+export class LandingPageComponent implements OnInit, OnDestroy {
+  ultime: InserzioneCard[] = [];
+  private destroy$ = new Subject<void>();
 
-    private destroy$ = new Subject<void>();
+  constructor(private inserzioneService: InserzioneService) {}
 
-    ngOnInit(): void {
-      this.caricaUltime();
-    }
-
-    caricaUltime() {
-      this.inserzioneService.getUltimeInserzioni()
-        .pipe(takeUntil(this.destroy$))
-        .subscribe({
-          next: dati => this.ultime = dati,
-          error: err => console.error("Errore caricamento ultime inserzioni:", err)
-        });
-    }
-
-    ngOnDestroy(): void {
-      this.destroy$.next(undefined);
-      this.destroy$.complete();
-    }
+  ngOnInit(): void {
+    this.caricaUltime();
   }
+
+  caricaUltime(): void {
+    this.inserzioneService.getUltimeInserzioni()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (dati) => {
+          this.ultime = dati;
+        },
+        error: (err) => {
+          console.error("Errore caricamento ultime inserzioni:", err);
+        }
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+}

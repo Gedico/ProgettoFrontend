@@ -1,0 +1,306 @@
+/* ============================================================
+   CONTENITORE FORM E POSIZIONAMENTO
+   ============================================================ */
+:host {
+  display: block;
+  width: 100%;
+}
+
+.modern-search-form {
+  position: relative;
+  max-width: 950px;
+  margin: 0 auto;
+  /* Z-index alto per stare sopra la hero e le sezioni successive */
+  z-index: 1000;
+}
+
+/* ============================================================
+   BARRA PRINCIPALE (SEARCH MAIN)
+   ============================================================ */
+.search-main-container {
+  display: flex;
+  align-items: center;
+  background: white;
+  border-radius: 100px;
+  padding: 8px 8px 8px 25px;
+  box-shadow: 0 15px 45px rgba(0, 0, 0, 0.15);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+  position: relative;
+  z-index: 1100; /* Deve stare sopra il pannello filtri */
+}
+
+.search-main-container:focus-within {
+  transform: translateY(-2px);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+}
+
+/* SEGMENTI DELLA BARRA */
+.search-segment {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 5px 20px;
+  border-right: 1px solid #f1f5f9;
+  position: relative;
+}
+
+.search-segment:nth-child(2) {
+  border-right: none;
+}
+
+.search-segment label {
+  font-size: 0.7rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: #94a3b8;
+  margin-bottom: 2px;
+  letter-spacing: 0.5px;
+}
+
+.search-segment input {
+  border: none;
+  background: transparent;
+  outline: none;
+  font-size: 1rem;
+  color: #1e293b;
+  width: 100%;
+  font-family: inherit;
+}
+
+.search-segment input::placeholder {
+  color: #cbd5e1;
+}
+
+/* ============================================================
+   SUGGERIMENTI COMUNE (AUTOCOMPLETE)
+   ============================================================ */
+.suggerimenti-glass {
+  position: absolute;
+  top: 75px;
+  left: 0;
+  width: 120%; /* Leggermente più largo del segmento */
+  background: white;
+  border-radius: 18px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  z-index: 1500 !important;
+  list-style: none;
+  padding: 8px;
+  margin: 0;
+  border: 1px solid #e2e8f0;
+  max-height: 280px;
+  overflow-y: auto;
+}
+
+.suggerimenti-glass li {
+  padding: 12px 15px;
+  cursor: pointer;
+  border-radius: 12px;
+  color: #334155;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.suggerimenti-glass li:hover {
+  background: #f0f7ff;
+  color: #2563eb;
+}
+
+/* ============================================================
+   PANNELLO FILTRI AVANZATI
+   ============================================================ */
+.filtri-avanzati-panel {
+  position: absolute;
+  top: calc(100% + 15px); /* Posizionato sotto la barra */
+  left: 0;
+  right: 0;
+  background: white;
+  border-radius: 28px;
+  padding: 30px;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.25);
+  z-index: 1050; /* Sotto la barra ma sopra la pagina */
+  border: 1px solid #f1f5f9;
+  animation: slideIn 0.3s ease-out;
+}
+
+.filter-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3 Colonne pulite */
+  gap: 30px;
+}
+
+.filter-section {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.filter-group label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #64748b;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+}
+
+.filter-group input {
+  width: 100%;
+  padding: 12px 16px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  transition: all 0.2s;
+}
+
+/* Feedback visivo sugli input dei filtri */
+.filter-group input:hover {
+  border-color: #cbd5e1;
+}
+
+.filter-group input:focus {
+  background: white;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+  outline: none;
+}
+
+/* Stile specifico per il bottone reset nel nuovo contesto */
+.filter-actions {
+  margin-top: 10px;
+}
+.dual-inputs {
+  display: flex;
+  gap: 10px;
+}
+
+/* ============================================================
+   BOTTONI E CHECKBOX
+   ============================================================ */
+.btn-icon-filter {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  padding: 10px 20px;
+  border-radius: 50px;
+  margin-right: 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  color: #64748b;
+  transition: all 0.3s;
+}
+
+.btn-icon-filter.active {
+  background: #eff6ff;
+  border-color: #2563eb;
+  color: #2563eb;
+}
+
+.btn-search-submit {
+  background: #2563eb;
+  color: white;
+  border: none;
+  padding: 14px 35px;
+  border-radius: 50px;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  box-shadow: 0 10px 20px rgba(37, 99, 235, 0.2);
+  transition: all 0.3s;
+}
+
+.btn-search-submit:hover:not(:disabled) {
+  background: #1d4ed8;
+  transform: scale(1.03);
+}
+
+.btn-search-submit:disabled {
+  background: #cbd5e1;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.btn-reset {
+  background: none;
+  border: none;
+  color: #94a3b8;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: underline;
+  margin-top: 10px;
+  align-self: flex-start;
+}
+
+.btn-reset:hover { color: #ef4444; }
+
+/* CHECKBOX MODERNA */
+.modern-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+}
+
+.modern-checkbox input { display: none; }
+
+.checkmark {
+  width: 24px;
+  height: 24px;
+  border: 2px solid #cbd5e1;
+  border-radius: 8px;
+  position: relative;
+  transition: all 0.3s;
+  background: #f8fafc;
+}
+
+.modern-checkbox input:checked + .checkmark {
+  background: #2563eb;
+  border-color: #2563eb;
+}
+
+.modern-checkbox input:checked + .checkmark::after {
+  content: '✓';
+  position: absolute;
+  color: white;
+  font-size: 14px;
+  left: 5px;
+  top: 1px;
+  font-weight: bold;
+}
+
+/* ============================================================
+   ANIMAZIONI E RESPONSIVE
+   ============================================================ */
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(-15px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 900px) {
+  .filter-grid { grid-template-columns: 1fr 1fr; }
+  .search-main-container { padding-left: 15px; }
+}
+
+@media (max-width: 650px) {
+  .search-main-container {
+    flex-direction: column;
+    border-radius: 25px;
+    padding: 15px;
+    height: auto;
+  }
+  .search-segment {
+    border-right: none;
+    border-bottom: 1px solid #f1f5f9;
+    width: 100%;
+    padding: 10px 0;
+  }
+  .filter-grid { grid-template-columns: 1fr; }
+  .btn-search-submit { width: 100%; margin-top: 15px; }
+  .btn-icon-filter { width: 100%; margin: 10px 0; justify-content: center; }
+}
