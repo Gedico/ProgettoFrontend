@@ -1,104 +1,72 @@
-<!-- Wrapper con sfondo moderno -->
 <div class="page-wrapper">
-
   <div class="container-form">
 
-    <h2>Inserisci offerta manuale</h2>
-    <p class="subtitle">
-      Inserisci un'offerta ricevuta di persona o fuori dall'applicazione.
-    </p>
-
-    <!-- Sezione animazione omino che aspetta -->
-    <div class="waiting-animation">
-      <div class="waiting-icon">🧑‍💼</div>
-      <div class="waiting-text">
-        In attesa dei dati<span class="dots"><span></span><span></span><span></span></span>
+    <header class="form-header">
+      <div class="icon-badge">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
       </div>
-    </div>
+      <h2>Nuova Offerta Manuale</h2>
+      <p class="subtitle">Registra un'offerta ricevuta extra-piattaforma per l'immobile <strong>#{{idInserzione}}</strong></p>
+    </header>
 
-    <form [formGroup]="form" (ngSubmit)="submit()">
+    <form [formGroup]="form" (ngSubmit)="submit()" class="modern-form">
 
-      <!-- Campo Importo Offerta -->
-      <label class="required">Importo offerta (€)</label>
-      <input
-        type="text"
-        class="input-field highlight"
-        formControlName="prezzoProposta"
-        appCurrencyInput
-        placeholder="Es. 150.000" />
-
-      @if (form.get('prezzoProposta')?.touched && form.get('prezzoProposta')?.invalid) {
-        <div class="error">
-          Inserisci un importo valido
+      <div class="field-group highlight-group">
+        <label class="required">Importo della proposta</label>
+        <div class="input-wrapper price-wrapper">
+          <span class="currency-prefix">€</span>
+          <input
+            type="text"
+            class="input-field price-input"
+            formControlName="prezzoProposta"
+            appCurrencyInput
+            placeholder="0,00" />
         </div>
-      }
+        @if (form.get('prezzoProposta')?.touched && form.get('prezzoProposta')?.invalid) {
+          <span class="error-msg">Inserisci un importo valido</span>
+        }
+      </div>
 
-      <!-- Campo Nome Cliente -->
-      <label class="required">Nome cliente</label>
-      <input
-        type="text"
-        class="input-field"
-        formControlName="nomeCliente"
-        placeholder="Nome e cognome" />
-
-      @if (form.get('nomeCliente')?.touched && form.get('nomeCliente')?.invalid) {
-        <div class="error">
-          Inserisci un nome valido (minimo 2 caratteri)
+      <div class="form-grid">
+        <div class="field-group">
+          <label class="required">Nome Cliente</label>
+          <input type="text" class="input-field" formControlName="nomeCliente" placeholder="es. Mario Rossi" />
+          @if (form.get('nomeCliente')?.touched && form.get('nomeCliente')?.invalid) {
+            <span class="error-msg">Nome richiesto</span>
+          }
         </div>
-      }
 
-      <!-- Campo Contatto Cliente -->
-      <label class="required">Contatto cliente</label>
-      <input
-        type="text"
-        class="input-field"
-        formControlName="contattoCliente"
-        placeholder="Telefono o email" />
-
-      @if (form.get('contattoCliente')?.touched && form.get('contattoCliente')?.invalid) {
-        <div class="error">
-          Inserisci un contatto valido (minimo 5 caratteri)
+        <div class="field-group">
+          <label class="required">Data Ricezione</label>
+          <input type="date" class="input-field" formControlName="dataOfferta" />
         </div>
-      }
+      </div>
 
-      <!-- Campo Note -->
-      <label>Note <span class="optional">(opzionale)</span></label>
-      <textarea
-        class="input-field"
-        formControlName="note"
-        placeholder="Aggiungi eventuali dettagli o informazioni aggiuntive..."
-        rows="4"></textarea>
-      <small class="hint">Puoi aggiungere informazioni extra sull'offerta</small>
+      <div class="field-group">
+        <label class="required">Contatto (Email o Telefono)</label>
+        <input type="text" class="input-field" formControlName="contattoCliente" placeholder="Esempio: +39 333... o email@esempio.it" />
+        @if (form.get('contattoCliente')?.touched && form.get('contattoCliente')?.invalid) {
+          <span class="error-msg">Inserisci un recapito valido</span>
+        }
+      </div>
 
-      <!-- Campo Data Offerta -->
-      <label class="required">Data offerta</label>
-      <input
-        type="date"
-        class="input-field"
-        formControlName="dataOfferta" />
+      <div class="field-group">
+        <label>Note aggiuntive <span class="optional">(opzionale)</span></label>
+        <textarea class="input-field" formControlName="note" rows="3" placeholder="Dettagli sulla trattativa..."></textarea>
+      </div>
 
-      @if (form.get('dataOfferta')?.touched && form.get('dataOfferta')?.invalid) {
-        <div class="error">
-          Seleziona una data valida
-        </div>
-      }
-
-      <!-- Action Buttons -->
-      <div class="actions">
-        <button
-          type="submit"
-          [disabled]="form.invalid">
-          💾 Salva offerta
-        </button>
-
-        <button
-          type="button"
-          (click)="annulla()">
+      <div class="form-actions">
+        <button type="button" class="btn-secondary" (click)="annulla()" [disabled]="isSubmitting">
           Annulla
         </button>
+        <button type="submit" class="btn-primary" [disabled]="form.invalid || isSubmitting">
+          @if (isSubmitting) {
+            <span class="loader"></span> Caricamento...
+          } @else {
+            Conferma e Salva
+          }
+        </button>
       </div>
-
     </form>
   </div>
-
 </div>
