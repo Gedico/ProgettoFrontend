@@ -1,196 +1,297 @@
-<!DOCTYPE html>
 @if (caricamento) {
-<div class="loading">Caricamento inserzione...</div>
+  <div class="loading">Caricamento inserzione...</div>
 }
 
 @if (!caricamento && inserzione) {
-<div class="container-inserzione">
 
-<!-- HEADER -->
-@if (inserzione.dati) {
-<div class="header">
-  <h1>{{ inserzione.dati.titolo }}</h1>
-  <div class="prezzo-dettaglio">
-    {{ inserzione.dati.prezzo | currency:'EUR':'symbol':'1.0-0' }}
-  </div>
-</div>
-}
+  <div class="listing-page">
 
-<!-- BOTTONI -->
-@if (isUtente()) {
-<button
-  class="proposta-btn"
-  [disabled]="haTrattativaInCorso"
-  (click)="toggleFormOfferta()">
-  💶 Fai un'offerta
-</button>
-}
+    <!-- HERO FOTO -->
+    @if (inserzione.foto?.length) {
+      <section class="hero">
+        <div class="hero-media">
+          <img
+            class="hero-img"
+            [src]="inserzione.foto[0].url"
+            alt="Foto principale"
+          />
 
-@if (isAgente()) {
-<button
-  class="proposta-btn manuale"
-  (click)="vaiAPropostaManuale()">
-  📝 Inserisci offerta manuale
-</button>
-}
-
-@if (haTrattativaInCorso) {
-<p class="hint-trattativa">
-  Hai già una trattativa in corso per questa inserzione.
-</p>
-}
-
-<!-- CONTROPROPOSTA -->
-@if (contropropostaAgente && contropropostaAgente.stato === 'CONTROPROPOSTA') {
-<div class="alert-controproposta">
-
-  <div class="alert-header">
-    <span class="icon">📩</span>
-    <h3>Controproposta dell’agente</h3>
-  </div>
-
-  <p class="alert-text">
-    Importo:
-    <b>{{ contropropostaAgente.importo | currency:'EUR':'symbol':'1.0-0' }}</b>
-  </p>
-
-  @if (contropropostaAgente.messaggio) {
-  <p class="alert-note">
-    <strong>Nota:</strong><br />
-  {{ contropropostaAgente.messaggio }}
-  </p>
-  }
-
-  <div class="alert-actions">
-    <button class="btn-accetta" (click)="accettaControproposta()">✔ Accetta</button>
-    <button class="btn-rifiuta" (click)="rifiutaControproposta()">✖ Rifiuta</button>
-  </div>
-
-  <p class="alert-reminder">
-    Rispondi alla controproposta per proseguire la trattativa.
-  </p>
-
-</div>
-}
-
-<!-- MODAL OFFERTA -->
-@if (mostraFormOfferta && !haTrattativaInCorso) {
-<div class="overlay" (click)="toggleFormOfferta()"></div>
-
-<div class="modal-card">
-  <h2>Invia una proposta</h2>
-
-  <p class="hint">
-    Prezzo minimo accettato:
-    <b>{{ prezzoMinimo | currency:'EUR':'symbol':'1.0-0' }}</b>
-  </p>
-
-  <form [formGroup]="offertaForm" (ngSubmit)="inviaProposta()">
-
-    <label>Importo offerta (€)</label>
-    <input
-      type="text"
-      class="input-field"
-      formControlName="prezzoProposta"
-      appCurrencyInput />
-
-    @if (prezzoProposta?.touched && prezzoProposta?.invalid) {
-    <div class="validation">
-      @if (prezzoProposta?.errors?.['required']) {
-    L'importo è obbligatorio.
+          <!-- Badge (facoltativi, solo estetica) -->
+          <div class="hero-badges">
+            @if (inserzione.dati?.classeEnergetica) {
+              <span class="badge">Classe {{ inserzione.dati.classeEnergetica }}</span>
+            }
+            @if (inserzione.dati?.ascensore !== null && inserzione.dati?.ascensore !== undefined) {
+              <span class="badge badge-soft">
+                {{ inserzione.dati.ascensore ? 'Ascensore' : 'No ascensore' }}
+              </span>
+            }
+          </div>
+        </div>
+      </section>
     }
-    @if (prezzoProposta?.errors?.['min']) {
-    L'importo deve essere almeno
-    {{ prezzoMinimo | currency:'EUR':'symbol':'1.0-0' }}.
-    }
+
+    <div class="container-inserzione">
+
+      <!-- HEADER -->
+      @if (inserzione.dati) {
+        <header class="header header-modern">
+          <div class="head-left">
+            <h1 class="title">{{ inserzione.dati.titolo }}</h1>
+
+            @if (inserzione.posizione?.indirizzo) {
+              <p class="location">
+                <span class="dot"></span>
+                {{ inserzione.posizione.indirizzo }}
+              </p>
+            }
+
+            <div class="chips">
+              @if (inserzione.dati?.dimensioni) {
+                <span class="chip">{{ inserzione.dati.dimensioni }} m²</span>
+              }
+              @if (inserzione.dati?.numeroStanze) {
+                <span class="chip">{{ inserzione.dati.numeroStanze }} stanze</span>
+              }
+              @if (inserzione.dati?.piano !== null && inserzione.dati?.piano !== undefined) {
+                <span class="chip">Piano {{ inserzione.dati.piano }}</span>
+              }
+            </div>
+          </div>
+
+          <div class="head-right">
+            <div class="prezzo-dettaglio prezzo-modern">
+              {{ inserzione.dati.prezzo | currency:'EUR':'symbol':'1.0-0' }}
+            </div>
+
+            @if (isUtente() && haTrattativaInCorso) {
+              <p class="hint-trattativa">
+                Hai già una trattativa in corso per questa inserzione.
+              </p>
+            }
+          </div>
+        </header>
+      }
+
+      <!-- GRID -->
+      <div class="layout">
+
+        <!-- COLONNA SINISTRA -->
+        <main class="main-col">
+
+          <!-- CONTROPROPOSTA -->
+          @if (contropropostaAgente && contropropostaAgente.stato === 'CONTROPROPOSTA') {
+            <div class="alert-controproposta">
+              <div class="alert-header">
+                <span class="icon">📩</span>
+                <h3>Controproposta dell’agente</h3>
+              </div>
+
+              <p class="alert-text">
+                Importo:
+                <b>{{ contropropostaAgente.importo | currency:'EUR':'symbol':'1.0-0' }}</b>
+              </p>
+
+              @if (contropropostaAgente.messaggio) {
+                <p class="alert-note">
+                  <strong>Nota:</strong><br />
+                  {{ contropropostaAgente.messaggio }}
+                </p>
+              }
+
+              <div class="alert-actions">
+                <button class="btn-accetta" (click)="accettaControproposta()">✔ Accetta</button>
+                <button class="btn-rifiuta" (click)="rifiutaControproposta()">✖ Rifiuta</button>
+              </div>
+
+              <p class="alert-reminder">
+                Rispondi alla controproposta per proseguire la trattativa.
+              </p>
+            </div>
+          }
+
+          <!-- DETTAGLI -->
+          @if (inserzione.dati) {
+            <section class="section-card">
+              <div class="section-head">
+                <h3>Dettagli</h3>
+              </div>
+
+              <div class="details-grid">
+                <div class="detail-row">
+                  <span class="k">Superficie</span>
+                  <span class="v">{{ inserzione.dati.dimensioni }} m²</span>
+                </div>
+
+                <div class="detail-row">
+                  <span class="k">Stanze</span>
+                  <span class="v">{{ inserzione.dati.numeroStanze }}</span>
+                </div>
+
+                <div class="detail-row">
+                  <span class="k">Piano</span>
+                  <span class="v">{{ inserzione.dati.piano }}</span>
+                </div>
+
+                <div class="detail-row">
+                  <span class="k">Ascensore</span>
+                  <span class="v">{{ inserzione.dati.ascensore ? 'Sì' : 'No' }}</span>
+                </div>
+
+                <div class="detail-row">
+                  <span class="k">Classe energetica</span>
+                  <span class="v">{{ inserzione.dati.classeEnergetica }}</span>
+                </div>
+              </div>
+            </section>
+          }
+
+          <!-- DESCRIZIONE -->
+          @if (inserzione.dati) {
+            <section class="section-card">
+              <div class="section-head">
+                <h3>Descrizione</h3>
+              </div>
+              <p class="desc">
+                {{ inserzione.dati.descrizione }}
+              </p>
+            </section>
+          }
+
+          <!-- INDICATORI -->
+          @if (inserzione.indicatore) {
+            <section class="section-card">
+              <div class="section-head">
+                <h3>Servizi nelle vicinanze</h3>
+              </div>
+
+              <div class="nearby">
+                <div class="near-item">
+                  <span>🏫 Scuole</span>
+                  <strong>{{ inserzione.indicatore.scuoleVicine ? 'Sì' : 'No' }}</strong>
+                </div>
+
+                <div class="near-item">
+                  <span>🌳 Parchi</span>
+                  <strong>{{ inserzione.indicatore.parchiVicini ? 'Sì' : 'No' }}</strong>
+                </div>
+
+                <div class="near-item">
+                  <span>🚉 Mezzi pubblici</span>
+                  <strong>{{ inserzione.indicatore.mezziPubbliciVicini ? 'Sì' : 'No' }}</strong>
+                </div>
+              </div>
+            </section>
+          }
+
+          <!-- POSIZIONE -->
+          @if (inserzione.posizione) {
+            <section class="section-card">
+              <div class="section-head">
+                <h3>Posizione</h3>
+              </div>
+              <p class="address">{{ inserzione.posizione.indirizzo }}</p>
+              <iframe [src]="mappaUrl" loading="lazy"></iframe>
+            </section>
+          }
+
+        </main>
+
+        <!-- COLONNA DESTRA (sticky) -->
+        <aside class="side-col">
+          <div class="sticky">
+
+            <section class="side-card">
+              <h3 class="side-title">
+                @if (isAgente()) { Gestione offerta } @else { Invia una proposta }
+              </h3>
+
+              @if (isUtente()) {
+                <p class="side-sub">
+                  Puoi inviare un’offerta all’agente. La trattativa rimane tracciata.
+                </p>
+
+                <button
+                  class="proposta-btn proposta-btn--full"
+                  [disabled]="haTrattativaInCorso"
+                  (click)="toggleFormOfferta()"
+                >
+                  💶 Fai un'offerta
+                </button>
+              }
+
+              @if (isAgente()) {
+                <p class="side-sub">
+                  Inserisci una proposta manuale per gestire trattative offline.
+                </p>
+
+                <button
+                  class="proposta-btn manuale proposta-btn--full"
+                  (click)="vaiAPropostaManuale()"
+                >
+                  📝 Inserisci offerta manuale
+                </button>
+              }
+
+              @if (haTrattativaInCorso) {
+                <p class="hint-trattativa hint-trattativa--box">
+                  Hai già una trattativa in corso per questa inserzione.
+                </p>
+              }
+            </section>
+
+          </div>
+        </aside>
+
+      </div>
     </div>
+
+    <!-- MODAL OFFERTA (la tua, mantenuta con animazione) -->
+    @if (mostraFormOfferta && !haTrattativaInCorso) {
+      <div class="overlay" (click)="toggleFormOfferta()"></div>
+
+      <div class="modal-card" (click)="$event.stopPropagation()">
+        <h2>Invia una proposta</h2>
+
+        <p class="hint">
+          Prezzo minimo accettato:
+          <b>{{ prezzoMinimo | currency:'EUR':'symbol':'1.0-0' }}</b>
+        </p>
+
+        <form [formGroup]="offertaForm" (ngSubmit)="inviaProposta()">
+          <label>Importo offerta (€)</label>
+          <input
+            type="text"
+            class="input-field"
+            formControlName="prezzoProposta"
+            appCurrencyInput
+          />
+
+          @if (prezzoProposta?.touched && prezzoProposta?.invalid) {
+            <div class="validation">
+              @if (prezzoProposta?.errors?.['required']) {
+                L'importo è obbligatorio.
+              }
+              @if (prezzoProposta?.errors?.['min']) {
+                L'importo deve essere almeno
+                {{ prezzoMinimo | currency:'EUR':'symbol':'1.0-0' }}.
+              }
+            </div>
+          }
+
+          <label>Note (opzionale)</label>
+          <textarea class="textarea-field" formControlName="note"></textarea>
+
+          <button type="submit" class="submit-btn" [disabled]="offertaForm.invalid">
+            Invia proposta
+          </button>
+
+          <button type="button" class="close-btn" (click)="toggleFormOfferta()">
+            Chiudi
+          </button>
+        </form>
+      </div>
     }
 
-    <label>Note (opzionale)</label>
-    <textarea
-      class="textarea-field"
-      formControlName="note">
-          </textarea>
-
-    <button
-      type="submit"
-      class="submit-btn"
-      [disabled]="offertaForm.invalid">
-      Invia proposta
-    </button>
-
-    <button
-      type="button"
-      class="close-btn"
-      (click)="toggleFormOfferta()">
-      Chiudi
-    </button>
-  </form>
-</div>
+  </div>
 }
-
-<!-- FOTO -->
-@if (inserzione.foto.length) {
-<div class="galleria">
-  <img
-    class="foto-principale"
-    [src]="inserzione.foto[0].url"
-    alt="Foto principale" />
-</div>
-}
-
-<!-- DETTAGLI -->
-@if (inserzione.dati) {
-<div class="dettagli">
-  <h3>Dettagli</h3>
-  <p><strong>Superficie:</strong> {{ inserzione.dati.dimensioni }} m²</p>
-  <p><strong>Stanze:</strong> {{ inserzione.dati.numeroStanze }}</p>
-  <p><strong>Piano:</strong> {{ inserzione.dati.piano }}</p>
-  <p><strong>Ascensore:</strong> {{ inserzione.dati.ascensore ? 'Sì' : 'No' }}</p>
-  <p><strong>Classe energetica:</strong> {{ inserzione.dati.classeEnergetica }}</p>
-</div>
-}
-
-<!-- DESCRIZIONE -->
-@if (inserzione.dati) {
-<div class="descrizione">
-  <h3>Descrizione</h3>
-  <p>{{ inserzione.dati.descrizione }}</p>
-</div>
-}
-
-<!-- INDICATORI -->
-@if (inserzione.indicatore) {
-<div class="indicatori">
-  <h3>Servizi nelle vicinanze</h3>
-
-  <p>
-    🏫 Scuole:
-    <strong>{{ inserzione.indicatore.scuoleVicine ? 'Sì' : 'No' }}</strong>
-  </p>
-
-  <p>
-    🌳 Parchi:
-    <strong>{{ inserzione.indicatore.parchiVicini ? 'Sì' : 'No' }}</strong>
-  </p>
-
-  <p>
-    🚉 Mezzi pubblici:
-    <strong>{{ inserzione.indicatore.mezziPubbliciVicini ? 'Sì' : 'No' }}</strong>
-  </p>
-</div>
-}
-
-
-<!-- POSIZIONE -->
-@if (inserzione.posizione) {
-<div class="posizione">
-  <h3>Posizione</h3>
-  <p>{{ inserzione.posizione.indirizzo }}</p>
-  <iframe [src]="mappaUrl"></iframe>
-</div>
-}
-
-</div>
-}
-

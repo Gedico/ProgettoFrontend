@@ -52,39 +52,56 @@ export class VisualizzaInserzioneComponent implements OnInit {
       note: ['', Validators.maxLength(500)]
     });
 
-    this.inserzioneService.getInserzioneById(this.id).subscribe(res => {
-      console.log('INSERZIONE COMPLETA', res);
-      console.log('INDICATORE', res.indicatore);
-      this.inserzione = res;
-    });
+    this.caricaInserzione();
+  }
 
+  private caricaInserzione(): void {
+    this.caricamento = true;
 
     this.inserzioneService.getInserzioneById(this.id).subscribe({
-      next: data => {
+      next: (data) => {
+        // Debug (se vuoi tenerli)
+        console.log('INSERZIONE COMPLETA', data);
+        console.log('INDICATORE', data.indicatore);
+
         this.inserzione = data;
-
-        this.prezzoMinimo = data.dati.prezzo * 0.85;
-
-        this.offertaForm.get('prezzoProposta')?.setValidators([
-          Validators.required,
-          Validators.min(this.prezzoMinimo)
-        ]);
-        this.offertaForm.get('prezzoProposta')?.updateValueAndValidity();
-
-        this.mappaUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
-          `https://maps.google.com/maps?q=${data.posizione.latitudine},${data.posizione.longitudine}&z=15&output=embed`
-        );
+        this.setupFromInserzione(data);
 
         const session = this.sessionService.getSnapshot();
-
         if (session.logged && session.role === 'UTENTE') {
           this.caricaControproposta();
         }
 
         this.caricamento = false;
       },
-      error: () => this.caricamento = false
+      error: () => {
+        this.caricamento = false;
+        Swal.fire('Errore', 'Impossibile caricare l’inserzione.', 'error');
+      }
     });
+  }
+
+  /**
+   * Imposta tutte le info derivate dall’inserzione:
+   * - prezzo minimo + validators
+   * - mappa url
+   */
+  private setupFromInserzione(data: InserzioneResponse): void {
+    // Prezzo minimo (se dati esistono)
+    if (data?.dati?.prezzo) {
+      this.prezzoMinimo = data.dati.prezzo * 0.85;
+
+      const ctrl = this.offertaForm.get('prezzoProposta');
+      ctrl?.setValidators([Validators.required, Validators.min(this.prezzoMinimo)]);
+      ctrl?.updateValueAndValidity({ emitEvent: false });
+    }
+
+    // Mappa (se posizione esiste)
+    if (data?.posizione?.latitudine != null && data?.posizione?.longitudine != null) {
+      this.mappaUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
+        `https://maps.google.com/maps?q=${data.posizione.latitudine},${data.posizione.longitudine}&z=15&output=embed`
+      );
+    }
   }
 
   get prezzoProposta() {
