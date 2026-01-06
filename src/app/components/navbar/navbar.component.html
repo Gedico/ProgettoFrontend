@@ -1,39 +1,47 @@
 <nav class="navbar" [class.scrolled]="isScrolled">
   <div class="logo" routerLink="/">
-    DietiEstate<span>25</span>
+    DietiEstates<span>25</span>
   </div>
 
   <div class="navbar-right">
-    @if(showLoginButton) {
+    @if (showLoginButton) {
       <a routerLink="/login" class="nav-button login-accent">
         Accedi
       </a>
     }
 
-    @if(showHomeButton) {
+    @if (showHomeButton) {
       <a routerLink="/" class="nav-button">
         Torna alla Home
       </a>
     }
 
-    @if(showProfileIcon) {
-      <div class="profile-container">
-        <div class="profile-trigger" (click)="toggleMenu()">
+    @if (showProfileIcon) {
+      <div class="profile-container" [class.open]="menuAperto">
+        <button
+          type="button"
+          class="profile-trigger"
+          (click)="toggleMenu($event)"
+          [attr.aria-expanded]="menuAperto"
+          aria-haspopup="menu"
+        >
+          <span class="sr-only">Apri menu profilo</span>
+
           <div class="profile-img-wrapper" [class.active]="menuAperto">
             <img
               src="https://storage.googleapis.com/database-dietiestate25/assets/user.png"
               alt="Profilo"
             />
           </div>
-        </div>
+        </button>
 
-        @if(menuAperto) {
-          <div class="dropdown">
+        @if (menuAperto) {
+          <div class="dropdown" role="menu">
             <app-menunavbar
               [role]="userRole"
               [logout]="logout.bind(this)"
-              (close)="chiudiMenu()">
-            </app-menunavbar>
+              (close)="chiudiMenu()"
+            ></app-menunavbar>
           </div>
         }
       </div>

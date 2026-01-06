@@ -1,12 +1,13 @@
 import { Component, Input } from '@angular/core';
-import { CurrencyPipe} from '@angular/common';
+
 import { InserzioneCard } from '../../../models/inserzionecard';
 import { Router,RouterModule } from '@angular/router';
+import {CurrencyPipe} from '@angular/common';
 
 @Component({
   selector: 'app-inserzione-card',
   standalone: true,
-  imports: [CurrencyPipe, RouterModule],
+  imports: [RouterModule, CurrencyPipe],
   templateUrl: './inserzione-card.component.html',
   styleUrls: ['./inserzione-card.component.css']
 })

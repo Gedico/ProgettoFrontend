@@ -1,4 +1,4 @@
-import { Component, Inject, PLATFORM_ID, OnInit, OnDestroy } from '@angular/core';
+import { Component, Inject, PLATFORM_ID, OnInit, OnDestroy, ElementRef, HostListener } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { Router, RouterModule, NavigationEnd } from '@angular/router';
 import { Subject, filter, takeUntil } from 'rxjs';
@@ -38,6 +38,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     private router: Router,
     private sessionService: SessionService,
     private loginService: LoginService,
+    private eRef: ElementRef, // per click-outside
     @Inject(PLATFORM_ID) private platformId: Object
   ) {}
 
@@ -60,49 +61,57 @@ export class NavbarComponent implements OnInit, OnDestroy {
       .subscribe(() => {
         this.currentRoute = this.router.url;
         this.updateNavbarVisibility();
-        this.checkNavbarState(); // Forza il controllo del colore al cambio pagina
+        this.checkNavbarState();
+
+        //  se cambio pagina, chiudo sempre il menu
+        this.menuAperto = false;
       });
 
     // 3. Listener Scroll
     if (isPlatformBrowser(this.platformId)) {
       window.addEventListener('scroll', this.onWindowScroll);
-      // Controllo iniziale al caricamento
       this.checkNavbarState();
     }
   }
 
-  /*--------- GESTIONE STATO VISIVO ---------------------------------------*/
+  /*--------- CLICK OUTSIDE + ESC ----------------------------------------*/
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent) {
+    if (!this.menuAperto) return;
 
-  // Funzione chiamata dallo scroll
+    // Se clicco fuori dalla navbar (e quindi fuori dal menu), chiudo
+    if (!this.eRef.nativeElement.contains(event.target)) {
+      this.chiudiMenu();
+    }
+  }
+
+  @HostListener('document:keydown', ['$event'])
+  onDocumentKeydown(event: KeyboardEvent) {
+    if (event.key === 'Escape' && this.menuAperto) {
+      this.chiudiMenu();
+    }
+  }
+
+  /*--------- GESTIONE STATO VISIVO ---------------------------------------*/
   private onWindowScroll = () => {
     this.checkNavbarState();
   };
 
-  /**
-   * Logica intelligente: la navbar è "scura" (scrolled) se:
-   * - non siamo nella pagina Home (/)
-   * -il colore andrebbe a contrastarlo
-   */
   private checkNavbarState() {
     const isHomePage = this.currentRoute === '/' || this.currentRoute === '';
     const scrollThreshold = window.scrollY > 20;
 
     if (!isHomePage) {
-      this.isScrolled = true; // Sempre scura nelle altre pagine
+      this.isScrolled = true;
     } else {
-      this.isScrolled = scrollThreshold; // In home dipende dallo scroll
+      this.isScrolled = scrollThreshold;
     }
   }
 
   private updateNavbarVisibility() {
-    // Mostra login solo se non loggato e siamo in home
     this.showLoginButton = !this.isLogged && (this.currentRoute === '/' || this.currentRoute === '');
-
-    // Mostra tasto home nelle pagine di auth
     this.showHomeButton = !this.isLogged &&
       (this.currentRoute === '/login' || this.currentRoute === '/register');
-
-    // Mostra profilo solo se loggato
     this.showProfileIcon = this.isLogged;
   }
 
@@ -111,7 +120,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     const token = this.sessionService.getToken() || '';
     this.loginService.logout(token).subscribe({
       next: () => this.handleLogoutSuccess(),
-      error: () => this.handleLogoutSuccess() // Forza pulizia anche in errore
+      error: () => this.handleLogoutSuccess()
     });
   }
 
@@ -121,7 +130,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.router.navigate(['/']);
   }
 
-  toggleMenu() {
+  toggleMenu(event: Event) {
+    event.stopPropagation();
     this.menuAperto = !this.menuAperto;
   }
 
@@ -132,6 +142,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
+
     if (isPlatformBrowser(this.platformId)) {
       window.removeEventListener('scroll', this.onWindowScroll);
     }

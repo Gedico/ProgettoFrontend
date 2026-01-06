@@ -1,7 +1,6 @@
-import {Component, Input, Output, EventEmitter} from '@angular/core';
-import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
-
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-menunavbar',
@@ -15,5 +14,12 @@ export class MenunavbarComponent {
   @Input() logout!: () => void;
   @Output() close = new EventEmitter<void>();
 
+  onLogout() {
+    if (this.logout) this.logout();
+    this.close.emit();
+  }
 
+  onNavigate() {
+    this.close.emit();
+  }
 }
