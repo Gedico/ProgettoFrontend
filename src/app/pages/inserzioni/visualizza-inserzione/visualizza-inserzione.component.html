@@ -39,7 +39,7 @@
           <div class="head-left">
             <h1 class="title">{{ inserzione.dati.titolo }}</h1>
 
-            @if (inserzione.posizione?.indirizzo) {
+            @if (inserzione.posizione.indirizzo) {
               <p class="location">
                 <span class="dot"></span>
                 {{ inserzione.posizione.indirizzo }}
@@ -47,10 +47,10 @@
             }
 
             <div class="chips">
-              @if (inserzione.dati?.dimensioni) {
+              @if (inserzione.dati.dimensioni) {
                 <span class="chip">{{ inserzione.dati.dimensioni }} m²</span>
               }
-              @if (inserzione.dati?.numeroStanze) {
+              @if (inserzione.dati.numeroStanze) {
                 <span class="chip">{{ inserzione.dati.numeroStanze }} stanze</span>
               }
               @if (inserzione.dati.piano !== null && inserzione.dati.piano !== undefined) {
