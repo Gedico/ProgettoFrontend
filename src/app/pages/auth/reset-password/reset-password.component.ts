@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
@@ -12,7 +12,6 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   imports: [
     CommonModule,
     ReactiveFormsModule,
-
   ],
   templateUrl: './reset-password.component.html',
   styleUrls: ['./reset-password.component.css']
@@ -21,6 +20,7 @@ export class ResetPasswordComponent implements OnInit {
 
   token: string | null = null;
   message = '';
+  isSuccess = false; // ← AGGIUNTO
 
   resetForm: any;
 
@@ -49,6 +49,7 @@ export class ResetPasswordComponent implements OnInit {
   submitNewPassword() {
     if (this.resetForm.value.newPassword !== this.resetForm.value.confirmPassword) {
       this.message = "Le password non coincidono.";
+      this.isSuccess = false; // ← AGGIUNTO
       return;
     }
 
@@ -60,6 +61,7 @@ export class ResetPasswordComponent implements OnInit {
     this.http.post('http://localhost:8080/api/password/reset', payload)
       .subscribe({
         next: (res: any) => {
+          this.isSuccess = true; // ← AGGIUNTO
 
           // 1. Mostra popup
           this.snackBar.open(res.message, "OK", {
@@ -74,6 +76,8 @@ export class ResetPasswordComponent implements OnInit {
         },
 
         error: () => {
+          this.isSuccess = false; // ← AGGIUNTO
+
           this.snackBar.open("Errore interno. Riprova più tardi.", "OK", {
             duration: 2500,
             panelClass: ['error-snackbar']
@@ -83,4 +87,3 @@ export class ResetPasswordComponent implements OnInit {
   }
 
 }
-
