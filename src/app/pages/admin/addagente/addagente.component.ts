@@ -1,21 +1,26 @@
 import { Component } from '@angular/core';
-import {CommonModule} from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
-import { NavbarComponent } from "../../../components/navbar/navbar.component";
-import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
-import {AdminService} from '../../../services/admin.service';
-import {MatSnackBar} from '@angular/material/snack-bar';
+import { NavbarComponent } from '../../../components/navbar/navbar.component';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators, AbstractControl } from '@angular/forms';
+import { AdminService } from '../../../services/admin.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+
+type UiState = 'idle' | 'loading' | 'success' | 'error';
 
 @Component({
   selector: 'app-addagente',
   standalone: true,
   imports: [NavbarComponent, CommonModule, RouterModule, ReactiveFormsModule],
   templateUrl: './addagente.component.html',
-  styleUrl: './addagente.component.css'
+  styleUrls: ['./addagente.component.css']
 })
 export class AddagenteComponent {
-
   form: FormGroup;
+
+  uiState: UiState = 'idle';
+  inlineMessage = '';
+  showPassword = false;
 
   constructor(
     private fb: FormBuilder,
@@ -24,31 +29,88 @@ export class AddagenteComponent {
     private snack: MatSnackBar
   ) {
     this.form = this.fb.group({
-      nome: ['', Validators.required],
-      cognome: ['', Validators.required],
+      nome: ['', [Validators.required, Validators.minLength(2)]],
+      cognome: ['', [Validators.required, Validators.minLength(2)]],
       mail: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(8)]],
-      numero: ['', [Validators.required,Validators.minLength(10)]],
-      agenzia: ['', Validators.required]
+      numero: ['', [Validators.required, Validators.minLength(10)]],
+      agenzia: ['', [Validators.required, Validators.minLength(2)]]
     });
   }
 
+  // === Helper PUBLIC per template (niente touched/invalid diretti) ===
+  control(name: string): AbstractControl | null {
+    return this.form.get(name);
+  }
+
+  isInvalid(name: string): boolean {
+    const c = this.control(name);
+    return !!c && c.touched && c.invalid;
+  }
+
+  getFieldError(name: string): string {
+    const c = this.control(name);
+    if (!c || !c.touched || !c.errors) return '';
+
+    if (c.errors['required']) return 'Campo obbligatorio';
+    if (c.errors['email']) return 'Email non valida';
+    if (c.errors['minlength']) {
+      const req = c.errors['minlength'].requiredLength;
+      return `Minimo ${req} caratteri`;
+    }
+    return 'Valore non valido';
+  }
+
+  togglePassword() {
+    this.showPassword = !this.showPassword;
+  }
+
+  private openSnack(message: string, type: 'success' | 'error' | 'info' = 'info') {
+    this.snack.open(message, 'OK', {
+      duration: 2800,
+      horizontalPosition: 'right',
+      verticalPosition: 'top',
+      panelClass: [`snack-${type}`]
+    });
+  }
 
   onSubmit() {
-    if (this.form.invalid) return;
+    this.inlineMessage = '';
 
-    this.adminService.creaAgente(this.form.value).subscribe({
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      this.uiState = 'error';
+      this.inlineMessage = 'Controlla i campi evidenziati e riprova.';
+      this.openSnack('Alcuni campi non sono validi', 'error');
+      return;
+    }
+
+    this.uiState = 'loading';
+
+    const payload = {
+      ...this.form.value,
+      numero: String(this.form.value.numero).replace(/\s+/g, '')
+    };
+
+    this.adminService.creaAgente(payload).subscribe({
       next: () => {
-        this.snack.open('Agente creato con successo!', 'OK', { duration: 2500 });
-        this.router.navigate(['/admin']);
+        this.uiState = 'success';
+        this.inlineMessage = 'Agente creato con successo! Reindirizzamento in corso...';
+        this.openSnack('Agente creato con successo!', 'success');
+        setTimeout(() => this.router.navigate(['/admin']), 700);
       },
       error: (err) => {
-        const msg = err.error?.message || 'Errore creazione agente';
-        this.snack.open(msg, 'Chiudi', { duration: 3000 });
+        this.uiState = 'error';
+        const msg = err?.error?.message || 'Errore durante la creazione dell’agente';
+        this.inlineMessage = msg;
+        this.openSnack(msg, 'error');
       }
     });
   }
 
-
-
+  resetForm() {
+    this.form.reset();
+    this.uiState = 'idle';
+    this.inlineMessage = '';
+  }
 }

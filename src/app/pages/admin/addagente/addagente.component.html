@@ -1,40 +1,186 @@
 <app-navbar></app-navbar>
-<h2>Aggiungi Agente</h2>
 
-<form [formGroup]="form" (ngSubmit)="onSubmit()">
+<div class="page">
+  <div class="shell">
 
-  <div>
-    <label>Nome</label>
-    <input type="text" formControlName="nome">
+    <header class="hero">
+      <div class="hero-left">
+        <div class="badge">Admin</div>
+        <h1 class="title">Aggiungi agente</h1>
+        <p class="subtitle">
+          Crea un nuovo account agente per la gestione delle inserzioni e delle richieste.
+        </p>
+      </div>
+
+      <div class="hero-right">
+        <div class="chip" [class.is-loading]="uiState === 'loading'"
+             [class.is-success]="uiState === 'success'"
+             [class.is-error]="uiState === 'error'">
+          <span class="dot"></span>
+          <span class="chip-text">
+            @if (uiState === 'idle') { Pronto }
+            @else if (uiState === 'loading') { Creazione in corso... }
+            @else if (uiState === 'success') { Creato }
+            @else { Errore }
+          </span>
+        </div>
+      </div>
+    </header>
+
+    <main class="card">
+      <div class="card-head">
+        <div class="icon">🧑‍💼</div>
+        <div class="card-titles">
+          <h2>Dettagli agente</h2>
+          <p>Inserisci i dati richiesti. La password deve avere almeno 8 caratteri.</p>
+        </div>
+      </div>
+
+      @if (inlineMessage) {
+        <div class="alert"
+             [class.alert-success]="uiState === 'success'"
+             [class.alert-error]="uiState === 'error'"
+             [class.alert-info]="uiState === 'loading'">
+          <span class="alert-icon">
+            @if (uiState === 'success') { ✅ }
+            @else if (uiState === 'error') { ⚠️ }
+            @else { ⏳ }
+          </span>
+          <span class="alert-text">{{ inlineMessage }}</span>
+          @if (uiState !== 'loading') {
+            <button type="button" class="alert-x" (click)="inlineMessage = ''" aria-label="Chiudi">✕</button>
+          }
+        </div>
+      }
+
+      <form class="form" [formGroup]="form" (ngSubmit)="onSubmit()">
+        <div class="grid">
+
+          <!-- Nome -->
+          <div class="field">
+            <label for="nome">Nome</label>
+            <input
+              id="nome"
+              type="text"
+              formControlName="nome"
+              placeholder="Es. Mario"
+              [class.invalid]="isInvalid('nome')"
+              autocomplete="given-name"
+            />
+            @if (getFieldError('nome')) {
+              <div class="error">{{ getFieldError('nome') }}</div>
+            }
+          </div>
+
+          <!-- Cognome -->
+          <div class="field">
+            <label for="cognome">Cognome</label>
+            <input
+              id="cognome"
+              type="text"
+              formControlName="cognome"
+              placeholder="Es. Rossi"
+              [class.invalid]="isInvalid('cognome')"
+              autocomplete="family-name"
+            />
+            @if (getFieldError('cognome')) {
+              <div class="error">{{ getFieldError('cognome') }}</div>
+            }
+          </div>
+
+          <!-- Email -->
+          <div class="field span-2">
+            <label for="mail">Email</label>
+            <input
+              id="mail"
+              type="email"
+              formControlName="mail"
+              placeholder="nome@agenzia.it"
+              [class.invalid]="isInvalid('mail')"
+              autocomplete="email"
+            />
+            @if (getFieldError('mail')) {
+              <div class="error">{{ getFieldError('mail') }}</div>
+            }
+          </div>
+
+          <!-- Password -->
+          <div class="field">
+            <label for="password">Password</label>
+
+            <div class="input-row">
+              <input
+                id="password"
+                [type]="showPassword ? 'text' : 'password'"
+                formControlName="password"
+                placeholder="Minimo 8 caratteri"
+                [class.invalid]="isInvalid('password')"
+                autocomplete="new-password"
+              />
+              <button type="button" class="ghost" (click)="togglePassword()">
+                {{ showPassword ? 'Nascondi' : 'Mostra' }}
+              </button>
+            </div>
+
+            @if (getFieldError('password')) {
+              <div class="error">{{ getFieldError('password') }}</div>
+            }
+            <div class="hint">Suggerimento: usa lettere, numeri e un simbolo.</div>
+          </div>
+
+          <!-- Numero -->
+          <div class="field">
+            <label for="numero">Numero di telefono</label>
+            <input
+              id="numero"
+              type="text"
+              formControlName="numero"
+              placeholder="+39 3xx xxx xxxx"
+              [class.invalid]="isInvalid('numero')"
+              autocomplete="tel"
+            />
+            @if (getFieldError('numero')) {
+              <div class="error">{{ getFieldError('numero') }}</div>
+            }
+          </div>
+
+          <!-- Agenzia -->
+          <div class="field span-2">
+            <label for="agenzia">Agenzia</label>
+            <textarea
+              id="agenzia"
+              rows="3"
+              formControlName="agenzia"
+              placeholder="Es. Dieti Estates — Napoli Centro"
+              [class.invalid]="isInvalid('agenzia')"
+            ></textarea>
+            @if (getFieldError('agenzia')) {
+              <div class="error">{{ getFieldError('agenzia') }}</div>
+            }
+          </div>
+
+        </div>
+
+        <div class="actions">
+          <button type="button" class="btn-secondary" (click)="resetForm()" [disabled]="uiState === 'loading'">
+            Reset
+          </button>
+
+          <button type="submit" class="btn-primary" [disabled]="uiState === 'loading'">
+            @if (uiState === 'loading') {
+              <span class="spinner" aria-hidden="true"></span>
+              Creazione...
+            } @else {
+              Crea agente
+            }
+          </button>
+        </div>
+
+        <div class="foot">
+          <a routerLink="/admin" class="back-link">← Torna al pannello admin</a>
+        </div>
+      </form>
+    </main>
+
   </div>
-
-  <div>
-    <label>Cognome</label>
-    <input type="text" formControlName="cognome">
-  </div>
-
-  <div>
-    <label>Email</label>
-    <input type="email" formControlName="mail">
-  </div>
-
-  <div>
-    <label>Password</label>
-    <input type="password" formControlName="password">
-  </div>
-
-  <div>
-    <label>Numero di telefono</label>
-    <input type="text" formControlName="numero">
-  </div>
-
-  <div>
-    <label>Agenzia</label>
-    <textarea formControlName="agenzia"></textarea>
-  </div>
-
-  <button type="submit" [disabled]="form.invalid">Crea agente</button>
-
-
-</form>
-
+</div>

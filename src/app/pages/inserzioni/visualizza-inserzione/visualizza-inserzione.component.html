@@ -7,7 +7,7 @@
   <div class="listing-page">
 
     <!-- HERO FOTO -->
-    @if (inserzione.foto?.length) {
+    @if (inserzione.foto.length) {
       <section class="hero">
         <div class="hero-media">
           <img
@@ -18,10 +18,10 @@
 
           <!-- Badge (facoltativi, solo estetica) -->
           <div class="hero-badges">
-            @if (inserzione.dati?.classeEnergetica) {
+            @if (inserzione.dati.classeEnergetica) {
               <span class="badge">Classe {{ inserzione.dati.classeEnergetica }}</span>
             }
-            @if (inserzione.dati?.ascensore !== null && inserzione.dati?.ascensore !== undefined) {
+            @if (inserzione.dati.ascensore !== null && inserzione.dati.ascensore !== undefined) {
               <span class="badge badge-soft">
                 {{ inserzione.dati.ascensore ? 'Ascensore' : 'No ascensore' }}
               </span>

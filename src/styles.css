@@ -1,4 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
+.snack-success { --mdc-snackbar-container-color: #16a34a; --mdc-snackbar-supporting-text-color: #fff; }
+.snack-error   { --mdc-snackbar-container-color: #ef4444; --mdc-snackbar-supporting-text-color: #fff; }
+.snack-info    { --mdc-snackbar-container-color: #0ea5e9; --mdc-snackbar-supporting-text-color: #fff; }
 
 /* =========================================================
    BASE STYLES
