@@ -219,12 +219,12 @@
   gap: 14px;
 }
 
-/* ========= FORM ========= */
-form .form-group{
+/* ========= FORM (scoped per evitare effetti su altre pagine) ========= */
+.register-card form .form-group{
   margin-bottom: 16px;
 }
 
-label{
+.register-card form label{
   font-weight: 900;
   margin-bottom: 6px;
   display: inline-block;
@@ -232,7 +232,7 @@ label{
   font-size: 13px;
 }
 
-input{
+.register-card form input{
   width: 100%;
   padding: 12px 14px;
   border: 1px solid rgba(15,23,42,.16);
@@ -243,14 +243,14 @@ input{
   transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.2s ease;
 }
 
-input:focus{
+.register-card form input:focus{
   border-color: rgba(245,158,11,.55);
   box-shadow: 0 0 0 4px rgba(245,158,11,.18);
   transform: translateY(-1px);
 }
 
 /* error */
-small{
+.register-card form small{
   color: #b91c1c;
   font-size: 12px;
   margin-top: 4px;
@@ -323,4 +323,15 @@ small{
 @media (prefers-reduced-motion: reduce){
   .register-card, .brand-panel{ animation: none !important; }
   *{ transition: none !important; }
+}
+
+/* ========= INPUT ERROR STATE ========= */
+.register-card form input.input-error{
+  border-color: #dc2626; /* red-600 */
+  box-shadow: 0 0 0 3px rgba(220,38,38,.18);
+}
+
+.register-card form input.input-error:focus{
+  border-color: #b91c1c;
+  box-shadow: 0 0 0 4px rgba(220,38,38,.22);
 }

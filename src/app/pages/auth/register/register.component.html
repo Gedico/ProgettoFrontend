@@ -7,7 +7,7 @@
   <div class="bg-orb orb-2"></div>
 
   <div class="auth-shell">
-    <!-- Pannello sinistro  -->
+    <!-- Pannello sinistro -->
     <aside class="brand-panel">
       <div class="brand-top">
         <div class="pill">Immobiliare • DietiEstate25</div>
@@ -49,7 +49,9 @@
       <div class="brand-footer">
         <div class="mini-card">
           <div class="mini-kpi">Premium experience</div>
-          <div class="mini-text">UI moderna, responsive e coerente col tema immobiliare.</div>
+          <div class="mini-text">
+            UI moderna, responsive e coerente col tema immobiliare.
+          </div>
         </div>
       </div>
     </aside>
@@ -59,45 +61,92 @@
       <div class="register-card">
         <header class="form-head">
           <h2>Crea il tuo account</h2>
-          <p class="subtitle">Compila i campi per completare la registrazione</p>
+          <p class="subtitle">
+            Compila i campi per completare la registrazione
+          </p>
         </header>
 
         <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+
+          <!-- Nome + Cognome -->
           <div class="grid-2">
             <div class="form-group">
               <label>Nome</label>
-              <input type="text" formControlName="nome" autocomplete="given-name" />
-              @if(nome?.touched && nome?.invalid){
+              <input
+                type="text"
+                formControlName="nome"
+                autocomplete="given-name"
+                [class.input-error]="nome?.touched && nome?.invalid"
+              />
+              @if (nome?.touched && nome?.invalid) {
                 <small>Inserisci il nome</small>
               }
             </div>
 
             <div class="form-group">
               <label>Cognome</label>
-              <input type="text" formControlName="cognome" autocomplete="family-name" />
-              @if(cognome?.touched && cognome?.invalid){
+              <input
+                type="text"
+                formControlName="cognome"
+                autocomplete="family-name"
+                [class.input-error]="cognome?.touched && cognome?.invalid"
+              />
+              @if (cognome?.touched && cognome?.invalid) {
                 <small>Inserisci il cognome</small>
               }
             </div>
           </div>
 
+          <!-- Email -->
           <div class="form-group">
             <label>Email</label>
-            <input type="email" formControlName="mail" autocomplete="email" />
-            @if(mail?.touched && mail?.invalid){
+            <input
+              type="email"
+              formControlName="mail"
+              autocomplete="email"
+              [class.input-error]="mail?.touched && mail?.invalid"
+            />
+            @if (mail?.touched && mail?.invalid) {
               <small>Email non valida</small>
             }
           </div>
 
-          <div class="form-group">
-            <label>Password</label>
-            <input type="password" formControlName="password" autocomplete="new-password" />
-            @if (password?.touched && password?.invalid){
-              <small>Inserisci la password</small>
-            }
+          <!-- Numero + Password -->
+          <div class="grid-2">
+            <div class="form-group">
+              <label>Telefono</label>
+              <input
+                type="tel"
+                formControlName="numero"
+                autocomplete="tel"
+                inputmode="tel"
+                placeholder="Es. 3331234567"
+                [class.input-error]="numero?.touched && numero?.invalid"
+              />
+              @if (numero?.touched && numero?.invalid) {
+                <small>Inserisci un numero valido (8–15 cifre)</small>
+              }
+            </div>
+
+            <div class="form-group">
+              <label>Password</label>
+              <input
+                type="password"
+                formControlName="password"
+                autocomplete="new-password"
+                [class.input-error]="password?.touched && password?.invalid"
+              />
+              @if (password?.touched && password?.invalid) {
+                <small>Inserisci la password</small>
+              }
+            </div>
           </div>
 
-          <button class="primary-btn" type="submit" [disabled]="registerForm.invalid">
+          <button
+            class="primary-btn"
+            type="submit"
+            [disabled]="registerForm.invalid || isSubmitting"
+          >
             Registrati
           </button>
         </form>
