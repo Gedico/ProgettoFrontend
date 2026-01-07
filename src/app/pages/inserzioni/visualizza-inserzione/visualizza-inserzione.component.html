@@ -16,12 +16,14 @@
             alt="Foto principale"
           />
 
-          <!-- Badge (facoltativi, solo estetica) -->
+          <!-- Badge -->
           <div class="hero-badges">
             @if (inserzione.dati.classeEnergetica) {
               <span class="badge">Classe {{ inserzione.dati.classeEnergetica }}</span>
             }
-            @if (inserzione.dati.ascensore !== null && inserzione.dati.ascensore !== undefined) {
+
+            <!-- ascensore: controllo null/undefined compatto -->
+            @if (inserzione.dati.ascensore != null) {
               <span class="badge badge-soft">
                 {{ inserzione.dati.ascensore ? 'Ascensore' : 'No ascensore' }}
               </span>
@@ -53,7 +55,7 @@
               @if (inserzione.dati.numeroStanze) {
                 <span class="chip">{{ inserzione.dati.numeroStanze }} stanze</span>
               }
-              @if (inserzione.dati.piano !== null && inserzione.dati.piano !== undefined) {
+              @if (inserzione.dati.piano != null) {
                 <span class="chip">Piano {{ inserzione.dati.piano }}</span>
               }
             </div>
@@ -64,7 +66,7 @@
               {{ inserzione.dati.prezzo | currency:'EUR':'symbol':'1.0-0' }}
             </div>
 
-            @if (isUtente() && haTrattativaInCorso) {
+            @if (isUtenteRole && haTrattativaInCorso) {
               <p class="hint-trattativa">
                 Hai già una trattativa in corso per questa inserzione.
               </p>
@@ -191,62 +193,81 @@
                 <h3>Posizione</h3>
               </div>
               <p class="address">{{ inserzione.posizione.indirizzo }}</p>
-              <iframe [src]="mappaUrl" loading="lazy"></iframe>
+
+              @if (mappaUrl) {
+                <iframe [src]="mappaUrl" loading="lazy"></iframe>
+              }
             </section>
           }
 
         </main>
 
-        <!-- COLONNA DESTRA (sticky) -->
+        <!-- COLONNA DESTRA -->
         <aside class="side-col">
           <div class="sticky">
+            @if (isUtenteRole || isAgenteRole || !isLogged) {
+              <section class="side-card">
+                <h3 class="side-title">
+                  @if (isAgenteRole) { Gestione offerta } @else { Invia una proposta }
+                </h3>
 
-            <section class="side-card">
-              <h3 class="side-title">
-                @if (isAgente()) { Gestione offerta } @else { Invia una proposta }
-              </h3>
+                <!-- UTENTE -->
+                @if (isUtenteRole) {
+                  <p class="side-sub">
+                    Puoi inviare un’offerta all’agente. La trattativa rimane tracciata.
+                  </p>
 
-              @if (isUtente()) {
-                <p class="side-sub">
-                  Puoi inviare un’offerta all’agente. La trattativa rimane tracciata.
-                </p>
+                  <button
+                    class="proposta-btn proposta-btn--full"
+                    [disabled]="haTrattativaInCorso"
+                    (click)="toggleFormOfferta()"
+                  >
+                    💶 Fai un'offerta
+                  </button>
+                }
 
-                <button
-                  class="proposta-btn proposta-btn--full"
-                  [disabled]="haTrattativaInCorso"
-                  (click)="toggleFormOfferta()"
-                >
-                  💶 Fai un'offerta
-                </button>
-              }
+                <!-- NON LOGGATO -->
+                @if (!isLogged) {
+                  <p class="side-sub">
+                    Devi essere registrato per inviare una proposta.
+                  </p>
 
-              @if (isAgente()) {
-                <p class="side-sub">
-                  Inserisci una proposta manuale per gestire trattative offline.
-                </p>
+                  <button
+                    class="proposta-btn proposta-btn--full proposta-btn--login"
+                    (click)="mostraAlertLogin()"
+                  >
+                    🔐 Accedi per fare una proposta
+                  </button>
+                }
 
-                <button
-                  class="proposta-btn manuale proposta-btn--full"
-                  (click)="vaiAPropostaManuale()"
-                >
-                  📝 Inserisci offerta manuale
-                </button>
-              }
+                <!-- AGENTE -->
+                @if (isAgenteRole) {
+                  <p class="side-sub">
+                    Inserisci una proposta manuale per gestire trattative offline.
+                  </p>
 
-              @if (haTrattativaInCorso) {
-                <p class="hint-trattativa hint-trattativa--box">
-                  Hai già una trattativa in corso per questa inserzione.
-                </p>
-              }
-            </section>
+                  <button
+                    class="proposta-btn manuale proposta-btn--full"
+                    (click)="vaiAPropostaManuale()"
+                  >
+                    📝 Inserisci offerta manuale
+                  </button>
+                }
+
+                @if (haTrattativaInCorso && isUtenteRole) {
+                  <p class="hint-trattativa hint-trattativa--box">
+                    Hai già una trattativa in corso per questa inserzione.
+                  </p>
+                }
+              </section>
+            }
 
           </div>
         </aside>
-
       </div>
     </div>
 
-    <!-- MODAL OFFERTA (la tua, mantenuta con animazione) -->
+    <!-- MODAL OFFERTA -->
     @if (mostraFormOfferta && !haTrattativaInCorso) {
       <div class="overlay" (click)="toggleFormOfferta()"></div>
 
@@ -282,8 +303,12 @@
           <label>Note (opzionale)</label>
           <textarea class="textarea-field" formControlName="note"></textarea>
 
-          <button type="submit" class="submit-btn" [disabled]="offertaForm.invalid">
-            Invia proposta
+          <button
+            type="submit"
+            class="submit-btn"
+            [disabled]="offertaForm.invalid || invioInCorso"
+          >
+            @if (invioInCorso) { Invio in corso... } @else { Invia proposta }
           </button>
 
           <button type="button" class="close-btn" (click)="toggleFormOfferta()">
