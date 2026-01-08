@@ -1,4 +1,4 @@
-import {Component, Inject, PLATFORM_ID, OnInit, OnDestroy, ElementRef, HostListener} from '@angular/core';
+import { Component, Inject, PLATFORM_ID, OnInit, OnDestroy, ElementRef, HostListener } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { Router, RouterModule, NavigationEnd } from '@angular/router';
 import { Subject, filter, takeUntil } from 'rxjs';
@@ -6,6 +6,7 @@ import { Subject, filter, takeUntil } from 'rxjs';
 import { SessionService } from '../../services/session.service';
 import { LoginService } from '../../core/auth/login.service';
 import { MenunavbarComponent } from '../menunavbar/menunavbar.component';
+import { UiPopupService } from '../../shared/ui/ui-popup.service';
 
 @Component({
   selector: 'app-navbar',
@@ -16,29 +17,26 @@ import { MenunavbarComponent } from '../menunavbar/menunavbar.component';
 })
 export class NavbarComponent implements OnInit, OnDestroy {
 
-  /*--------- PROPRIETÀ --------------------------------------------------*/
   menuAperto = false;
   currentRoute = '';
   isScrolled = false;
 
-  // Visibilità elementi
   showLoginButton = false;
   showHomeButton = false;
   showProfileIcon = false;
 
-  // Stato Utente
   isLogged = false;
   userRole: string | null = null;
 
   private destroy$ = new Subject<void>();
   private readonly isBrowser: boolean;
 
-  /*--------- COSTRUTTORE --------------------------------------------------*/
   constructor(
-    private router: Router,
-    private sessionService: SessionService,
-    private loginService: LoginService,
-    private eRef: ElementRef,
+    private readonly router: Router,
+    private readonly sessionService: SessionService,
+    private readonly loginService: LoginService,
+    private readonly popup: UiPopupService,
+    private readonly eRef: ElementRef,
     @Inject(PLATFORM_ID) platformId: Object
   ) {
     this.isBrowser = isPlatformBrowser(platformId);
@@ -64,16 +62,13 @@ export class NavbarComponent implements OnInit, OnDestroy {
         this.currentRoute = this.router.url;
         this.updateNavbarVisibility();
 
-        // ✅ checkNavbarState usa window => solo in browser
         if (this.isBrowser) {
           this.checkNavbarState();
         } else {
-          // in SSR: se non sei in home, vogliamo navbar "scrolled"
           const isHomePage = this.currentRoute === '/' || this.currentRoute === '';
           this.isScrolled = !isHomePage;
         }
 
-        // se cambio pagina, chiudo sempre il menu
         this.menuAperto = false;
       });
 
@@ -86,18 +81,16 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   /*--------- CLICK OUTSIDE + ESC ----------------------------------------*/
   @HostListener('document:click', ['$event'])
-  onDocumentClick(event: MouseEvent) {
+  onDocumentClick(event: MouseEvent): void {
     if (!this.menuAperto) return;
 
-    // SSR-safe: HostListener su document può scattare anche in ambienti strani,
-    // ma qui usiamo solo eRef (che esiste nel browser). In SSR normalmente non arriva.
     if (this.isBrowser && !this.eRef.nativeElement.contains(event.target)) {
       this.chiudiMenu();
     }
   }
 
   @HostListener('document:keydown', ['$event'])
-  onDocumentKeydown(event: KeyboardEvent) {
+  onDocumentKeydown(event: KeyboardEvent): void {
     if (event.key === 'Escape' && this.menuAperto) {
       this.chiudiMenu();
     }
@@ -109,7 +102,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
   };
 
   private checkNavbarState(): void {
-    // ✅ Protezione totale
     if (!this.isBrowser) return;
 
     const isHomePage = this.currentRoute === '/' || this.currentRoute === '';
@@ -126,7 +118,21 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   /*--------- AZIONI ------------------------------------------------------*/
-  logout(): void {
+
+  async logout(): Promise<void> {
+    // chiudi il menu (così l’utente vede bene il popup)
+    this.menuAperto = false;
+
+    const ok = await this.popup.confirm({
+      title: 'Disconnettersi?',
+      text: 'Sei sicuro di voler effettuare il logout?',
+      confirmText: 'Logout',
+      cancelText: 'Annulla',
+      danger: true
+    });
+
+    if (!ok) return;
+
     const token = this.sessionService.getToken() || '';
     this.loginService.logout(token).subscribe({
       next: () => this.handleLogoutSuccess(),
@@ -137,7 +143,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   private handleLogoutSuccess(): void {
     this.sessionService.clearSession();
     this.menuAperto = false;
-    this.router.navigate(['/']);
+    void this.router.navigate(['/']);
   }
 
   toggleMenu(event: Event): void {
