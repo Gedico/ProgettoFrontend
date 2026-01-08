@@ -269,54 +269,74 @@
 
     <!-- MODAL OFFERTA -->
     @if (mostraFormOfferta && !haTrattativaInCorso) {
-      <div class="overlay" (click)="toggleFormOfferta()"></div>
+      <div class="overlay" (click)="chiudiFormOfferta()"></div>
 
-      <div class="modal-card" (click)="$event.stopPropagation()">
-        <h2>Invia una proposta</h2>
+      <section class="modal-card modal-card--modern" (click)="$event.stopPropagation()" role="dialog" aria-modal="true">
+        <header class="modal-head">
+          <div class="modal-head-left">
+            <h2 class="modal-title">Invia una proposta</h2>
+            <p class="modal-sub">Inserisci l’importo e un messaggio per l’agente</p>
+          </div>
 
-        <p class="hint">
-          Prezzo minimo accettato:
-          <b>{{ prezzoMinimo | currency:'EUR':'symbol':'1.0-0' }}</b>
-        </p>
+          <button type="button" class="modal-close" aria-label="Chiudi" (click)="chiudiFormOfferta()">
+            ✕
+          </button>
+        </header>
 
-        <form [formGroup]="offertaForm" (ngSubmit)="inviaProposta()">
-          <label>Importo offerta (€)</label>
-          <input
-            type="text"
-            class="input-field"
-            formControlName="prezzoProposta"
-            appCurrencyInput
-          />
+        <div class="modal-pill">
+          <span>Prezzo minimo accettato</span>
+          <strong>{{ prezzoMinimo | currency:'EUR':'symbol':'1.0-0' }}</strong>
+        </div>
 
-          @if (prezzoProposta?.touched && prezzoProposta?.invalid) {
-            <div class="validation">
-              @if (prezzoProposta?.errors?.['required']) {
-                L'importo è obbligatorio.
-              }
-              @if (prezzoProposta?.errors?.['min']) {
-                L'importo deve essere almeno
-                {{ prezzoMinimo | currency:'EUR':'symbol':'1.0-0' }}.
-              }
+        <form class="modal-form" [formGroup]="offertaForm" (ngSubmit)="inviaProposta()">
+          <div class="field">
+            <label>Importo offerto (€)</label>
+
+            <div class="input-wrap">
+              <span class="input-icon">€</span>
+              <input
+                type="text"
+                formControlName="prezzoProposta"
+                appCurrencyInput
+                placeholder="Es. 120.000"
+                [class.is-invalid]="prezzoProposta?.touched && prezzoProposta?.invalid"
+              />
             </div>
-          }
 
-          <label>Note (opzionale)</label>
-          <textarea class="textarea-field" formControlName="note"></textarea>
+            @if (prezzoProposta?.touched && prezzoProposta?.invalid) {
+              <small class="error">
+                @if (prezzoProposta?.errors?.['required']) { L'importo è obbligatorio. }
+                @if (prezzoProposta?.errors?.['min']) {
+                  Deve essere almeno {{ prezzoMinimo | currency:'EUR':'symbol':'1.0-0' }}.
+                }
+              </small>
+            }
+          </div>
 
-          <button
-            type="submit"
-            class="submit-btn"
-            [disabled]="offertaForm.invalid || invioInCorso"
-          >
-            @if (invioInCorso) { Invio in corso... } @else { Invia proposta }
-          </button>
+          <div class="field">
+            <label>Messaggio (opzionale)</label>
+            <textarea
+              rows="4"
+              formControlName="note"
+              placeholder="Scrivi un messaggio per l’agente…"
+            ></textarea>
+            <div class="field-hint">Max 500 caratteri</div>
+          </div>
 
-          <button type="button" class="close-btn" (click)="toggleFormOfferta()">
-            Chiudi
-          </button>
+          <footer class="modal-actions">
+            <button type="button" class="btn ghost" (click)="chiudiFormOfferta()" [disabled]="invioInCorso">
+              Annulla
+            </button>
+
+            <button type="submit" class="btn primary" [disabled]="offertaForm.invalid || invioInCorso">
+              @if (invioInCorso) { Invio in corso… } @else { Invia proposta }
+            </button>
+          </footer>
         </form>
-      </div>
+      </section>
     }
+
+
 
   </div>
 }

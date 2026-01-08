@@ -215,3 +215,52 @@ html, body {
   scrollbar-width: thin;
   scrollbar-color: #4facfe #f1f1f1;
 }
+
+/* SweetAlert2 theme (globale) */
+.sw-popup{
+  border-radius: 18px !important;
+  padding: 18px !important;
+  box-shadow: 0 22px 60px rgba(2, 6, 23, 0.22) !important;
+}
+
+.sw-title{
+  font-weight: 950 !important;
+  letter-spacing: -0.2px !important;
+  color: #0f172a !important;
+}
+
+.sw-text{
+  color: #475569 !important;
+  font-weight: 700 !important;
+  line-height: 1.6 !important;
+}
+
+.swal2-actions{
+  margin-top: 14px !important;
+  gap: 10px !important;
+}
+
+.sw-btn{
+  border-radius: 14px !important;
+  padding: 10px 14px !important;
+  font-weight: 950 !important;
+  border: 1px solid rgba(2, 6, 23, 0.12) !important;
+  box-shadow: none !important;
+}
+
+.sw-btnPrimary{
+  background: linear-gradient(135deg, #2977a7, #1f5a7d) !important;
+  color: #fff !important;
+  border: none !important;
+}
+
+.sw-btnDanger{
+  background: rgba(220, 38, 38, 0.12) !important;
+  border-color: rgba(220, 38, 38, 0.22) !important;
+  color: #991b1b !important;
+}
+
+.sw-btnGhost{
+  background: #f1f5f9 !important;
+  color: #0f172a !important;
+}

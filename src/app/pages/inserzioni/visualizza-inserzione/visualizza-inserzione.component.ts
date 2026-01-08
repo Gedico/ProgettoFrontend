@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule, CurrencyPipe } from '@angular/common';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
@@ -10,7 +10,6 @@ import {
   AbstractControl
 } from '@angular/forms';
 import { finalize } from 'rxjs/operators';
-import Swal from 'sweetalert2';
 
 import { InserzioneService } from '../../../services/inserzioni.service';
 import { PropostaService } from '../../../services/proposta.service';
@@ -18,6 +17,7 @@ import { SessionService } from '../../../services/session.service';
 import { InserzioneResponse } from '../../../models/inserzioneresponse';
 import { CurrencyInputDirective } from '../../../shared/directives/currency-input.directive';
 import { StatoProposta } from '../../../models/dto/enums/stato-proposta';
+import { UiPopupService } from '../../../shared/ui/ui-popup.service';
 
 type Ruolo = 'UTENTE' | 'AGENTE' | 'ADMIN';
 
@@ -58,7 +58,7 @@ export class VisualizzaInserzioneComponent implements OnInit {
   haTrattativaInCorso = false;
   contropropostaAgente: ContropropostaAgente | null = null;
 
-  // session flags (centralizzati)
+  // session flags
   isLogged = false;
   role: Ruolo | null = null;
   isUtenteRole = false;
@@ -69,13 +69,14 @@ export class VisualizzaInserzioneComponent implements OnInit {
   invioInCorso = false;
 
   constructor(
-    private route: ActivatedRoute,
-    private inserzioneService: InserzioneService,
-    private sanitizer: DomSanitizer,
-    private fb: FormBuilder,
-    private propostaService: PropostaService,
-    private sessionService: SessionService,
-    private router: Router
+    private readonly route: ActivatedRoute,
+    private readonly inserzioneService: InserzioneService,
+    private readonly sanitizer: DomSanitizer,
+    private readonly fb: FormBuilder,
+    private readonly propostaService: PropostaService,
+    private readonly sessionService: SessionService,
+    private readonly router: Router,
+    private readonly popup: UiPopupService
   ) {
     this.offertaForm = this.fb.group({
       prezzoProposta: [null, [Validators.required, Validators.min(1)]],
@@ -97,6 +98,16 @@ export class VisualizzaInserzioneComponent implements OnInit {
     this.caricaInserzione();
   }
 
+  /* =========================================================
+     Keyboard: ESC chiude la modale
+     ========================================================= */
+  @HostListener('document:keydown.escape')
+  onEsc(): void {
+    if (this.mostraFormOfferta) {
+      this.chiudiFormOfferta();
+    }
+  }
+
   private caricaInserzione(): void {
     this.caricamento = true;
 
@@ -112,19 +123,14 @@ export class VisualizzaInserzioneComponent implements OnInit {
             this.caricaControproposta();
           }
         },
-        error: () => {
-          Swal.fire('Errore', 'Impossibile caricare l’inserzione.', 'error');
+        error: async () => {
+          await this.popup.error('Errore', 'Impossibile caricare l’inserzione.');
         }
       });
   }
 
-  /**
-   * Imposta:
-   * - prezzo minimo (85% del prezzo) + validator
-   * - url mappa (se coordinate presenti)
-   */
   private setupFromInserzione(data: InserzioneResponse): void {
-    // prezzo minimo
+    // prezzo minimo (85% del prezzo)
     const prezzo = data?.dati?.prezzo;
     if (typeof prezzo === 'number' && prezzo > 0) {
       this.prezzoMinimo = prezzo * 0.85;
@@ -147,52 +153,87 @@ export class VisualizzaInserzioneComponent implements OnInit {
     }
   }
 
-  // getter tipizzato (utile nel template, evita warning e null crash)
+  // getter tipizzato
   get prezzoProposta(): AbstractControl | null {
     return this.offertaForm.get('prezzoProposta');
   }
 
-  /** Apertura/chiusura modale proposta con regole ruolo/login */
+  /* =========================================================
+     MODAL: apertura/chiusura (con scroll lock)
+     ========================================================= */
+
   toggleFormOfferta(): void {
     if (!this.isLogged) {
-      this.mostraAlertLogin();
+      void this.mostraAlertLogin();
       return;
     }
 
     if (!this.isUtenteRole) {
-      Swal.fire('Operazione non consentita', 'Solo gli utenti possono inviare offerte.', 'info');
+      void this.popup.info('Operazione non consentita', 'Solo gli utenti possono inviare offerte.');
       return;
     }
 
     if (this.haTrattativaInCorso) {
-      Swal.fire('Trattativa già presente', 'Hai già una trattativa in corso per questa inserzione.', 'info');
+      void this.popup.info('Trattativa già presente', 'Hai già una trattativa in corso per questa inserzione.');
       return;
     }
 
     this.mostraFormOfferta = !this.mostraFormOfferta;
+    document.body.classList.toggle('no-scroll', this.mostraFormOfferta);
+
+    if (!this.mostraFormOfferta) {
+      this.resetOffertaForm();
+    }
   }
 
-  /** CTA login (public perché potrebbe essere richiamata dal template) */
-  mostraAlertLogin(): void {
-    Swal.fire({
+  chiudiFormOfferta(): void {
+    this.mostraFormOfferta = false;
+    document.body.classList.remove('no-scroll');
+    this.resetOffertaForm();
+  }
+
+  private resetOffertaForm(): void {
+    this.offertaForm.reset();
+    this.invioInCorso = false;
+  }
+
+  /* =========================================================
+     LOGIN CTA
+     ========================================================= */
+  async mostraAlertLogin(): Promise<void> {
+    const go = await this.popup.confirm({
       title: 'Accesso richiesto',
       text: 'Devi essere registrato per inviare una proposta.',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonText: 'Accedi',
-      cancelButtonText: 'Annulla',
-      confirmButtonColor: '#0f2a44'
-    }).then((r) => {
-      if (r.isConfirmed) {
-        this.router.navigate(['/login']);
-      }
+      confirmText: 'Accedi',
+      cancelText: 'Annulla'
     });
+
+    if (go) {
+      void this.router.navigate(['/login']);
+    }
   }
 
-  inviaProposta(): void {
+  /* =========================================================
+     INVIO PROPOSTA (con confirm + popup)
+     ========================================================= */
+  async inviaProposta(): Promise<void> {
     if (!this.inserzione) return;
     if (!this.isUtenteRole) return;
-    if (this.offertaForm.invalid || this.invioInCorso) return;
+
+    if (this.offertaForm.invalid || this.invioInCorso) {
+      this.offertaForm.markAllAsTouched();
+      await this.popup.warning('Dati non validi', 'Controlla l’importo inserito prima di inviare.');
+      return;
+    }
+
+    const ok = await this.popup.confirm({
+      title: 'Inviare la proposta?',
+      text: 'Confermi l’invio della tua proposta all’agente?',
+      confirmText: 'Invia',
+      cancelText: 'Annulla'
+    });
+
+    if (!ok) return;
 
     this.invioInCorso = true;
 
@@ -206,67 +247,105 @@ export class VisualizzaInserzioneComponent implements OnInit {
       .inviaProposta(payload)
       .pipe(finalize(() => (this.invioInCorso = false)))
       .subscribe({
-        next: () => {
-          Swal.fire({
+        next: async () => {
+          const goToList = await this.popup.confirm({
             title: 'Successo',
-            text: 'Proposta inviata!',
-            icon: 'success',
-            showCancelButton: true,
-            confirmButtonText: 'Vai alle mie proposte',
-            cancelButtonText: 'Chiudi',
-            confirmButtonColor: '#0f2a44'
-          }).then((res) => {
-            if (res.isConfirmed) {
-              this.router.navigate(['/proposte-inviate']);
-            }
+            text: 'Proposta inviata! Vuoi andare alle tue proposte?',
+            confirmText: 'Vai alle mie proposte',
+            cancelText: 'Chiudi'
           });
 
-          this.mostraFormOfferta = false;
-          this.offertaForm.reset();
+          if (goToList) {
+            void this.router.navigate(['/proposte-inviate']);
+          }
+
+          this.chiudiFormOfferta();
         },
-        error: (err) => {
-          Swal.fire('Errore', err?.error?.message || 'Errore invio proposta.', 'error');
+        error: async (err) => {
+          const msg = err?.error?.message || 'Errore invio proposta.';
+          await this.popup.error('Errore', msg);
         }
       });
   }
 
-  /** Carica solo eventuale CONTROPROPOSTA dell’agente relativa a questa inserzione */
+  /* =========================================================
+     CONTROPROPOSTA
+     ========================================================= */
+
   private caricaControproposta(): void {
     if (!this.inserzione) return;
 
-    this.propostaService.getProposteUtente().subscribe((res: ContropropostaAgente[]) => {
-      const found = res.find(
-        (p) =>
-          p.idInserzione === this.inserzione!.id &&
-          p.proponente === 'AGENTE' &&
-          p.stato === 'CONTROPROPOSTA'
-      );
+    this.propostaService.getProposteUtente().subscribe({
+      next: (res: ContropropostaAgente[]) => {
+        const found = res.find(
+          (p) =>
+            p.idInserzione === this.inserzione!.id &&
+            p.proponente === 'AGENTE' &&
+            p.stato === 'CONTROPROPOSTA'
+        );
 
-      this.contropropostaAgente = found ?? null;
-      this.haTrattativaInCorso = !!this.contropropostaAgente;
+        this.contropropostaAgente = found ?? null;
+        this.haTrattativaInCorso = Boolean(this.contropropostaAgente);
+      },
+      error: async () => {
+        // non blocchiamo la pagina: solo warn
+        await this.popup.warning('Attenzione', 'Non è stato possibile caricare la controproposta.');
+      }
     });
   }
 
-  accettaControproposta(): void {
+  async accettaControproposta(): Promise<void> {
     if (!this.contropropostaAgente) return;
+
+    const ok = await this.popup.confirm({
+      title: 'Accettare la controproposta?',
+      text: 'Confermi di accettare la controproposta dell’agente?',
+      confirmText: 'Accetta',
+      cancelText: 'Annulla'
+    });
+
+    if (!ok) return;
 
     this.propostaService
       .aggiornaStato(this.contropropostaAgente.idProposta, StatoProposta.ACCETTATA)
-      .subscribe(() => this.caricaControproposta());
+      .subscribe({
+        next: () => this.caricaControproposta(),
+        error: async () => {
+          await this.popup.error('Errore', 'Impossibile accettare la controproposta.');
+        }
+      });
   }
 
-  rifiutaControproposta(): void {
+  async rifiutaControproposta(): Promise<void> {
     if (!this.contropropostaAgente) return;
+
+    const ok = await this.popup.confirm({
+      title: 'Rifiutare la controproposta?',
+      text: 'Confermi di rifiutare la controproposta dell’agente?',
+      confirmText: 'Rifiuta',
+      cancelText: 'Annulla',
+      danger: true
+    });
+
+    if (!ok) return;
 
     this.propostaService
       .aggiornaStato(this.contropropostaAgente.idProposta, StatoProposta.RIFIUTATA)
-      .subscribe(() => this.caricaControproposta());
+      .subscribe({
+        next: () => this.caricaControproposta(),
+        error: async () => {
+          await this.popup.error('Errore', 'Impossibile rifiutare la controproposta.');
+        }
+      });
   }
 
+  /* =========================================================
+     ROUTE: proposta manuale
+     ========================================================= */
   vaiAPropostaManuale(): void {
     if (!this.inserzione) return;
     if (!this.isAgenteRole) return;
 
-    this.router.navigate(['/inserzione', this.inserzione.id, 'proposta-manuale']);
+    void this.router.navigate(['/inserzione', this.inserzione.id, 'proposta-manuale']);
   }
 }
