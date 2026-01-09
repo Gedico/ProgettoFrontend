@@ -88,10 +88,68 @@
 /* SEZIONE CARD */
 .ultime-inserzioni {
   position: relative;
-  padding: 100px 8%;
-  background-color: #ffffff;
+  padding: 120px 8%;
+  background: linear-gradient(
+    180deg,
+    #f8fafc 0%,   /* quasi bianco */
+    #f1f5f9 60%,  /* grigio ghiaccio */
+    #e8eef6 100%  /* leggero azzurro freddo */
+  );
   z-index: 1;
 }
+
+
+.ultime-inserzioni::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 80px;
+  background: linear-gradient(
+    to bottom,
+    rgba(15, 23, 42, 0.08),
+    transparent
+  );
+}
+
+
+.ultime-inserzioni .grid-inserzioni {
+  position: relative;
+  z-index: 2;
+}
+
+.ultime-inserzioni .card-animate {
+  position: relative;
+  border-radius: 20px;
+  overflow: visible; /* necessario per l’alone */
+  transition: transform 0.4s ease;
+}
+
+.ultime-inserzioni .card-animate::after {
+  content: '';
+  position: absolute;
+  inset: -6px;
+  border-radius: inherit;
+  background: rgba(37, 99, 235, 0.25);
+  filter: blur(18px);
+  opacity: 0.35;
+  z-index: -1;
+  transition:
+    opacity 0.4s ease,
+    filter 0.4s ease,
+    inset 0.4s ease;
+}
+
+.ultime-inserzioni .card-animate:hover {
+  box-shadow:
+    0 25px 60px rgba(37, 99, 235, 0.35),
+    0 0 0 1px rgba(37, 99, 235, 0.15);
+}
+
+
+
+
 
 .section-header {
   display: flex;

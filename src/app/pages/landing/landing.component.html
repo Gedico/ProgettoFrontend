@@ -23,19 +23,22 @@
 </section>
 
 <section class="ultime-inserzioni">
-  <div class="section-header">
-    <div class="title-box">
-      <span class="subtitle">Recenti</span>
-      <h2>Ultime inserzioni caricate</h2>
+  <div class="container">
+    <div class="section-header">
+      <div class="title-box">
+        <span class="subtitle">Recenti</span>
+        <h2>Ultime inserzioni caricate</h2>
+      </div>
+      <button class="btn-outline">Scopri tutte le case</button>
     </div>
-    <button class="btn-outline">Scopri tutte le case</button>
-  </div>
 
-  <div class="grid-inserzioni">
-    <app-inserzione-card
-      *ngFor="let inserzione of ultime"
-      [inserzione]="inserzione"
-      class="card-animate">
-    </app-inserzione-card>
+    <div class="grid-inserzioni">
+      <app-inserzione-card
+        *ngFor="let inserzione of ultime"
+        [inserzione]="inserzione"
+        class="card-animate">
+      </app-inserzione-card>
+    </div>
   </div>
 </section>
+
