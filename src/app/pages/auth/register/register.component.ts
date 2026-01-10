@@ -9,7 +9,6 @@ import { SessionService } from '../../../services/session.service';
 import { LoginService } from '../../../core/auth/login.service';
 import { LoginRequest } from '../../../models/dto/auth/login-request.dto';
 
-import { NavbarComponent } from '../../../components/navbar/navbar.component';
 import { RegisterService } from '../../../core/register/register.service';
 import { RegisterRequest } from '../../../models/dto/register-request.dto';
 
@@ -18,7 +17,7 @@ import { RegisterRequest } from '../../../models/dto/register-request.dto';
   standalone: true,
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css'],
-  imports: [CommonModule, ReactiveFormsModule, NavbarComponent, RouterLink]
+  imports: [CommonModule, ReactiveFormsModule, RouterLink]
 })
 export class RegisterComponent {
 

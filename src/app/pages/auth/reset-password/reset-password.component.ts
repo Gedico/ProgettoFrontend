@@ -20,7 +20,7 @@ export class ResetPasswordComponent implements OnInit {
 
   token: string | null = null;
   message = '';
-  isSuccess = false; // ← AGGIUNTO
+  isSuccess = false;
 
   resetForm: any;
 
