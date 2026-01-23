@@ -1,13 +1,24 @@
 <div class="step-mappa-container">
 
   <!-- Introduzione Step -->
-  <div class="step-intro">
-    <div class="step-icon">🗺️</div>
-    <h2 class="step-main-title">Conferma la posizione sulla mappa</h2>
-    <p class="step-description">
-      Assicurati che il marker sia posizionato esattamente dove si trova l'immobile. Puoi trascinarlo per maggiore precisione.
-    </p>
-  </div>
+ <div class="step-intro">
+  <h2 class="step-main-title">
+    Conferma la <span class="accent">posizione</span> sulla mappa
+  </h2>
+</div>
+
+
+ <!-- Indirizzo corrente -->
+  @if (posizioneForm.get('indirizzo')?.value) {
+    <div class="current-address">
+      <div class="address-icon">📍</div>
+      <div class="address-content">
+        <div class="address-label">Indirizzo selezionato:</div>
+        <div class="address-text">{{ posizioneForm.get('indirizzo')?.value }}</div>
+      </div>
+    </div>
+  }
+  
 
   <!-- Map Container con overlay -->
   <div class="map-wrapper">
@@ -39,16 +50,7 @@
     </div>
   </div>
 
-  <!-- Indirizzo corrente -->
-  @if (posizioneForm.get('indirizzo')?.value) {
-    <div class="current-address">
-      <div class="address-icon">📍</div>
-      <div class="address-content">
-        <div class="address-label">Indirizzo selezionato:</div>
-        <div class="address-text">{{ posizioneForm.get('indirizzo')?.value }}</div>
-      </div>
-    </div>
-  }
+ 
 
   <!-- Info box suggerimenti -->
   <div class="info-box">

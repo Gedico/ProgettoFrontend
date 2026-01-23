@@ -14,7 +14,9 @@ import { MarkerDTO } from '../../models/dto/Search/markerdto';
   selector: 'app-risultati',
   standalone: true,
   imports: [CommonModule, ListaInserzioniComponent, MappaInterattivaComponent],
-  templateUrl: './risultati.component.html'
+  templateUrl: './risultati.component.html',
+  styleUrl:'./risultati.component.css'
+  
 })
 export class RisultatiComponent implements OnInit {
 

@@ -42,7 +42,8 @@ export class StepMappaComponent implements AfterViewInit, OnDestroy {
         center,
         zoom: 16,
         mapTypeControl: false,
-        streetViewControl: false
+        streetViewControl: false,
+        gestureHandling: 'greedy'
       }
     );
 

@@ -1,58 +1,82 @@
-.progress-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 32px 16px;
-  background: linear-gradient(to bottom, #f8f9fa 0%, #ffffff 100%);
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+/* ==================== CONTAINER VERTICALE ==================== */
+
+:host {
+  display: block;
+  height: 100%;
+  width: 100%;
 }
+
+
+.progress-container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 32px 16px;
+
+  /* ✅ SFONDO COLONNA */
+  background-image: url('https://storage.googleapis.com/database-dietiestate25/assets/sfondo%20mappa%20gpt.png');
+  background: var(--glass-bg);
+  border: 3px solid var(--glass-border);
+}
+
+
+
+/* ==================== STEP ==================== */
 
 .step {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
+  gap: 16px;
   position: relative;
+  flex: 1; /* ogni step occupa una porzione uguale */
 }
 
+
+/* ==================== CERCHIO ==================== */
+
 .circle {
-  width: 48px;
-  height: 48px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
+
   background: linear-gradient(135deg, #e9ecef 0%, #dee2e6 100%);
   color: #6c757d;
-  font-weight: 600;
-  font-size: 18px;
+
+  font-weight: 700;
+  font-size: 16px;
+
   display: flex;
   align-items: center;
   justify-content: center;
-  position: relative;
-  z-index: 2;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+
   border: 3px solid #ffffff;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  z-index: 2;
+
+  transition: all 0.35s ease;
 }
 
-.circle::before {
-  content: '';
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #2c5f8d 0%, #1a4d7a 100%);
-  opacity: 0;
-  transition: opacity 0.4s ease;
-  z-index: -1;
-}
+/* ==================== LINEA VERTICALE ==================== */
 
 .line {
-  width: 80px;
-  height: 4px;
-  background: linear-gradient(to right, #e9ecef 0%, #dee2e6 100%);
-  margin: 0 -3px;
-  position: relative;
-  z-index: 1;
-  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  position: absolute;
+  top: 50px;          /* sotto il cerchio (diametro) */
+  left: 20px;         /* centro del cerchio (56 / 2) */
+
+  width: 4px;
+  height: calc(100% - 56px); /* RIEMPIE LO STEP */
+
+  background: #e5e7eb;
   border-radius: 2px;
+
+   box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.6);
+
+}
+
+
+.step:last-child .line {
+  display: none;
 }
 
 .line::after {
@@ -60,98 +84,64 @@
   position: absolute;
   top: 0;
   left: 0;
-  width: 0;
-  height: 100%;
-  background: linear-gradient(to right, #2c5f8d 0%, #1a4d7a 100%);
-  transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-  border-radius: 2px;
-  box-shadow: 0 0 8px rgba(44, 95, 141, 0.4);
-}
 
-/* Stato attivo */
-.step.active .circle {
-  background: linear-gradient(135deg, #2c5f8d 0%, #1a4d7a 100%);
-  color: #ffffff;
-  transform: scale(1.1);
-  box-shadow: 0 4px 16px rgba(44, 95, 141, 0.3);
-}
+  width: 100%;
+  height: 0;
 
-.step.active .circle::before {
-  opacity: 1;
+  background: linear-gradient(
+    to bottom,
+    #2c5f8d 0%,
+    #1a4d7a 100%
+  );
+
+  transition: height 0.5s ease;
 }
 
 .line.active::after {
-  width: 100%;
+  height: 100%;
 }
 
-/* Animazione pulse per lo step corrente */
-@keyframes pulse {
-  0%, 100% {
-    box-shadow: 0 4px 16px rgba(44, 95, 141, 0.3);
-  }
-  50% {
-    box-shadow: 0 4px 24px rgba(44, 95, 141, 0.5);
-  }
-}
+/* ==================== STEP ATTIVO ==================== */
 
 .step.active .circle {
-  animation: pulse 2s ease-in-out infinite;
+  background: linear-gradient(135deg, #2c5f8d 0%, #1a4d7a 100%);
+  color: #ffffff;
+  transform: scale(1.15);
+
+  box-shadow:
+    0 8px 24px rgba(44, 95, 141, 0.4),
+    0 0 0 6px rgba(44, 95, 141, 0.15);
 }
 
-/* Icona checkmark per step completati (opzionale) */
-.step.active .circle::after {
-  content: '✓';
-  position: absolute;
-  font-size: 24px;
-  font-weight: bold;
-  opacity: 0;
-  transform: scale(0);
-  transition: all 0.3s ease;
-}
-
-.step.active:not(:last-child) .circle {
-  animation: none;
-}
-
-.step.active:not(:last-child) .circle::after {
-  opacity: 1;
-  transform: scale(1);
-}
-
+/* Check per step completati */
 .step.active:not(:last-child) .circle {
   font-size: 0;
 }
 
-/* Responsività */
-@media (max-width: 768px) {
+.step.active:not(:last-child) .circle::after {
+  content: '✓';
+  position: absolute;
+  font-size: 22px;
+  font-weight: 800;
+  color: #ffffff;
+}
+
+/* ==================== RESPONSIVE ==================== */
+
+@media (max-width: 1024px) {
   .progress-container {
-    padding: 24px 8px;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
   }
 
-  .circle {
-    width: 40px;
-    height: 40px;
-    font-size: 16px;
-  }
-
-  .line {
-    width: 50px;
-  }
-
-  .step.active .circle::after {
-    font-size: 20px;
-  }
-}
-
-@media (max-width: 480px) {
-  .circle {
-    width: 36px;
-    height: 36px;
-    font-size: 14px;
+  .step {
+    flex-direction: column;
+    align-items: center;
   }
 
   .line {
-    width: 30px;
-    height: 3px;
+    display: none;
   }
 }
+

@@ -3,7 +3,8 @@ import { MarkerDTO } from '../../../models/dto/Search/markerdto';
 
 @Component({
   selector: 'app-mappa-interattiva',
-  templateUrl: './mappainterattiva.component.html'
+  templateUrl: './mappainterattiva.component.html',
+  styleUrls: ['./mappainterattiva.component.css']
 })
 export class MappaInterattivaComponent implements AfterViewInit, OnChanges {
 
@@ -13,20 +14,21 @@ export class MappaInterattivaComponent implements AfterViewInit, OnChanges {
   private markers: google.maps.marker.AdvancedMarkerElement[] = [];
 
   ngAfterViewInit(): void {
-    this.map = new google.maps.Map(
-      document.getElementById('map') as HTMLElement,
-      {
-        center: { lat: 41.9028, lng: 12.4964 },
-        zoom: 6,
-        mapId: 'DEMO_MAP_ID'
-      }
-    );
-
-    // Prova a renderizzare subito, se ci sono già dati
-    if (this.inserzioniPreview.length > 0) {
-      this.renderMarkers();
+  this.map = new google.maps.Map(
+    document.getElementById('map') as HTMLElement,
+    {
+      center: { lat: 41.9028, lng: 12.4964 },
+      zoom: 6,
+      mapId: 'DEMO_MAP_ID',
+      gestureHandling: 'greedy'
     }
+  );
+
+  if (this.inserzioniPreview.length > 0) {
+    this.renderMarkers();
   }
+}
+
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['inserzioniPreview'] && !changes['inserzioniPreview'].firstChange) {
@@ -78,7 +80,7 @@ markerDiv.innerHTML = `
     });
 
     marker.addListener('click', () => {
-      window.open(`/inserzione/${m.id}`, '_blank');
+      window.open(`#/inserzione/${m.id}`, '_blank');
     });
 
     this.markers.push(marker);

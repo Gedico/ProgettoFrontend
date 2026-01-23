@@ -8,7 +8,8 @@ import { Router } from '@angular/router';
   selector: 'app-lista-inserzioni',
   standalone: true,
   imports: [CommonModule, NgForOf],
-  templateUrl: './listainserzione.component.html'
+  templateUrl: './listainserzione.component.html',
+  styleUrls:['./listainserzione.component.css']
 })
 export class ListaInserzioniComponent {
   // Input dal componente genitore (RisultatiComponent)

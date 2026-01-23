@@ -14,20 +14,6 @@
   border-bottom: 2px solid #e9ecef;
 }
 
-.step-icon {
-  font-size: 64px;
-  margin-bottom: 16px;
-  animation: pulse 2s ease-in-out infinite;
-}
-
-@keyframes pulse {
-  0%, 100% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.05);
-  }
-}
 
 .step-main-title {
   font-size: 32px;
@@ -37,13 +23,11 @@
   line-height: 1.2;
 }
 
-.step-description {
-  font-size: 16px;
-  color: #6c757d;
-  line-height: 1.6;
-  max-width: 700px;
-  margin: 0 auto;
+.step-main-title .accent {
+  color: #f59e0b;
 }
+
+
 
 /* ==================== FORM CONTENT ==================== */
 

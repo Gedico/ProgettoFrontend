@@ -1,0 +1,82 @@
+/* CARD */
+.inserzione-card {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+  padding: 12px;
+
+  background: #ffffff;
+  border-radius: 8px;
+  cursor: pointer;
+
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* IMMAGINE */
+.inserzione-img {
+  width: 150px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 6px;
+  flex-shrink: 0;
+}
+
+/* CONTENUTO */
+.inserzione-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.inserzione-main {
+  display: flex;
+  flex-direction: column;
+}
+
+/* TESTI */
+.inserzione-title {
+  margin: 0 0 4px 0;
+}
+
+.inserzione-desc {
+  margin: 0 0 6px 0;
+  color: #555;
+}
+
+/* FEATURES */
+.inserzione-features {
+  display: flex;
+  gap: 14px;
+  font-size: 0.85rem;
+  color: #555;
+  align-items: center;
+}
+
+.inserzione-features .material-icons {
+  font-size: 18px;
+  vertical-align: middle;
+}
+
+/* FOOTER */
+.inserzione-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 500;
+}
+
+.inserzione-prezzo {
+  color: #1e88e5;
+}
+
+.inserzione-prezzo .material-icons,
+.inserzione-comune .material-icons {
+  font-size: 18px;
+  vertical-align: middle;
+}
+
+.inserzione-comune {
+  font-size: 0.9rem;
+  color: #777;
+}
