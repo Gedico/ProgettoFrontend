@@ -1,73 +1,26 @@
-.results-layout {
-  display: grid;
-  grid-template-columns: 42% 58%;
-  gap: 40px;
-  padding: 60px 6%;
-  background: linear-gradient(
-    180deg,
-    #f8fafc 0%,
-    #f1f5f9 100%
-  );
-}
-
-.results-title {
-  padding: 40px 6% 0;
-  font-size: 2rem;
-  font-weight: 700;
-  color: var(--text-dark);
-}
-
-/* Colonna sinistra */
-.results-list {
+.no-results {
+  height: calc(100vh - 80px); /* assunzione: header ~80px */
   display: flex;
   flex-direction: column;
-  gap: 30px; /* stesso gap cards landing */
+  justify-content: center;
+  align-items: center;
+
+  text-align: center;
+  color: #072451; /* blu */
 }
 
-/* Colonna destra (mappa) */
-.results-map {
-  position: sticky;
-  top: 100px;
-  height: calc(100vh - 140px);
-  border-radius: 20px;
-  overflow: hidden;
+.no-results h2 {
+  font-size: 30px;
+  font-weight: 600;
+  margin-bottom: 12px;
 }
 
-.results-layout {
-  display: grid;
-  grid-template-columns: 48% 52%;
-  gap: 40px;
-  padding: 60px 6%;
-  height: calc(100vh - 80px);
-  background: linear-gradient(
-    180deg,
-    #f8fafc 0%,
-    #f1f5f9 100%
-  );
+.no-results .highlight {
+  color: #ffbb00; /* giallo */
 }
 
-.results-layout {
-  background: #eef2f7; /* grigio-azzurro chiaro */
-  padding: 40px 5%;
-  gap: 28px;
-}
-
-.results-layout {
-  margin-top: 40px;
-}
-
-/* Lista: scroll indipendente */
-.results-list {
-  overflow-y: auto;
-  padding-right: 8px; /* evita taglio scrollbar */
-}
-
-/* Mappa: resta fissa nel viewport */
-.results-map {
-  position: sticky;
-  top: 140px; /* prima era 100px */
-  height: calc(100vh - 200px);
-  border-radius: 20px;
-  overflow: hidden;
+.no-results p {
+  font-size: 16px;
+  opacity: 0.85;
 }
 

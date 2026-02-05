@@ -304,3 +304,80 @@
   .btn-search-submit { width: 100%; margin-top: 15px; }
   .btn-icon-filter { width: 100%; margin: 10px 0; justify-content: center; }
 }
+
+.search-segment select {
+  border: none;
+  background: transparent;
+  outline: none;
+  font-size: 1rem;
+  color: #1e293b;
+  width: 100%;
+  font-family: inherit;
+  cursor: pointer;
+
+  /* Rimuove stile nativo */
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+/* Placeholder visivo per "Tutte" */
+.search-segment select option[value=""] {
+  color: #cbd5e1;
+}
+
+/* Focus coerente con input */
+.search-main-container:focus-within select {
+  color: #1e293b;
+}
+
+/* Wrapper del select */
+.select-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+/* Select elegante */
+.search-segment select {
+  width: 100%;
+  padding-right: 30px;
+  border: none;
+  background: transparent;
+  outline: none;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #1e293b;
+  font-family: inherit;
+  cursor: pointer;
+
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+/* Freccia custom */
+.select-arrow {
+  position: absolute;
+  right: 0;
+  font-size: 22px;
+  color: #94a3b8;
+  pointer-events: none;
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+
+/* Hover soft */
+.search-segment:hover .select-arrow {
+  color: #2563eb;
+}
+
+/* Focus (quando il select è attivo) */
+.search-main-container:focus-within .select-arrow {
+  transform: rotate(180deg);
+  color: #2563eb;
+}
+
+/* Opzione "Tutte" come placeholder */
+.search-segment select option[value=""] {
+  color: #cbd5e1;
+}

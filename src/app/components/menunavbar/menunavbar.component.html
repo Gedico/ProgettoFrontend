@@ -17,6 +17,5 @@
 <!-- ===================== MENU ADMIN ===================== -->
 @if (role === 'ADMIN') {
   <a routerLink="/admin/addagente" (click)="onNavigate()">Aggiungi agente</a>
-  <a routerLink="/admin/statistiche" (click)="onNavigate()">Statistiche</a>
   <a class="logout-btn" (click)="onLogout()">Logout</a>
 }

@@ -17,7 +17,8 @@
     <!-- COMUNE -->
     <div class="form-group">
       <label for="comune" class="form-label required">
-        <span class="label-icon">🏘️</span>
+        <span class="material-icons">location_city</span>
+
         Comune
       </label>
 
@@ -41,7 +42,8 @@
               <li
                 class="autocomplete-item"
                 (click)="selezionaComune.emit(comune)">
-                <span class="item-icon">📌</span>
+                <span class="material-icons">location_on</span>
+
                 <span class="item-text">{{ comune }}</span>
               </li>
             }
@@ -66,7 +68,7 @@
     <!-- INDIRIZZO -->
     <div class="form-group">
       <label for="indirizzo" class="form-label required">
-        <span class="label-icon">🏠</span>
+        <span class="material-icons">home</span>
         Indirizzo completo
       </label>
 

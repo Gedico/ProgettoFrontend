@@ -11,7 +11,7 @@ type UiState = 'idle' | 'loading' | 'success' | 'error';
 @Component({
   selector: 'app-addagente',
   standalone: true,
-  imports: [NavbarComponent, CommonModule, RouterModule, ReactiveFormsModule],
+  imports: [CommonModule, RouterModule, ReactiveFormsModule],
   templateUrl: './addagente.component.html',
   styleUrls: ['./addagente.component.css']
 })

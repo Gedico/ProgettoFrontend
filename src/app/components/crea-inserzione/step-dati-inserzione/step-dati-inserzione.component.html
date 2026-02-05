@@ -13,7 +13,6 @@
     <!-- Sezione Informazioni Principali -->
     <div class="form-section">
       <h3 class="section-title">
-        <span class="section-icon">✍️</span>
         Informazioni principali
       </h3>
 
@@ -72,7 +71,8 @@
         <!-- PREZZO -->
         <div class="form-group">
           <label for="prezzo" class="form-label required">
-            <span class="label-icon">💰</span>
+           <span class="material-icons">euro</span>
+
             Prezzo
           </label>
           <div class="input-group">
@@ -101,7 +101,8 @@
         <!-- CATEGORIA -->
         <div class="form-group">
           <label for="categoria" class="form-label required">
-            <span class="label-icon">🏷️</span>
+            <span class="material-icons">sell</span>
+
             Tipo annuncio
           </label>
           <div class="select-wrapper">
@@ -129,7 +130,8 @@
     <!-- Sezione Caratteristiche -->
     <div class="form-section">
       <h3 class="section-title">
-        <span class="section-icon">📐</span>
+       <span class="material-icons">straighten</span>
+
         Caratteristiche
       </h3>
 
@@ -146,7 +148,8 @@
               class="form-control"
               formControlName="dimensioni"
               placeholder="80"
-              min="1"
+              min="10"
+              max="10000"
               [class.ng-invalid]="datiInserzioneForm.get('dimensioni')?.touched && datiInserzioneForm.get('dimensioni')?.invalid"
               [class.ng-valid]="datiInserzioneForm.get('dimensioni')?.touched && datiInserzioneForm.get('dimensioni')?.valid"
             />
@@ -171,6 +174,7 @@
             formControlName="numeroStanze"
             placeholder="3"
             min="1"
+            max="20"
             [class.ng-invalid]="datiInserzioneForm.get('numeroStanze')?.touched && datiInserzioneForm.get('numeroStanze')?.invalid"
             [class.ng-valid]="datiInserzioneForm.get('numeroStanze')?.touched && datiInserzioneForm.get('numeroStanze')?.valid"
           />
@@ -190,6 +194,7 @@
             id="piano"
             type="number"
             class="form-control"
+            max="1000"
             formControlName="piano"
             placeholder="2"
           />
@@ -200,7 +205,8 @@
       <!-- CLASSE ENERGETICA -->
       <div class="form-group">
         <label class="form-label required">
-          <span class="label-icon">⚡</span>
+          <span class="material-icons">bolt</span>
+
           Classe energetica
         </label>
 
@@ -231,7 +237,8 @@
           formControlName="ascensore"
         />
         <label for="ascensore" class="checkbox-label">
-          🛗 Ascensore presente
+          <span class="material-icons">elevator</span>
+          Ascensore presente
         </label>
       </div>
     </div>
@@ -245,7 +252,7 @@
         </div>
       </div>
       <small class="progress-text">
-        {{ getFilledFieldsCount() }} di 8 campi compilati
+        {{ getFilledFieldsCount() }} di 7 campi obbligatori compilati
       </small>
     </div>
 

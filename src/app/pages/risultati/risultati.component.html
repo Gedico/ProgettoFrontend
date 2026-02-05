@@ -1,20 +1,36 @@
 <div class="results-layout">
 
+  @if (inserzioni && inserzioni.length > 0) {
 
-  <!-- Lista inserzioni -->
-  <div class="results-list">
-    <app-lista-inserzioni
-      [inserzioni]="inserzioni">
-    </app-lista-inserzioni>
-  </div>
+    <!-- Lista inserzioni -->
+    <div class="results-list">
+      <app-lista-inserzioni
+        [inserzioni]="inserzioni">
+      </app-lista-inserzioni>
+    </div>
 
-  <!-- Mappa -->
-  <div class="results-map">
-    <app-mappa-interattiva
-      [inserzioniPreview]="markerInserzioni">
-    </app-mappa-interattiva>
-  </div>
+    <!-- Mappa -->
+    <div class="results-map">
+      <app-mappa-interattiva
+        [inserzioniPreview]="markerInserzioni">
+      </app-mappa-interattiva>
+    </div>
+
+  } @else {
+
+    <div class="no-results">
+  <h2>
+    Non ci sono <span class="highlight">risultati</span>
+  </h2>
+  <p>
+    Prova a ricontrollare il comune o a modificare i filtri di ricerca.
+  </p>
+</div>
+
+
+  }
 
 </div>
+
 
 

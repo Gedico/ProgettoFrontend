@@ -11,7 +11,7 @@
  <!-- Indirizzo corrente -->
   @if (posizioneForm.get('indirizzo')?.value) {
     <div class="current-address">
-      <div class="address-icon">📍</div>
+      <span class="material-icons">location_on</span>
       <div class="address-content">
         <div class="address-label">Indirizzo selezionato:</div>
         <div class="address-text">{{ posizioneForm.get('indirizzo')?.value }}</div>

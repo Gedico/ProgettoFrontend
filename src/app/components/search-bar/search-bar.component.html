@@ -21,10 +21,21 @@
       </ul>
     </div>
 
-    <div class="search-segment">
-      <label>Categoria</label>
-      <input type="text" placeholder="Es. Villa, Loft..." formControlName="categoria" />
-    </div>
+    <div class="search-segment select-segment">
+  <label>Categoria</label>
+
+  <div class="select-wrapper">
+    <select formControlName="categoria">
+      <option value="">Tutte</option>
+      <option value="VENDITA">Vendita</option>
+      <option value="AFFITTO">Affitto</option>
+    </select>
+
+    <span class="material-icons select-arrow">expand_more</span>
+  </div>
+</div>
+
+
 
     <button type="button" class="btn-icon-filter" (click)="toggleFiltriAggiuntivi()" [class.active]="mostraFiltriAggiuntivi">
       <span class="icon">⚙️</span>
