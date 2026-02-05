@@ -865,3 +865,74 @@ iframe {
     grid-template-columns: 1fr;
   }
 }
+
+
+/* =========================
+   HERO CAROUSEL
+========================= */
+.hero-carousel {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Pulsanti frecce */
+.carousel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+
+  /* look moderno */
+  background: rgba(15, 35, 60, 0.55);
+  color: #fff;
+  font-size: 26px;
+  font-weight: 300;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  backdrop-filter: blur(6px);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.35);
+
+  transition:
+    background 0.25s ease,
+    transform 0.2s ease,
+    box-shadow 0.25s ease;
+  z-index: 5;
+}
+
+/* Posizione */
+.carousel-btn.left {
+  left: 16px;
+}
+
+.carousel-btn.right {
+  right: 16px;
+}
+
+/* Hover */
+.carousel-btn:hover {
+  background: rgba(30, 136, 229, 0.85); /* blu elegante */
+  transform: translateY(-50%) scale(1.08);
+  box-shadow: 0 12px 32px rgba(30, 136, 229, 0.45);
+}
+
+/* Active (click) */
+.carousel-btn:active {
+  transform: translateY(-50%) scale(0.96);
+}
+
+/* Mobile: pulsanti più piccoli */
+@media (max-width: 768px) {
+  .carousel-btn {
+    width: 36px;
+    height: 36px;
+    font-size: 22px;
+  }
+}
+

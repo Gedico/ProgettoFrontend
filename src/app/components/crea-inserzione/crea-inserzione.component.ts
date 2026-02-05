@@ -12,6 +12,8 @@ import {StepPosizioneComponent} from './step-posizione/step-posizione.component'
 import {StepDatiInserzioneComponent} from './step-dati-inserzione/step-dati-inserzione.component';
 import {StepImmaginiComponent} from './step-immagini/step-immagini.component';
 import { ProgressBarComponent} from './progress-bar/progress-bar.component';
+import { UiPopupService } from '../../shared/ui/ui-popup.service';
+
 
 
 
@@ -47,7 +49,9 @@ export class CreaInserzioneComponent implements OnInit {
   constructor(private fb: FormBuilder,
               private http: HttpClient,
               private inserzioneService: InserzioneService,
-              private router: Router) {}
+              private router: Router,
+              private uiPopup: UiPopupService
+            ) {}
 
 
 
@@ -240,39 +244,43 @@ onPrezzoInput(event: Event): void {
 
   submit(): void {
 
-
-    if (!this.creaInserzioneForm.valid) {
-      return;
-    }
-
-
-    const formValue = this.creaInserzioneForm.value;
-    console.log('POSIZIONE INVIATA:', formValue.posizione);
-
-
-    const dati = this.creaInserzioneForm.get('datiInserzione')?.value;
-    const posizione = this.creaInserzioneForm.get('posizione')?.value;
-
-    const request: InserzioneRequest = {
-      datiInserzioneRequest: dati,
-      posizione: posizione
-    };
-
-    this.inserzioneService.creaInserzione(request, this.immagini)
-      .subscribe({
-        next: (_res) => {
-          alert('Inserzione creata con successo');
-          this.router.navigate(['/agente/inserzioni']);
-        },
-        error: (err) => {
-          console.error('Errore creazione inserzione', err);
-          alert('Errore durante la creazione dell’inserzione. Controlla i dati e riprova.');
-          // resta sull’ultimo step (non fare nulla)
-          this.stepCorrente = this.totaleStep;
-        }
-      });
-
+  if (!this.creaInserzioneForm.valid) {
+    return;
   }
+
+  const dati = this.creaInserzioneForm.get('datiInserzione')?.value;
+  const posizione = this.creaInserzioneForm.get('posizione')?.value;
+
+  const request: InserzioneRequest = {
+    datiInserzioneRequest: dati,
+    posizione: posizione
+  };
+
+  this.inserzioneService.creaInserzione(request, this.immagini)
+    .subscribe({
+      next: async () => {
+        await this.uiPopup.success(
+          'Inserzione creata',
+          'La tua inserzione è stata pubblicata con successo.'
+        );
+
+        this.router.navigate(['/agente/inserzioni']);
+      },
+      error: async (err) => {
+        console.error('Errore creazione inserzione', err);
+
+        await this.uiPopup.error(
+          'Creazione non riuscita',
+          'Si è verificato un errore durante la creazione dell’inserzione. Controlla i dati e riprova.'
+        );
+
+        // resta sull’ultimo step
+        this.stepCorrente = this.totaleStep;
+      }
+    });
+
+}
+
 
 }
 

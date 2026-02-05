@@ -10,11 +10,43 @@
     @if (inserzione.foto.length) {
       <section class="hero">
         <div class="hero-media">
-          <img
-            class="hero-img"
-            [src]="inserzione.foto[0].url"
-            alt="Foto principale"
-          />
+          <div class="hero-carousel">
+
+            <button
+              class="carousel-btn left"
+              (click)="prevFoto()"
+              aria-label="Foto precedente">
+              ‹
+            </button>
+
+            <img
+              class="hero-img"
+              [src]="inserzione.foto[indiceFotoCorrente].url"
+              alt="Foto inserzione"
+            />
+
+            <button
+              class="carousel-btn right"
+              (click)="nextFoto()"
+              aria-label="Foto successiva">
+              ›
+            </button>
+
+            <!-- Indicatori -->
+            <div class="carousel-dots">
+              @for (f of inserzione.foto; track i; let i = $index) {
+                <span
+                  class="dot"
+                  [class.active]="i === indiceFotoCorrente"
+                  (click)="vaiAFoto(i)">
+                </span>
+              }
+
+
+            </div>
+
+          </div>
+
 
           <!-- Badge -->
           <div class="hero-badges">

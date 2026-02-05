@@ -54,6 +54,7 @@ export class VisualizzaInserzioneComponent implements OnInit {
   offertaForm: FormGroup;
 
   prezzoMinimo = 0;
+  indiceFotoCorrente: number = 0;
 
   haTrattativaInCorso = false;
   contropropostaAgente: ContropropostaAgente | null = null;
@@ -348,4 +349,31 @@ export class VisualizzaInserzioneComponent implements OnInit {
 
     void this.router.navigate(['/inserzione', this.inserzione.id, 'proposta-manuale']);
   }
+
+
+
+
+  nextFoto(): void {
+  if (!this.inserzione?.foto?.length) return;
+
+  this.indiceFotoCorrente =
+    (this.indiceFotoCorrente + 1) % this.inserzione.foto.length;
+}
+
+prevFoto(): void {
+  if (!this.inserzione?.foto?.length) return;
+
+  this.indiceFotoCorrente =
+    (this.indiceFotoCorrente - 1 + this.inserzione.foto.length) %
+    this.inserzione.foto.length;
+}
+
+vaiAFoto(index: number): void {
+  if (!this.inserzione?.foto?.length) return;
+
+  this.indiceFotoCorrente = index;
+}
+
+
+
 }
