@@ -1,9 +1,15 @@
+<!-- 🔵 RICERCA IN CORSO -->
+<div *ngIf="loading" class="stato-ricerca">
+  <span class="material-icons">hourglass_top</span>
+  <p>Ricerca in corso...</p>
+</div>
+
+<!-- 🟡 RISULTATI -->
 <div
   *ngFor="let i of inserzioni"
   class="inserzione-card"
   (click)="apriDettaglio(i.idInserzione)"
 >
-
   <!-- Immagine -->
   <img
     *ngIf="i.fotoUrls.length > 0"
@@ -16,35 +22,28 @@
   <div class="inserzione-content">
 
     <div class="inserzione-main">
-      <h3 class="inserzione-title">
-        {{ i.titolo }}
-      </h3>
+      <h3 class="inserzione-title">{{ i.titolo }}</h3>
 
       <p class="inserzione-desc">
         {{ i.descrizione | slice:0:90 }}{{ i.descrizione.length > 90 ? '…' : '' }}
       </p>
 
-      <!-- Dati con icone -->
       <div class="inserzione-features">
         <span *ngIf="i.dimensione">
           <span class="material-icons">straighten</span>
           {{ i.dimensione }} mq
         </span>
-
         <span *ngIf="i.stanze">
           <span class="material-icons">bed</span>
           {{ i.stanze }}
         </span>
-
         <span *ngIf="i.piano !== undefined">
           <span class="material-icons">apartment</span>
           Piano {{ i.piano }}
         </span>
-
         <span *ngIf="i.ascensore">
           <span class="material-icons">elevator</span>
         </span>
-
         <span *ngIf="i.classeEnergetica">
           <span class="material-icons">bolt</span>
           {{ i.classeEnergetica }}
@@ -52,13 +51,11 @@
       </div>
     </div>
 
-    <!-- Footer -->
     <div class="inserzione-footer">
       <span class="inserzione-prezzo">
         <span class="material-icons">payments</span>
         {{ i.prezzo | number }} €
       </span>
-
       <span class="inserzione-comune">
         <span class="material-icons">location_on</span>
         {{ i.comune }}
@@ -67,6 +64,22 @@
 
   </div>
 </div>
+
+<!-- 🔴 NESSUN RISULTATO -->
+<div
+  *ngIf="!loading && mostraNessunRisultato"
+  class="nessun-risultato"
+>
+  <span class="material-icons">search_off</span>
+  <p>
+  Non ci sono risultati per il comune:
+  <strong>{{ comune }}</strong>
+</p>
+
+  
+</div>
+
+
 
 
 

@@ -98,6 +98,8 @@ export class SearchBarComponent implements OnInit {
       }
     });
 
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
     this.router.navigate(['/search'], { queryParams });
   }
 }

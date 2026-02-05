@@ -226,12 +226,14 @@ onPrezzoInput(event: Event): void {
 
   nextStep(): void {
     if (this.stepCorrente < this.totaleStep) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
       this.stepCorrente++;
     }
   }
 
   previousStep(): void {
     if (this.stepCorrente > 1) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
       this.stepCorrente--;
     }
   }
