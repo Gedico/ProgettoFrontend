@@ -1,6 +1,10 @@
 <div class="container">
 
-  <h1>Proposte ricevute</h1>
+  <h1 class="titolo">
+  <span class="oro">Proposte</span>
+  <span class="blu">Ricevute</span>
+</h1>
+
 
   <!-- Loader -->
   @if (loading) {
@@ -16,73 +20,79 @@
     </p>
   }
 
-  <!-- Tabella proposte -->
+  <!-- Lista proposte -->
   @if (!loading && proposte.length > 0) {
-    <table mat-table
-           [dataSource]="proposte"
-           class="mat-elevation-z2">
 
-      <!-- Inserzione -->
-      <ng-container matColumnDef="titolo">
-        <th mat-header-cell *matHeaderCellDef> Inserzione </th>
-        <td mat-cell *matCellDef="let row">
-          {{ row.importo | number:'1.0-0':'it' }} €
-        </td>
-      </ng-container>
+    <div class="proposte-list">
 
-      <!-- Importo -->
-      <ng-container matColumnDef="importo">
-        <th mat-header-cell *matHeaderCellDef> Offerta </th>
-        <td mat-cell *matCellDef="let row">
-          {{ row.importo | number:'1.0-0':'it' }} €
-        </td>
-      </ng-container>
+      @for (p of proposte; track p.idProposta) {
+  <mat-card class="proposta-card">
 
-      <!-- Data -->
-      <ng-container matColumnDef="data">
-        <th mat-header-cell *matHeaderCellDef> Data </th>
-        <td mat-cell *matCellDef="let row">
-          {{ row.dataCreazione | date:'dd/MM/yyyy' }}
-        </td>
-      </ng-container>
+    <!-- Header -->
+    <mat-card-header>
+      <mat-card-title class="importo-proposta">
+        {{ p.importo | number:'1.0-0':'it' }} €
+      </mat-card-title>
 
-      <!-- Azioni -->
-      <ng-container matColumnDef="azioni">
-        <th mat-header-cell *matHeaderCellDef> Azioni </th>
-        <td mat-cell *matCellDef="let row" class="azioni-cell">
+      <mat-card-subtitle class="prezzo-inserzione">
+        Prezzo inserzione:
+        <strong>{{ p.prezzoInserzione | number:'1.0-0':'it' }} €</strong>
+      </mat-card-subtitle>
+    </mat-card-header>
 
-          <!-- Accetta -->
-          <button mat-raised-button
-                  color="primary"
-                  (click)="aggiornaStato(row.idProposta, StatoProposta.ACCETTATA)">
-            <mat-icon>check_circle</mat-icon>
-            Accetta
-          </button>
+    <!-- Contenuto -->
+    <mat-card-content>
+      <p class="inserzione">
+        Inserzione: <strong>{{ p.titoloInserzione }}</strong>
+      </p>
 
-          <!-- Rifiuta -->
-          <button mat-raised-button
-                  color="warn"
-                  (click)="aggiornaStato(row.idProposta, StatoProposta.RIFIUTATA)">
-            <mat-icon>cancel</mat-icon>
-            Rifiuta
-          </button>
+      <p class="data">
+        Inviata il {{ p.dataCreazione | date:'dd/MM/yyyy' }}
+      </p>
+    </mat-card-content>
 
-          <!-- Controproposta -->
-          <button mat-raised-button
-                  color="accent"
-                  (click)="apriControproposta(row)">
-            <mat-icon>swap_horiz</mat-icon>
-            Controproposta
-          </button>
+    <!-- Azioni -->
+    <mat-card-actions>
 
-        </td>
-      </ng-container>
+      <button
+        mat-stroked-button
+        color="primary"
+        [routerLink]="['/inserzione', p.idInserzione]">
+        <mat-icon>open_in_new</mat-icon>
+        Inserzione
+      </button>
 
-      <!-- Header & Rows -->
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="aggiornaStato(p.idProposta, StatoProposta.ACCETTATA)">
+        <mat-icon>check_circle</mat-icon>
+        Accetta
+      </button>
 
-    </table>
+      <button
+        mat-raised-button
+        color="warn"
+        (click)="aggiornaStato(p.idProposta, StatoProposta.RIFIUTATA)">
+        <mat-icon>cancel</mat-icon>
+        Rifiuta
+      </button>
+
+      <button
+        mat-raised-button
+        color="accent"
+        (click)="apriControproposta(p)">
+        <mat-icon>swap_horiz</mat-icon>
+        Controproposta
+      </button>
+
+    </mat-card-actions>
+
+  </mat-card>
+}
+
+
+    </div>
   }
 
 </div>

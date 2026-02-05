@@ -11,6 +11,10 @@ import { StatoProposta } from '../../../models/dto/enums/stato-proposta';
 import Swal from 'sweetalert2';
 import {ContropropostaRequest} from '../../../models/dto/proposta/controproposta-request-dto';
 import {parsePrezzo} from '../../../shared/utils/prezzo.utils';
+import { MatCardModule } from '@angular/material/card';
+import { RouterModule } from '@angular/router';
+
+
 
 
 @Component({
@@ -21,7 +25,9 @@ import {parsePrezzo} from '../../../shared/utils/prezzo.utils';
     MatTableModule,
     MatButtonModule,
     MatIconModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatCardModule,
+    RouterModule
   ],
   templateUrl: './proposte-ricevute.component.html',
   styleUrls: ['./proposte-ricevute.component.css']
