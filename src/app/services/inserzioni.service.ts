@@ -5,6 +5,7 @@ import { InserzioneCard } from '../models/inserzionecard';
 import { InserzioneResponse } from '../models/inserzioneresponse';
 import { InserzioneSearchRequest } from '../models/dto/Search/inserzioneserchrequest';
 import { InserzioneSearchResponse } from '../models/dto/Search/inserzionesearchresponse';
+import { environment } from '../../envoiroments/envoiroment';
 
 
 
@@ -12,7 +13,7 @@ import { InserzioneSearchResponse } from '../models/dto/Search/inserzionesearchr
   providedIn: 'root'
 })
 export class InserzioneService {
-  private apiUrl = 'http://localhost:8080/api/inserzioni';
+ private apiUrl = `${environment.apiUrl}/api/inserzioni`;
 
 
   private risultatiSearch: InserzioneResponse[] = [];

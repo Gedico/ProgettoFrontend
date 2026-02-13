@@ -7,13 +7,15 @@ import { PropostaResponse } from '../models/dto/proposta/proposta-response.dto';
 import { StatoProposta } from '../models/dto/enums/stato-proposta';
 import {ContropropostaRequest} from '../models/dto/proposta/controproposta-request-dto';
 import {PropostaManualeRequest} from '../models/dto/proposta/proposta-manuale-request.dto';
+import { environment } from '../../envoiroments/envoiroment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PropostaService {
 
-  private baseUrl = 'http://localhost:8080/api/proposte';
+ private baseUrl = `${environment.apiUrl}/api/proposte`;
+
 
   constructor(private http: HttpClient) {}
 

@@ -5,13 +5,14 @@ import { Observable } from 'rxjs';
 import { ProfiloResponse } from '../models/dto/profilo/profilo-response';
 import { UpdateProfiloRequest } from '../models/dto/profilo/update-profilo-request';
 import { UpdateProfiloResponse } from '../models/dto/profilo/update-profilo-response';
+import { environment } from '../../envoiroments/envoiroment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProfiloService {
 
-  private api = 'http://localhost:8080/api/profilo';
+  private api = `${environment.apiUrl}/api/profilo`;
 
   constructor(private http: HttpClient) {}
 

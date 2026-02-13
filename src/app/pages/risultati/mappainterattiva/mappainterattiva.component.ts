@@ -53,7 +53,7 @@ export class MappaInterattivaComponent implements AfterViewInit, OnChanges {
     const markerDiv = document.createElement('div');
 markerDiv.innerHTML = `
   <div style="
-    background-color: #4CAF50;
+    background-color: #1f1061;
     color: white;
     font-weight: bold;
     padding: 2px 6px;
@@ -65,7 +65,7 @@ markerDiv.innerHTML = `
   <div style="
     width: 20px;
     height: 20px;
-    background-color: #4CAF50;
+    background-color: #152476;
     border-radius: 50%;
     border: 2px solid white;
     box-shadow: 0 2px 4px rgba(0,0,0,0.3);
